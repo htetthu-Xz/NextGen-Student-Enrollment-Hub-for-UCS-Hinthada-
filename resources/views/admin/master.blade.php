@@ -108,13 +108,13 @@
         </li>
 
         <li class="nav-item {{ request()->routeIs('service.review.list') ? 'active' : '' }}">
-            <a class="nav-link" href="{{route('admin.stu.reg.list')}}">
+            <a class="nav-link" href="{{route('admin.stu.reg.accept.classes')}}">
                 <i class="fab fa-imdb"></i>
                 <span>ကျောင်းအပ်သူများ</span>
             </a>
         </li>
           <li class="nav-item {{ request()->routeIs('service.review.list') ? 'active' : '' }}">
-            <a class="nav-link" href="{{route('admin.stu.reg.accept.list')}}">
+            <a class="nav-link" href="{{ route('admin.stu.reg.accept.list') }}">
                 <i class="fab fa-imdb"></i>
                 <span>ကျောင်းအပ်လက်ခံထားမှု</span>
             </a>

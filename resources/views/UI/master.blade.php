@@ -84,6 +84,10 @@
 
 <body>
 
+@php
+  use App\Helper\Facades\File;
+@endphp
+
   <div class="hero_area">
     <div class="hero_bg_box">
 
@@ -131,9 +135,11 @@
 
               @if(Auth::check() && Auth::user()->role == 'admin')
 
+
+
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle wtext" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   <img src="{{ asset('storage/'. Auth::user()->image) }}" class="rounded-circle" style="width: 30px; height: 30px; vertical-align: middle;"> {{ Auth::user()->name }}
+                   <img src="{{ asset(File::GetStudentDataPath() . Auth::user()->image) }}" class="rounded-circle" style="width: 30px; height: 30px; vertical-align: middle;"> {{ Auth::user()->name }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a href="{{route('admin.index')}}" type="submit" class="dropdown-item mt-2" >Admin DashBoard</a>
@@ -146,7 +152,7 @@
               @if(Auth::check() && Auth::user()->role == 'user')
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle wtext" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{ asset('storage/images/'. Auth::user()->image) }}" class="rounded-circle" style="width: 30px; height: 30px; vertical-align: middle;"> {{ Auth::user()->name }}
+                  <img src="{{ asset(File::GetStudentDataPath() . Auth::user()->image) }}" class="rounded-circle" style="width: 30px; height: 30px; vertical-align: middle;"> {{ Auth::user()->name }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 

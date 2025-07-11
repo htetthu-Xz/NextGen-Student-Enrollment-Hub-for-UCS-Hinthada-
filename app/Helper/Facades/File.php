@@ -34,7 +34,6 @@ class File
 
     public static function GetStudentDataPath()
     {
-        $authUser = Auth::user();
-        return 'storage/images/' . Str::slug($authUser->name) . '-'  . Auth::user()->uuid . '/';
+        return 'storage/public/images/' . Auth::user()->uuid . '/';
     }
 }

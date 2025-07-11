@@ -81,7 +81,7 @@
         </div>
         <div class="card-body">
             <div class="text-center mt-4">
-                <img src="{{ asset(File::GetStudentDataPath(). '/' . $student->profile) }}"
+                <img src="{{ asset(File::GetStudentDataPath() . $student->profile) }}"
                     class="rounded-circle shadow" style="width: 120px; height: 120px; object-fit: cover;">
                 <h4 class="mt-2 text-primary fw-bold">အချက်အလက်များ</h4>
             </div>
@@ -127,7 +127,7 @@
             </div>
 
 
-            <div class="card shadow-sm mb-4" style="padding: 0% !important;">
+            <div class="card shadow-sm mb-4 col-md-10 mx-auto" style="padding: 0% !important;">
                 <div class="card-header bg-primary text-white">Submitted Documents</div>
                 <div class="card-body">
                     <div class="row">
@@ -144,7 +144,7 @@
                             @if ($student->$field)
                                 <div class="col-md-3 col-sm-6 mb-4">
                                     <div class="card h-100 border-0 shadow-sm">
-                                        <img src="{{ asset(File::GetStudentDataPath(). '/' . $student->$field) }}"
+                                        <img src="{{ asset(File::GetStudentDataPath() . $student->$field) }}"
                                             class="card-img-top rounded clickable-image"
                                             style="height: 180px; object-fit: cover;">
                                         <div class="card-body text-center py-2">

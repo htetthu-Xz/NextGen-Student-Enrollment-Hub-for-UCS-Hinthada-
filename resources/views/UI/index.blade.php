@@ -11,7 +11,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="detail-box">
-                    <h1 style=" font-size: 3rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">UCS-HTD <br> Student Registration & <br>Grading Certificate Creation<br>System </h1>
+                    <h2 style=" font-size: 3rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">NextGen <br> Student Enrollment <br> Hub For UCS (Hinthada)</h2>
                     <p>ကျောင်းသားများ လွယ်ကူလျှင်မြန်စွာ ကျောင်းအပ်ရန် ရည်ရွယ် စီစဉ်ထားပါသည်.</p>
                   <div class="btn-box">
                     <a href="{{route('stu.reg')}}" class="btn1">ကျောင်းအပ်မည်</a>
@@ -22,8 +22,8 @@
 
               </div>
               <div class="col-md-5">
-                <div class="img">
-                  <img src="{{ asset('user/images/logo.png') }}" alt="" style="height: 330px;width:330px">
+                <div class="img text-right">
+                  <img src="{{ asset('user/images/logo.png') }}" alt="" style="height: 300px;width:300px">
                 </div>
               </div>
             </div>

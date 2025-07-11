@@ -20,7 +20,7 @@ class StudentRegistrationController extends Controller
         $attributes = $request->validated();
 
         if (auth()->user()->stop === "no") {
-            $lastRegistration = StudentRegistration::where('user_id', auth()->user()->id)->where('status', 'pending')->latest()->first();   
+            $lastRegistration = StudentRegistration::where('user_id', auth()->user()->id)->where('status', 'pending')->latest()->first();
 
             if ($lastRegistration) {
                 return redirect()->back()->with('error', 'ကျောင်းသားတစ်ယောက်သည် တစ်နှစ်လျှင် စာသင်နှစ်တစ်ခုကိုသာ ကျောင်းအပ်ခွင့်လျှောက်ထားနိုင်သည်။');
@@ -34,7 +34,7 @@ class StudentRegistrationController extends Controller
                 return redirect()->back()->with('error', 'ဤနှစ်အတွက် CS သို့မဟုတ် CT ကိုသာရွေးချယ်နိုင်ပါသည်။');
             }
 
-            $path = 'public/images/' . Str::slug(auth()->user()->name) . '-'  . Auth::user()->uuid . '/';
+            $path = 'public/images/' . Auth::user()->uuid . '/';
             $registration['profile'] = File::upload($request->file('profile'), $path);
             $registration['matriculation_result'] = File::upload($request->file('matriculation_result'), $path);
             $registration['nrc_student_front'] = File::upload($request->file('nrc_student_front'), $path);
@@ -72,6 +72,9 @@ class StudentRegistrationController extends Controller
             $registration['payment_note'] = $attributes['payment_note'] ?? null;
             $registration['agree_rules'] = $attributes['agree_rules'] == "on" ? true : false;
 
+            auth()->user()->update([
+                'image' => $registration['profile'],
+            ]);
             StudentRegistration::create($registration);
 
             return redirect()->route('ui.home')->with('success', 'Student Registration Form submitted successfully!');
@@ -80,15 +83,20 @@ class StudentRegistrationController extends Controller
         return back()->with('error', 'ကျောင်းရပ်နားသူဖြစ်သောကြောင့် Registration လုပ်မရပါ');
     }
 
-    public function stuRegList(Request $request)
+    public function acceptClasses()
     {
-        $searchKey = $request->input('search');
-        $academicYearId = $request->input('academic_year_id');
-        $specialist = $request->input('specialist');
-        $query = StudentRegistration::query()->where('status', 'pending')->whereHas('user', function ($query) {
+        $years = AcademicYear::all();
+
+        return view('admin.accept.acceptClasses', ['years' => $years]);
+    }
+
+    public function stuRegList(Request $request, AcademicYear $academicYear)
+    {
+        $searchKey = $request->input('student_name');
+        $major = $request->input('specialist');
+        $query = StudentRegistration::query()->where('status', 'pending')->where('academic_year_id', $academicYear->id)->whereHas('user', function ($query) {
             $query->where('stop', 'no');
         });
-        $years = AcademicYear::all();
 
         if ($searchKey) {
             $query->whereHas('user', function ($query) use ($searchKey) {
@@ -96,15 +104,12 @@ class StudentRegistrationController extends Controller
             });
         }
 
-        if ($academicYearId) {
-            $query->where('academic_year_id', $academicYearId);
-        }
-        if ($specialist) {
-            $query->where('specialist', $specialist);
+        if ($major) {
+            $query->where('major', $major);
         }
 
-        $regs = $query->paginate(10);
-        return view('admin.studentRegistation.list', compact('regs', 'years'));
+        $registrations = $query->paginate(10);
+        return view('admin.studentRegistation.list', ['registrations' => $registrations, 'academicYear' => $academicYear]);
     }
 
 
@@ -112,8 +117,8 @@ class StudentRegistrationController extends Controller
 
     public function stuRegDetail($id)
     {
-        $student = StudentRegistration::find($id);
-        return view('admin.studentRegistation.detail', compact('student'));
+        $registration = StudentRegistration::find($id);
+        return view('admin.studentRegistation.detail', compact('registration'));
     }
 
     public function showImage($name)
@@ -235,23 +240,26 @@ class StudentRegistrationController extends Controller
     }
 
 
-    public function stuRegDelete($id)
+    public function stuRegDelete(StudentRegistration $studentRegistration)
     {
-        $da = StudentRegistration::find($id);
-        $stu_id = $da->user_id;
-        try {
-            $data = User::find($stu_id);
+        // $da = StudentRegistration::find($id);
+        // $stu_id = $da->user_id;
+        // try {
+        //     $data = User::find($stu_id);
 
-            if ($data) {
-                $data->stop = "yes";
-                $data->save();
-                return back()->with('success', 'ကျောင်းသားအား ရပ်နားထားသည်');
-            } else {
-                return back()->with('error', 'ကျောင်းသားကို မတွေ့ပါ');
-            }
-        } catch (\Exception $e) {
-            return back()->with('error', 'တစ်စုံတစ်ရာအမှားအယွင်းရှိပါသည်: ' . $e->getMessage());
-        }
+        //     if ($data) {
+        //         $data->stop = "yes";
+        //         $data->save();
+        //         return back()->with('success', 'ကျောင်းသားအား ရပ်နားထားသည်');
+        //     } else {
+        //         return back()->with('error', 'ကျောင်းသားကို မတွေ့ပါ');
+        //     }
+        // } catch (\Exception $e) {
+        //     return back()->with('error', 'တစ်စုံတစ်ရာအမှားအယွင်းရှိပါသည်: ' . $e->getMessage());
+        // }
+
+        $studentRegistration->update(['status' => 'rejected']);
+        return back()->with('success', 'ကျောင်းသားအား ပယ်ဖျက်လိုက်ပါပြီ');
     }
 
     public function form()
@@ -515,11 +523,9 @@ class StudentRegistrationController extends Controller
         return back()->with('success', 'ကျောင်းသားအား ကိုယ်တိုင် ပြင်ဆင်ခွင့်ပေးလိုက်ပါပြီ');
     }
 
-    public function regAccept($id)
+    public function regAccept(StudentRegistration $studentRegistration)
     {
-        $data = StudentRegistration::find($id);
-        $data->status = "confirm";
-        $data->save();
+        $studentRegistration->update(['status' => 'confirm']);
         return back()->with('success', 'ကျောင်းအပ် လက်ခံလိုက်ပါပြီ');
     }
 

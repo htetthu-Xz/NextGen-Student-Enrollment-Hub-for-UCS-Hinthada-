@@ -1,101 +1,166 @@
 @extends('admin.master')
+
 @section('content')
-<div class="page-wrapper mt-0 ">
-    <div class="card bg-dark text-white">
-        <img class="w-100" src="{{ asset('user/images/ucsh1.jpg') }}" alt="Card image"
-            style="height: 1200px; filter: blur(70px); object-fit: cover;">
-        <div class="card-img-overlay">
+@php
+    use App\Helper\Facades\File;
+@endphp
 
-            <div class="container my-1 d-flex justify-content-center">
+<div class="container py-4">
+    <h3 class="text-center pcolor mb-4">Student Registration Details</h3>
 
-                <div class="col-12 text-end">
-                    <a href="{{route('admin.stu.reg.list')}}" class="btn wbtn btn-sm mb-2 text-white">Back</a>
-                </div>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-md-12 mb-4">
-                    <div class="border border-primary pt-3 mt-3 rounded shadow"
-                         style="box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); background-color: rgb(250, 250, 250); height: 500px; overflow-y: auto;">
-                        <!-- Added scrollable container with height 600px and overflow-y: auto; -->
-
-                        <ul class="list-group list-group-flush p-3">
-                            <div class="mb-3 text-center">
-                                @if ($student->student_image)
-                                    <a href="{{ route('image.show', ['name' => $student->student_image]) }}">
-                                        <img src="{{ asset('storage/images/'.$student->student_image) }}"
-                                             class="profileimg rounded-circle"
-                                             style="width: 200px; height:200px; object-fit:cover">
-                                    </a>
-                                @else
-                                    <p class="text-white"><b>No photo available !</b></p>
-                                @endif
-                            </div>
-
-                            <!-- List items for student details -->
-                            <li class="list-group-item bg-transparent "  style="font-size: 1.2rem"><b >ကျောင်းသားအမည် :</b>&nbsp;
-                                {{ $student->user->name }}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>သင်တန်းနှစ် :</b>&nbsp;
-                                {{ $student->academicYear->name }}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>ကျောင်းအပ်ခ :</b>&nbsp;
-                                {{ $student->academicYear->enrollment }} ကျပ်
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အထူးပြုဘာသာ :</b>&nbsp;
-                                {{ $student->specialist }}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>ခုံနံပါတ် :</b>&nbsp;
-                                @if($student->specialist==="computer_science") CS-{{ $student->roll_no }}
-                                @elseif ($student->specialist==="computer_technology") CT-{{ $student->roll_no }}
-                                @else CST-{{ $student->roll_no }}
-                                @endif
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အဘအမည် :</b>&nbsp;
-                                {{ $student->father_name}}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အဘ မှတ်ပုံတင် မိတ္တူအရှေ့ :</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->father_nrc_photo]) }}"> <i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အဘ မှတ်ပုံတင် မိတ္တူအနောက် :</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->father_nrc_back]) }}"> <i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အမိအမည် :</b>&nbsp;
-                                {{ $student->mother_name}}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အမိမှတ်ပုံတင် မိတ္တူ အရှေ့:</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->mother_nrc_photo]) }}"><i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အမိမှတ်ပုံတင် မိတ္တူ  အနောက် :</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->mother_nrc_back]) }}"><i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>ကျောင်းသားမှတ်ပုံတင် မိတ္တူ အရှေ့:</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->student_nrc_photo]) }}"><i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>ကျောင်းသားမှတ်ပုံတင် မိတ္တူ  အနောက် :</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->student_nrc_back]) }}"><i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>အိမ်ထောင်စုစရင်း မိတ္တူ :</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->family]) }}"><i class="fas fa-eye"> </i></a>
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>နေရပ်လိပ်စာ :</b>&nbsp;
-                                {{ $student->address }}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>မိဘ ဖုန်းနံပါတ် :</b>&nbsp;
-                                {{ $student->parent_phone }}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>ကျောင်းသားဖုန်းနံပါတ် :</b>&nbsp;
-                                {{ $student->student_phone }}
-                            </li>
-                            <li class="list-group-item bg-transparent " style="font-size: 1.2rem"><b>ငွေလွဲပြေစာ :</b>&nbsp;
-                                <a href="{{ route('image.show', ['name' => $student->payment_img]) }}"><i class="fas fa-eye"> </i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <strong>Personal Information</strong>
         </div>
+        <div class="card-body">
+            <div class="text-center mb-4">
+                <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->profile) }}" class="profileimg img-thumbnail" style="width: 300px" alt="Profile">
+            </div>
+            <table class="table custom-table">
+                <tr>
+                    <th>Name</th>
+                    <td>{{ $registration->user->name }}</td>
+                    <th>Academic Year</th>
+                    <td>{{ $registration->academic_year }}</td>
+                </tr>
+                <tr>
+                    <th>Year</th>
+                    <td>{{ $registration->academicYear->name }}</td>
+                    <th>Major</th>
+                    <td>{{ $registration->major }}</td>
+                </tr>
+                <tr>
+                    <th>Roll No</th>
+                    <td>{{ $registration->roll_no }}</td>
+                    <th>Phone</th>
+                    <td>{{ $registration->phone }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ $registration->reg_email }}</td>
+                    <th>DOB</th>
+                    <td>{{ $registration->dob }}</td>
+                </tr>
+                <tr>
+                    <th>Present Address</th>
+                    <td colspan="3">{{ $registration->present_address }}</td>
+                </tr>
+                <tr>
+                    <th>NRC</th>
+                    <td>{{ $registration->nrc_student }}</td>
+                    <th>Race / Religion</th>
+                    <td>{{ $registration->race }} / {{ $registration->religion }}</td>
+                </tr>
+                <tr>
+                    <th>Blood Type</th>
+                    <td>{{ $registration->blood_type }}</td>
+                    <th>Matriculation Result</th>
+                    <td><a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->matriculation_result) }}" target="_blank">View File</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header bg-info text-white">
+            <strong>Family Details</strong>
+        </div>
+        <div class="card-body">
+            <table class="table custom-table">
+                <tr>
+                    <th>Father Name / Job</th>
+                    <td>{{ $registration->father_name }} / {{ $registration->father_job }}</td>
+                    <th>Mother Name / Job</th>
+                    <td>{{ $registration->mother_name }} / {{ $registration->mother_job }}</td>
+                </tr>
+                <tr>
+                    <th>Guardian Name</th>
+                    <td>{{ $registration->guardian_name }}</td>
+                    <th>Relation</th>
+                    <td>{{ $registration->guardian_relation }}</td>
+                </tr>
+                <tr>
+                    <th>Guardian Job</th>
+                    <td>{{ $registration->guardian_job }}</td>
+                    <th>Guardian Phone</th>
+                    <td>{{ $registration->guardian_phone }}</td>
+                </tr>
+                <tr>
+                    <th>Permanent Address</th>
+                    <td colspan="3">{{ $registration->permanent_address }}</td>
+                </tr>
+                <tr>
+                    <th>Family Docs</th>
+                    <td colspan="3">
+                        <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->family_member_docs) }}" target="_blank">View File</a>
+                    </td>
+                </tr>
+            </table>
+
+            {{-- NRC Photos Section --}}
+            <h5 class="text-center mt-4 pcolor">Parent NRC Photos</h5>
+            <div class="row text-center">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Father NRC Front</label>
+                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_front) }}" target="_blank">
+                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_front) }}" class="img-thumbnail" width="150">
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Father NRC Back</label>
+                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_back) }}" target="_blank">
+                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_back) }}" class="img-thumbnail" width="150">
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Mother NRC Front</label>
+                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_front) }}" target="_blank">
+                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_front) }}" class="img-thumbnail" width="150">
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Mother NRC Back</label>
+                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_back) }}" target="_blank">
+                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_back) }}" class="img-thumbnail" width="150">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card shadow mb-4">
+        <div class="card-header bg-success text-white">
+            <strong>Payment Information</strong>
+        </div>
+        <div class="card-body">
+            <table class="table custom-table">
+                <tr>
+                    <th>Payment Method</th>
+                    <td>{{ $registration->payment_method }}</td>
+                    <th>Transaction ID</th>
+                    <td>{{ $registration->transaction_id }}</td>
+                </tr>
+                <tr>
+                    <th>Payment Screenshot</th>
+                    <td colspan="3">
+                        <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->payment_screenshot) }}" target="_blank">
+                            <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->payment_screenshot) }}" width="150" class="img-thumbnail">
+                        </a>
+                    </td>
+                </tr>
+                @if ($registration->payment_note)
+                <tr>
+                    <th>Note</th>
+                    <td colspan="3">{{ $registration->payment_note }}</td>
+                </tr>
+                @endif
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ route('admin.stu.reg.list', ['academic_year' => $registration->academic_year_id]) }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
     </div>
 </div>
 @endsection

@@ -48,7 +48,7 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('stop/mail/{id}', [AdminController::class, 'stopMail'])->name('stop.mail');
     Route::get('nostop/mail/{id}', [AdminController::class, 'nostopMail'])->name('no.stop.mail');
     Route::get('/reg/give/edit/{id}', [StudentRegistrationController::class, 'giveEdit'])->name('admin.stu.give.edit');
-    Route::get('/reg/accept/{id}', [StudentRegistrationController::class, 'regAccept'])->name('admin.stu.accept');
+    Route::get('/reg/accept/{student_registration}', [StudentRegistrationController::class, 'regAccept'])->name('admin.stu.accept');
 
     Route::get('/home', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -65,14 +65,15 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::put('/acedmic/update/{id}', [AcademicYearController::class, 'acedmicUpdate'])->name('admin.acedimic.update');
     Route::get('/acedmic/delete/{id}', [AcademicYearController::class, 'acedmicDelete'])->name('admin.acedimic.delete');
 
-    Route::get('/studentReg/list', [StudentRegistrationController::class, 'stuRegList'])->name('admin.stu.reg.list');
+    Route::get('studentReg/classes', [StudentRegistrationController::class, 'acceptClasses'])->name('admin.stu.reg.accept.classes');
+    Route::get('/studentReg/{academic_year}/list', [StudentRegistrationController::class, 'stuRegList'])->name('admin.stu.reg.list');
     Route::get('/studentReg/list/byyear/{yearid}', [StudentRegistrationController::class, 'stuRegListByYearId'])->name('admin.stu.reg.list.byYear');
     Route::post('first/reg/store', [StudentRegistrationController::class, 'firstYrStore'])->name('first.yr.store');
     Route::get('/studentReg/form/firstyr', [StudentRegistrationController::class, 'form'])->name('admin.stu.reg.form');
     Route::get('/studentReg/detail/{id}', [StudentRegistrationController::class, 'stuRegDetail'])->name('admin.stu.reg.detail');
     Route::get('/studentReg/edit/{id}', [StudentRegistrationController::class, 'stuRegEdit'])->name('admin.stu.reg.edit');
     Route::put('/studentReg/update/{id}', [StudentRegistrationController::class, 'stuRegUpdate'])->name('admin.stu.reg.update');
-    Route::get('/studentReg/delete/{id}', [StudentRegistrationController::class, 'stuRegDelete'])->name('admin.stu.reg.delete');
+    Route::get('/studentReg/delete/{student_registration}', [StudentRegistrationController::class, 'stuRegDelete'])->name('admin.stu.reg.delete');
 
 
 
