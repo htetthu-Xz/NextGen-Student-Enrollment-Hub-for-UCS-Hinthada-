@@ -34,6 +34,7 @@ class AuthController extends Controller
         $image = $request->file('image');
         $imageName = uniqid() . 'soe' . $image->getClientOriginalName();
         $image->storeAs('public/images/', $imageName);
+        $data['uuid'] = uniqid();
         $data['image'] = $imageName;
         $data['password'] = 'P@ssw0rd';
 

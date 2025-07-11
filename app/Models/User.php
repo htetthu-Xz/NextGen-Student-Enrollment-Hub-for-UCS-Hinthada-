@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'role',
         'image',
-        "uni_id_no"
+        "uni_id_no",
+        'uuid',
     ];
 
     /**

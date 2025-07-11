@@ -26,7 +26,7 @@
                     <div >
                         <p class="pcolor  fw-bold  mb-3"  style="font-size: 1.3rem">ကွန်ပျူတာ တက္ကသိုလ် ဟင်္သာတ</p>
                         <p class="pcolor  fw-bold  mb-3"  style="font-size: 1.3rem">ကျောင်းအပ်သူများ</p>
-                        <p style="font-size: 3rem" class="pcolor  fw-bold  mb-3" ><a href="{{route('admin.stu.reg.list')}}" style="text-decoration: none">{{count($regs)}}</a></p>
+                        <p style="font-size: 3rem" class="pcolor  fw-bold  mb-3" ><a href="" style="text-decoration: none">{{count($regs)}}</a></p>
                     </div>
 
                 </div>

@@ -251,7 +251,7 @@ class StudentRegistrationController extends Controller
         //         $data->stop = "yes";
         //         $data->save();
         //         return back()->with('success', 'ကျောင်းသားအား ရပ်နားထားသည်');
-        //     } else {
+        //     } else { 
         //         return back()->with('error', 'ကျောင်းသားကို မတွေ့ပါ');
         //     }
         // } catch (\Exception $e) {
