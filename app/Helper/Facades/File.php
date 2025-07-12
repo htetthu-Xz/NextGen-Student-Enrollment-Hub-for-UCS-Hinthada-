@@ -15,7 +15,7 @@ class File
         if ($file->isValid()) {
             $file_name = Carbon::now()->format('Ymdhisf') . '_' . $file->getClientOriginalName();
 
-            Storage::put($path . $file_name, file_get_contents($file));
+            Storage::put($path . '/' .  $file_name, file_get_contents($file));
 
             return $file_name;
         }
