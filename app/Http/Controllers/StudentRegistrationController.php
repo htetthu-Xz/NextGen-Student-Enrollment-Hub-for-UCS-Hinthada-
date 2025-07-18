@@ -34,7 +34,7 @@ class StudentRegistrationController extends Controller
                 return redirect()->back()->with('error', 'ဤနှစ်အတွက် CS သို့မဟုတ် CT ကိုသာရွေးချယ်နိုင်ပါသည်။');
             }
 
-            $path = 'public/images/' . Auth::user()->uuid . '/';
+            $path = 'images/' . Auth::user()->uuid . '/';
             $registration['profile'] = File::upload($request->file('profile'), $path);
             $registration['matriculation_result'] = File::upload($request->file('matriculation_result'), $path);
             $registration['nrc_student_front'] = File::upload($request->file('nrc_student_front'), $path);

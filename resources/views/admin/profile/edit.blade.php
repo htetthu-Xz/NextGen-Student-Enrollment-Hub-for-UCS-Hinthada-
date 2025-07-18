@@ -40,7 +40,7 @@
 
                     <div class="mb-3">
                         <label for="password" class="mb-1"><b>Password</b></label>
-                        <input id="password" type="password" class="form-control border-0 shadow @error('password') is-invalid @enderror" name="password" value="{{old('password',$user->password)}}">
+                        <input id="password" type="password" class="form-control border-0 shadow @error('password') is-invalid @enderror" name="password" value="{{old('password')}}">
                         @error('password')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror

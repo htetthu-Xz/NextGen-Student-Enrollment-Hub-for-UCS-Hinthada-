@@ -62,6 +62,27 @@
                                                     @error('academic_year_id')<div class="text-danger">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>ခုံနံပတ်</label>
+                                                    <input name="roll_no" value="{{ old('roll_no') }}" type="text" class="form-control" placeholder="3CS1-2" required>
+                                                    @error('roll_no')<div class="text-danger">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
+                                             <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Semester</label>
+                                                    <select name="semester" class="form-control" required>
+                                                        <option value="">-- select semester --</option>
+                                                        <option value="1">ပထမ နှစ်ဝက်</option>
+                                                        <option value="2">ဒုတိယ နှစ်ဝက်</option>
+                                                    </select>
+                                                    @error('semester')<div class="text-danger">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div> 
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>အထူးပြုဘာသာ</label>
@@ -73,15 +94,8 @@
                                                     </select>
                                                     @error('major')<div class="text-danger">{{ $message }}</div>@enderror
                                                 </div>
-                                            </div>
+                                            </div>                                 
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>ခုံနံပတ်</label>
-                                                    <input name="roll_no" value="{{ old('roll_no') }}" type="text" class="form-control" placeholder="3CS1-2" required>
-                                                    @error('roll_no')<div class="text-danger">{{ $message }}</div>@enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>တက္ကသိုလ်မှက်ပုံတင်အမှက်</label>
                                                     <input name="uni_reg_no" value="{{ auth()->user()->uni_id_no }}" type="text" class="form-control" required disabled>

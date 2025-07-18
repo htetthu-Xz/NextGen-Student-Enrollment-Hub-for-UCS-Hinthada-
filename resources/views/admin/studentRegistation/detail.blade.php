@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <div class="text-center mb-4">
-                <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->profile) }}" class="profileimg img-thumbnail" style="width: 300px" alt="Profile">
+                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->profile) }}" class="profileimg img-thumbnail" style="width: 300px" alt="Profile">
             </div>
             <table class="table custom-table">
                 <tr>
@@ -55,7 +55,7 @@
                     <th>Blood Type</th>
                     <td>{{ $registration->blood_type }}</td>
                     <th>Matriculation Result</th>
-                    <td><a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->matriculation_result) }}" target="_blank">View File</a></td>
+                    <td><a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->matriculation_result) }}" target="_blank">View File</a></td>
                 </tr>
             </table>
         </div>
@@ -92,7 +92,7 @@
                 <tr>
                     <th>Family Docs</th>
                     <td colspan="3">
-                        <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->family_member_docs) }}" target="_blank">View File</a>
+                        <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->family_member_docs) }}" target="_blank">View File</a>
                     </td>
                 </tr>
             </table>
@@ -101,27 +101,39 @@
             <h5 class="text-center mt-4 pcolor">Parent NRC Photos</h5>
             <div class="row text-center">
                 <div class="col-md-3 mb-3">
+                    <label class="form-label">Student NRC Front</label>
+                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_student_front) }}" target="_blank">
+                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_student_front) }}" class="img-thumbnail" width="150">
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Student NRC Back</label>
+                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_student_back) }}" target="_blank">
+                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_student_back) }}" class="img-thumbnail" width="150">
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
                     <label class="form-label">Father NRC Front</label>
-                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_front) }}" target="_blank">
-                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_front) }}" class="img-thumbnail" width="150">
+                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_father_front) }}" target="_blank">
+                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_father_front) }}" class="img-thumbnail" width="150">
                     </a>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Father NRC Back</label>
-                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_back) }}" target="_blank">
-                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_father_back) }}" class="img-thumbnail" width="150">
+                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_father_back) }}" target="_blank">
+                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_father_back) }}" class="img-thumbnail" width="150">
                     </a>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Mother NRC Front</label>
-                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_front) }}" target="_blank">
-                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_front) }}" class="img-thumbnail" width="150">
+                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_mother_front) }}" target="_blank">
+                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_mother_front) }}" class="img-thumbnail" width="150">
                     </a>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Mother NRC Back</label>
-                    <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_back) }}" target="_blank">
-                        <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->nrc_mother_back) }}" class="img-thumbnail" width="150">
+                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_mother_back) }}" target="_blank">
+                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->nrc_mother_back) }}" class="img-thumbnail" width="150">
                     </a>
                 </div>
             </div>
@@ -144,8 +156,8 @@
                 <tr>
                     <th>Payment Screenshot</th>
                     <td colspan="3">
-                        <a href="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->payment_screenshot) }}" target="_blank">
-                            <img src="{{ asset('storage/public/images/' . $registration->User->uuid . '/' . $registration->payment_screenshot) }}" width="150" class="img-thumbnail">
+                        <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" target="_blank">
+                            <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" width="150" class="img-thumbnail">
                         </a>
                     </td>
                 </tr>

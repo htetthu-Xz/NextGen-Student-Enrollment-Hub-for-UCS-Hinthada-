@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Notice;
+use App\Helper\Facades\File;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\IOFactory;
 
+use PhpOffice\PhpWord\IOFactory;
 use App\Exports\StopStudentExport;
 use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Auth;
@@ -158,10 +159,7 @@ class AdminController extends Controller
         // Process the uploaded image
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = uniqid() . 'soe' . $image->getClientOriginalName();
-            $image->storeAs('public/images/', $imageName);
-            $data['image'] = $imageName;
+            $data['image'] = File::Upload($request->file('image'), 'images/' . $user->uuid);
         } else {
             $data['image'] = $user->image;
         }
@@ -210,10 +208,7 @@ class AdminController extends Controller
 
         ]);
 
-        $image = $request->file('image');
-        $imageName = uniqid() . 'soe' . $image->getClientOriginalName();
-        $image->storeAs('public/images/', $imageName);
-        $data['image'] = $imageName;
+        $data['image'] = File::upload($request->file('image'), 'images/' . Auth::user()->uuid);
 
         $user = User::find(Auth::user()->id);
         $user->update($data);

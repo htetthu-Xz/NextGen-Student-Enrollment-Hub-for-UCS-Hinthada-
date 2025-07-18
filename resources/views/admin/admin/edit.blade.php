@@ -27,7 +27,7 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <img src="{{asset('storage/images/'.$user->image)}}" style="height: 40px; weight:40px" class="rounded-circle">
+                            <img src="{{asset('storage/images/' . $user->uuid . '/' . $user->image)}}" style="height: 40px; weight:40px" class="rounded-circle">
 
                             <div class="mb-3">
                                 <label for="name" class="mb-1"><b>Name</b></label>

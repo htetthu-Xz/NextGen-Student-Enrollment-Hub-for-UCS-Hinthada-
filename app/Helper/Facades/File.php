@@ -13,8 +13,19 @@ class File
     public static function Upload($file, $path)
     {
         if (isset($file) && $file->isValid()) {
-            $fileName = Auth::user()->uuid . '.' . $file->getClientOriginalExtension();
-            $file->storeAs($path, $fileName, 'public');
+            $fileName = Carbon::now()->timestamp . '_' . $file->getClientOriginalName();
+            $file->storeAs($path, $fileName);
+            return $fileName;
+        }
+
+        return null;
+    }
+
+    public static function NoticeImageUpload($file, $path)
+    {
+        if (isset($file) && $file->isValid()) {
+            $fileName = Str::random(10) . '_' . $file->getClientOriginalName();
+            $file->storeAs($path, $fileName);
             return $fileName;
         }
 
@@ -30,8 +41,8 @@ class File
         return false;
     }
 
-    public static function GetStudentDataPath()
+    public static function GetStudentDataPath($user  = null)
     {
-        return 'storage/public/images/' . Auth::user()->uuid . '/';
+        return 'storage/images/' . ($user ? $user->uuid : Auth::user()->uuid) . '/';
     }
 }

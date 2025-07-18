@@ -73,7 +73,7 @@
             <a class="nav-link" href="">
                 @if (auth()->user()->image)
                     <img class="img-profile rounded-circle object-fit-cover" style="height: 40px; width: 40px"
-                         src="{{ asset('storage/images/' . Auth::user()->image) }}">
+                         src="{{ asset('storage/images/' . Auth::user()->uuid . '/' . Auth::user()->image) }}">
                 @endif
                 <span>{{ Auth::user()->name }}</span>
             </a>

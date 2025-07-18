@@ -72,11 +72,7 @@
 
 
                                         <td class="text-white">
-                                            @if (file_exists(public_path('storage/images/'. $notice->image)))
-                                            <img src="{{asset('storage/images/'.$notice->image)}}" style="height: 30px;width:30px" class="rounded-circle">
-                                            @else
-                                                <p>Image not found</p>
-                                            @endif
+                                            <img src="{{asset('storage/images/notice/' . $notice->image)}}" style="height: 30px;width:30px" class="rounded-circle">
                                         </td>
                                         <th><a href="{{route('notice.edit',$notice->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>
                                     <th><a href="{{route('notice.delete',$notice->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
