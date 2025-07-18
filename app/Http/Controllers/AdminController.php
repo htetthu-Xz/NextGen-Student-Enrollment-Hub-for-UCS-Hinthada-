@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicYear;
-use App\Models\Notice;
-use App\Models\StudentRegistration;
 use App\Models\User;
+use App\Models\Notice;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+
+use App\Exports\StopStudentExport;
+use App\Models\StudentRegistration;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TransferStudentExport;
 
 class AdminController extends Controller
 {
@@ -70,14 +74,21 @@ class AdminController extends Controller
     public function adminList(Request $request)
     {
         $searchKey = $request->input('search');
-        $admins = User::where('role', 'user')->where('stop', 'no');
+        $admins = User::where('role', 'user')
+            ->where('stop', 'no')
+            ->whereIn('transfer', ['present', 'in']);
         if ($searchKey) {
             $admins->where(function ($query) use ($searchKey) {
                 $query->where('name', 'like', '%' . $searchKey . '%');
             });
         }
 
+        // $user = User::find(15);
+        // dd($user->studentRegistrations()->latest()->first());
+
         $admins = $admins->latest()->paginate(10);
+
+
 
         return view('admin.admin.list', compact('admins'));
     }
@@ -93,6 +104,29 @@ class AdminController extends Controller
         }
         $admins = $admins->latest()->paginate(10);
         return view('admin.stopStu.list', compact('admins'));
+    }
+
+    public function transferStuList(Request $request)
+    {
+        $searchKey = $request->input('search');
+        $admins = User::where('role', 'user')->whereIn('transfer', ['out', 'in']);
+        if ($searchKey) {
+            $admins->where(function ($query) use ($searchKey) {
+                $query->where('name', 'like', '%' . $searchKey . '%');
+            });
+        }
+        $admins = $admins->latest()->paginate(10);
+        return view('admin.transfer.list', compact('admins'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new StopStudentExport, 'stop_student_list.xlsx');
+    }
+
+    public function transferExport()
+    {
+        return Excel::download(new TransferStudentExport, 'transfer_student_list.xlsx');
     }
 
     public function adminEdit($id)
@@ -186,12 +220,17 @@ class AdminController extends Controller
         return redirect()->route('admin.profile')->with('success', 'အောင်မြင်စွာပြင်လိုက်ပါပြီ');
     }
 
-    public function stopMail($id)
+    public function stopMail(User $user)
     {
-        $data = User::find($id);
-        $data->stop = "yes";
-        $data->save();
+        $user->stop = "yes";
+        $user->save();
         return back()->with('success', 'ကျောင်းသားအား ရပ်နားထားသည်');
+    }
+
+    public function transferStudent(User $user)
+    {
+        $user->update(['transfer' => 'out']);
+        return back()->with('success', 'ကျောင်းသားအား လွှဲပြောင်းထားသည်');
     }
 
     public function nostopMail($id)

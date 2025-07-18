@@ -12,12 +12,10 @@ class File
 {
     public static function Upload($file, $path)
     {
-        if ($file->isValid()) {
-            $file_name = Carbon::now()->format('Ymdhisf') . '_' . $file->getClientOriginalName();
-
-            Storage::put($path . '/' .  $file_name, file_get_contents($file));
-
-            return $file_name;
+        if (isset($file) && $file->isValid()) {
+            $fileName = Auth::user()->uuid . '.' . $file->getClientOriginalExtension();
+            $file->storeAs($path, $fileName, 'public');
+            return $fileName;
         }
 
         return null;

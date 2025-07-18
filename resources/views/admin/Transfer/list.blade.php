@@ -12,16 +12,15 @@
                         <div class="page-header">
                             <div class="row">
                                 <div class="col-11">
-                                    <div class="d-flex jusitfy-content-center gap-3">
-                                        <div class="col-12 ">
-                                            <form
-                                                class="d-none  d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                    <div class="d-flex justify-content-center gap-3">
+                                        <div class="col-12">
+                                            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                                                 <div class="input-group">
                                                     <form action="{{ route('admin.list') }}" method="GET">
                                                         @csrf
                                                         <input type="text" name="search" class="form-control border-success small"
                                                                aria-label="Search" aria-describedby="basic-addon2"
-                                                               value="{{ request('search') }}" style="">
+                                                               value="{{ request('search') }}">
                                                         <div class="input-group-append">
                                                             <button class="btn wbtn" type="submit">
                                                                 <i class="fas fa-search fa-sm text-white"></i>
@@ -30,16 +29,11 @@
                                                     </form>
                                                 </div>
                                             </form>
-                                            <a href="{{route('admin.list')}}" class="btn wbtn text-white" type="submit">
-                                                All
-                                            </a>
-                                            <a href="{{route('add.admin')}}" class="btn wbtn text-white" type="submit">
-                                                <i class="fa fa-plus"></i>
-                                            </a>
-
                                         </div>
-
-
+                                        <a href="{{ route('transfer.stu.export') }}" class="w-auto btn btn-success d-flex align-items-center gap-2">
+                                            <i class="fas fa-file-excel"></i>
+                                            Export
+                                        </a>
                                     </div>
                                 </div>
 
@@ -62,16 +56,15 @@
                         <table class="custom-table  border-success table-hover mt-4">
                             <thead class=" border-success">
                                 <tr>
-                                    <th style="">စဉ်</th>
-                                    <th style="">အမည်</th>
-                                    <th style="">Email</th>
-                                    <th style="">သင်တန်းနှစ်</th>
+                                    <th  style="font-size: 1.3rem">စဉ်</th>
+                                    <th style="font-size: 1.3rem">အမည်</th>
+                                    <th style="font-size: 1.3rem">Email</th>
 
 
-                                    <th style="">ရပ်နားစရင်းထည့်ရန်</th>
-                                    <th style="">ကျောင်းပြောင်းစာရင်းထည့်ရန်</th>
-                                    <th style="">Edit</th>
-                                    <th style="">Trash</th>
+                                     <th style="font-size: 1.3rem">Type</th>
+                                    <th style="font-size: 1.3rem">တက္ကသိုလ်မှက်ပုံတင်အမှက်</th>
+
+
 
                                 </tr>
                             </thead>
@@ -88,11 +81,10 @@
                                         </td>
 
                                         <td style="font-size: 1.1rem">{{ $admin->email }}</td>
-                                        <td style="font-size: 1.1rem">{{ $admin->CurrentUserAcademicYear() }}</td>
-                                        <td style="font-size: 1.1rem"><a href="{{route('stop.mail',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-ban" style="color: red"></i></a></td>
-                                        <td style="font-size: 1.1rem"><a href="{{route('student.transfer',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-exchange-alt" style="color: green"></i></a></td>
-                                        <th><a href="{{route('admin.info.edit',$admin->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>
-                                    <th><a href="{{route('admin.delete',$admin->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
+
+                                        <td style="font-size: 1.1rem">{{ $admin->transfer }}</td>
+                                        <td style="font-size: 1.1rem">{{ $admin->uni_id_no }}</td>
+
 
 
 

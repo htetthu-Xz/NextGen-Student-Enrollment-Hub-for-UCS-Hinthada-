@@ -12,16 +12,15 @@
                         <div class="page-header">
                             <div class="row">
                                 <div class="col-11">
-                                    <div class="d-flex jusitfy-content-center gap-3">
-                                        <div class="col-12 ">
-                                            <form
-                                                class="d-none  d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                    <div class="d-flex justify-content-center gap-3">
+                                        <div class="col-12">
+                                            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                                                 <div class="input-group">
                                                     <form action="{{ route('admin.list') }}" method="GET">
                                                         @csrf
                                                         <input type="text" name="search" class="form-control border-success small"
                                                                aria-label="Search" aria-describedby="basic-addon2"
-                                                               value="{{ request('search') }}" style="">
+                                                               value="{{ request('search') }}">
                                                         <div class="input-group-append">
                                                             <button class="btn wbtn" type="submit">
                                                                 <i class="fas fa-search fa-sm text-white"></i>
@@ -30,12 +29,11 @@
                                                     </form>
                                                 </div>
                                             </form>
-
-
-
                                         </div>
-
-                                     <div class="form-control border-success small"><a href="{{ route('stop.stu.wordfile')}}"><i class="fas fa-download" style="color: blue"></i></a></div>
+                                        <a href="{{ route('stopStudent.export') }}" class="w-auto btn btn-success d-flex align-items-center gap-2">
+                                            <i class="fas fa-file-excel"></i>
+                                            Export
+                                        </a>
                                     </div>
                                 </div>
 

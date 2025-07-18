@@ -46,9 +46,17 @@
 
                                     <div class="mb-3">
                                         <label for="uni_id_no" class="mb-2 pcolor"><b>တက္ကသိုလ်မှက်ပုံတင်အမှက်</b></label>
-                                        <input type="text" name="uni_id_no" value="{{old('uni_id_no')}}" class="form-control @error('uni_id_no') is-invalid @enderror" id="uni_id_no" placeholder="CU(ဟင်္သာတ)1234">
+                                        <input type="text" name="uni_id_no" value="{{old('uni_id_no')}}" class="form-control @error('uni_id_no') is-invalid @enderror" id="uni_id_no" placeholder="CU(Hinthada)XXXX">
                                         @error('uni_id_no')
                                             <span class="invalid-feedback">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input @error('transfer_in') is-invalid @enderror" id="transfer_in" name="transfer" {{ old('transfer_in') ? 'checked' : '' }}>
+                                        <label class="form-check-label pcolor" for="transfer_in"><b>Transfer In</b></label>
+                                        @error('transfer_in')
+                                            <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror
                                     </div>
 

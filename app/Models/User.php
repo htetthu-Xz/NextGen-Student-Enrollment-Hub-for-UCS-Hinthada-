@@ -22,9 +22,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'stop',
         'image',
         "uni_id_no",
         'uuid',
+        'transfer',
     ];
 
     /**
@@ -58,6 +60,26 @@ class User extends Authenticatable
     public function studentRegistrations()
     {
         return $this->hasMany(StudentRegistration::class, 'user_id');
+    }
+
+    public function CurrentUserAcademicYear()
+    {
+        $registration = $this->studentRegistrations()
+            ->where('status', 'confirm')
+            ->latest()
+            ->first();
+
+        return $registration && $registration->academicYear
+            ? $registration->academicYear->name
+            : null;
+    }
+
+    public function CurrentUserAcademicInfo()
+    {
+        return $this->studentRegistrations()
+            ->where('status', 'confirm')
+            ->latest()
+            ->first();
     }
 
     public function Grading()

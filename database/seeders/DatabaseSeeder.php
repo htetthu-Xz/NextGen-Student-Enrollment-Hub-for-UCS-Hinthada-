@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
 
         User::create([
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၇၆၈၈၉",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'နိုင်၀င်းကို',
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၅၇၉၁၀",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ဟိန်းမင်းထွန်း',
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၃၈၆၂၁",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'သော်ဇင်ဖြိုး',
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၇၈၃၈၄",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'စုစု',
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၅၇၆၉၀",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ခင်ခင်',
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၈၂၇၁၆",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ဖြူဖြူ',
@@ -101,7 +101,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၃၂၉၄၁",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ဇင်မင်းထွဠ်',
@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၆၄၇၉၈",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ရဲမြတ်အောင်',
@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၅၃၃၈၅",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ဖြိုးမင်း',
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၂၂၆၄၈",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ဟိန်းလင်းသန့်',
@@ -141,7 +141,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၃၈၉၀၅",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ပိုင်စိုးလင်း',
@@ -151,7 +151,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၄၆၃၄၇",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ထက်ဝေယံဦး',
@@ -161,7 +161,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၅၈၂၄၉",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'တင်သန့်လွင်',
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၈၂၃၅၆",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
         User::create([
             'name' => 'ထက်အောင်ကျော်',
@@ -181,7 +181,7 @@ class DatabaseSeeder extends Seeder
             //'sch_no'=>"၀၇၆၃၂၉",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => "CU(ဟင်္သာတ)" . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
         ]);
 
 

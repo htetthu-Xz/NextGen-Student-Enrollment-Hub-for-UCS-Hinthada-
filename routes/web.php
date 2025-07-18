@@ -44,8 +44,13 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('accept/list/search', [AdminController::class, 'acceptSearch'])->name('admin.stu.reg.accept.list.search');
     Route::get('/stu/stop', [AdminController::class, 'stopdownloadWordFile'])->name('stop.stu.wordfile');
     Route::get('/stu/stoplist/download', [AdminController::class, 'stopStuList'])->name('stop.stu');
+    Route::get('/students/stop/export', [AdminController::class, 'export'])->name('stopStudent.export');
 
-    Route::get('stop/mail/{id}', [AdminController::class, 'stopMail'])->name('stop.mail');
+    Route::get('Students/transfer/list', [AdminController::class, 'transferStuList'])->name('transfer.stu');
+    Route::get('/students/transfer/export', [AdminController::class, 'transferExport'])->name('transfer.stu.export');
+
+    Route::get('student/transfer/{user}', [AdminController::class, 'transferStudent'])->name('student.transfer');
+    Route::get('stop/mail/{user}', [AdminController::class, 'stopMail'])->name('stop.mail');
     Route::get('nostop/mail/{id}', [AdminController::class, 'nostopMail'])->name('no.stop.mail');
     Route::get('/reg/give/edit/{id}', [StudentRegistrationController::class, 'giveEdit'])->name('admin.stu.give.edit');
     Route::get('/reg/accept/{student_registration}', [StudentRegistrationController::class, 'regAccept'])->name('admin.stu.accept');

@@ -120,18 +120,26 @@
             </a>
         </li>
 
- <li class="nav-item {{ request()->routeIs('stop.stu') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('stop.stu') ? 'active' : '' }}">
             <a class="nav-link" href="{{route('stop.stu')}}">
                 <i class="fas fa-users"></i>
                 <span>ရပ်နားကျောင်းသားများ</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('admin.get.semester') ? 'active' : '' }}">
+
+        <li class="nav-item {{ request()->routeIs('transfer.stu') ? 'active' : '' }}">
+            <a class="nav-link" href="{{route('transfer.stu')}}">
+                <i class="fas fa-users"></i>
+                <span>ရွှေ့ပြောင်းကျောင်းသားများ</span>
+            </a>
+        </li>
+
+        {{-- <li class="nav-item {{ request()->routeIs('admin.get.semester') ? 'active' : '' }}">
             <a class="nav-link" href="{{route('admin.get.semester')}}">
                 <i class="fas fa-users"></i>
                 <span>Student Grading</span>
             </a>
-        </li>
+        </li> --}}
         {{-- <li class="nav-item {{ request()->routeIs('user.get.calculationForm') ? 'active' : '' }}">
             <a class="nav-link" href="{{route('user.get.calculationForm')}}">
                 <i class="fas fa-users"></i>

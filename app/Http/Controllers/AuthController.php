@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Rules\EduEmail;
 
+use Illuminate\Support\Str;
 use App\Helper\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +17,10 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             "name" => "required",
-            "email" => 'required|email|unique:users,email',
-            "uni_id_no" => 'required|unique:users,uni_id_no',
-            "image" => "required|image|mimes:png,jpg,jpeg"
+            "email" => ['required', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@ucsh\.edu\.mm$/'],
+            "uni_id_no" => ['required', 'unique:users,uni_id_no', 'regex:/^CU\(Hinthada\)\d{4}$/'],
+            "image" => "required|image|mimes:png,jpg,jpeg",
+            "transfer" => "nullable"
         ], [
             "name.required" => "Name is required.",
             "email.required" => "Email is required.",
@@ -28,14 +30,12 @@ class AuthController extends Controller
             "uni_id_no.unique" => "This University ID number is already registered.",
             "image.required" => "Image is required.",
             "image.image" => "The file must be an image.",
-            "image.mimes" => "The image must be a file of type: png, jpg, jpeg."
+            "image.mimes" => "The image must be a file of type: png, jpg, jpeg.",
         ]);
+        $data['transfer'] = $request->has('transfer') ? 'in' : 'present';
 
-        $image = $request->file('image');
-        $imageName = uniqid() . 'soe' . $image->getClientOriginalName();
-        $image->storeAs('public/images/', $imageName);
-        $data['uuid'] = uniqid();
-        $data['image'] = $imageName;
+        $data['uuid'] = Str::uuid();
+        $data['image'] = File::upload($request->file('image'), 'storage/images/' . $data['uuid']);
         $data['password'] = 'P@ssw0rd';
 
         User::create($data);
