@@ -12,7 +12,7 @@
                         <div class="col-10">
                             <div class="d-flex justify-content-center gap-3">
                                 <div class="col-12">
-                                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="{{ route('admin.stu.reg.list', ['academic_year' => $academicYear->id]) }}" method="GET">
+                                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="{{ route('admin.stu.reg.list') }}" method="GET">
                                         @csrf
                                         <div class="input-group">
                                             <input type="text" name="student_name"
@@ -44,14 +44,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2">
-                            <a href="{{ route('admin.stu.reg.form') }}" class="btn wbtn text-white"><i class="fa fa-plus"></i></a>
-                             {{--  <a href="{{ route('admin.stu.reg.form') }}" class="btn wbtn text-white"><i class="fa fa-plus"></i></a>  --}}
+                        <div class="col-2 d-flex justify-content-end mt-3">
                             <a href="{{ route('admin.stu.reg.export', [
                                 'search' => request('search'),
                                 'academic_year_id' => request('academic_year_id'),
                                 'specialist' => request('specialist')
                             ]) }}" class="btn btn-success"><i class="fa fa-download"></i></a>
+
                         </div>
                     </div>
                 </div>

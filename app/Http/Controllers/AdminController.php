@@ -15,6 +15,7 @@ use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TransferStudentExport;
+use App\Exports\FilteredStudentsExport;
 
 class AdminController extends Controller
 {
@@ -92,6 +93,54 @@ class AdminController extends Controller
 
 
         return view('admin.admin.list', compact('admins'));
+    }
+
+    public function studentsList(Request $request)
+    {
+        $searchKey = $request->input('search');
+        $major = $request->input('major');
+        $year = $request->input('academic_year');
+        $academicClasses = AcademicYear::all()->pluck('name', 'id')->toArray();
+
+        $academicYears = StudentRegistration::distinct()->pluck('academic_year')->toArray();
+
+        // Start query builder
+        $students = User::with('studentRegistrations')
+            ->where('role', 'user');
+
+        if (!empty($searchKey)) {
+            $students->where(function ($query) use ($searchKey) {
+                $query->where('name', 'like', '%' . $searchKey . '%');
+            });
+        }
+
+        if (!empty($major)) {
+            $students->whereHas('studentRegistrations', function ($query) use ($major) {
+                $query->where('major', $major);
+            });
+        }
+
+        if (!empty($year)) {
+            $students->whereHas('studentRegistrations', function ($query) use ($year) {
+                $query->where('academic_year', $year);
+            });
+        }
+
+        if (!empty($request->academic_class)) {
+            $students->whereHas('studentRegistrations', function ($query) use ($request) {
+                $query->where('academic_year_id', $request->academic_class);
+            });
+        }
+
+        // Final result
+        $students = $students->latest()->paginate(10);
+
+        return view('admin.students.index', compact('students', 'academicYears', 'academicClasses'));
+    }
+
+    public function studentsExport(Request $request)
+    {
+        return Excel::download(new FilteredStudentsExport($request), 'students_list.xlsx');
     }
 
     public function stopStuList(Request $request)

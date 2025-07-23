@@ -46,6 +46,10 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('/stu/stoplist/download', [AdminController::class, 'stopStuList'])->name('stop.stu');
     Route::get('/students/stop/export', [AdminController::class, 'export'])->name('stopStudent.export');
 
+    Route::get('students/list', [AdminController::class, 'studentsList'])->name('students.list');
+    Route::get('/students/export', [AdminController::class, 'studentsExport'])->name('students.export');
+
+
     Route::get('Students/transfer/list', [AdminController::class, 'transferStuList'])->name('transfer.stu');
     Route::get('/students/transfer/export', [AdminController::class, 'transferExport'])->name('transfer.stu.export');
 
@@ -71,7 +75,7 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('/acedmic/delete/{id}', [AcademicYearController::class, 'acedmicDelete'])->name('admin.acedimic.delete');
 
     Route::get('studentReg/classes', [StudentRegistrationController::class, 'acceptClasses'])->name('admin.stu.reg.accept.classes');
-    Route::get('/studentReg/{academic_year}/list', [StudentRegistrationController::class, 'stuRegList'])->name('admin.stu.reg.list');
+    Route::get('/studentReg/list', [StudentRegistrationController::class, 'stuRegList'])->name('admin.stu.reg.list');
     Route::get('/studentReg/list/byyear/{yearid}', [StudentRegistrationController::class, 'stuRegListByYearId'])->name('admin.stu.reg.list.byYear');
     Route::post('first/reg/store', [StudentRegistrationController::class, 'firstYrStore'])->name('first.yr.store');
     Route::get('/studentReg/form/firstyr', [StudentRegistrationController::class, 'form'])->name('admin.stu.reg.form');

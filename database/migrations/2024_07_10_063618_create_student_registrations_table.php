@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('roll_no');
 
             $table->string('matriculation_result');
+            $table->string('matriculation_certificate');
+            $table->string('last_year_pass_document_screenshot');
             $table->string('reg_email');
             $table->string('phone');
             $table->date('dob');

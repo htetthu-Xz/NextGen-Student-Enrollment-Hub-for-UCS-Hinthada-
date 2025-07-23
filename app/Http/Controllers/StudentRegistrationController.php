@@ -37,6 +37,8 @@ class StudentRegistrationController extends Controller
             $path = 'images/' . Auth::user()->uuid . '/';
             $registration['profile'] = File::upload($request->file('profile'), $path);
             $registration['matriculation_result'] = File::upload($request->file('matriculation_result'), $path);
+            $registration['matriculation_certificate'] = File::upload($request->file('matriculation_certificate'), $path);
+            $registration['last_year_pass_document_screenshot'] = File::upload($request->file('last_year_pass_document_screenshot'), $path);
             $registration['nrc_student_front'] = File::upload($request->file('nrc_student_front'), $path);
             $registration['nrc_student_back'] = File::upload($request->file('nrc_student_back'), $path);
             $registration['nrc_father_front'] = File::upload($request->file('nrc_father_front'), $path);
@@ -90,11 +92,11 @@ class StudentRegistrationController extends Controller
         return view('admin.accept.acceptClasses', ['years' => $years]);
     }
 
-    public function stuRegList(Request $request, AcademicYear $academicYear)
+    public function stuRegList(Request $request)
     {
         $searchKey = $request->input('student_name');
         $major = $request->input('specialist');
-        $query = StudentRegistration::query()->where('status', 'pending')->where('academic_year_id', $academicYear->id)->whereHas('user', function ($query) {
+        $query = StudentRegistration::query()->where('status', 'pending')->whereHas('user', function ($query) {
             $query->where('stop', 'no');
         });
 
@@ -108,8 +110,12 @@ class StudentRegistrationController extends Controller
             $query->where('major', $major);
         }
 
+        if ($request->has('no_reg_std')) {
+            $query->whereDoesntHave('user');
+        }
+
         $registrations = $query->paginate(10);
-        return view('admin.studentRegistation.list', ['registrations' => $registrations, 'academicYear' => $academicYear]);
+        return view('admin.studentRegistation.list', ['registrations' => $registrations]);
     }
 
 

@@ -32,7 +32,7 @@
 
                             <div class="mb-3">
                                 <label for="password" class="mb-2 pcolor"><b>ကျောင်းအပ်ခ</b></label>
-                                <input type="number" name="enrollment" class="form-control @error('enrollment') is-invalid @enderror" >
+                                <input type="text" name="enrollment" class="form-control @error('enrollment') is-invalid @enderror" >
                                 @error('enrollment')
                                 <span class="invalid-feedback">{{$message}}</span>
                             @enderror

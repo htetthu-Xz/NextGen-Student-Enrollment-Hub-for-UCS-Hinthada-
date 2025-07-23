@@ -8,10 +8,10 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="container">
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row mt-4">
+              <div class="col-md-7">
                 <div class="detail-box">
-                    <h2 style=" font-size: 3rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">NextGen <br> Student Enrollment <br> Hub For UCS (Hinthada)</h2>
+                    <h2 style="width:auto; font-size: 3rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">Student Enrollment System For University of Computer Studies Hinthada</h2>
                     <p>ကျောင်းသားများ လွယ်ကူလျှင်မြန်စွာ ကျောင်းအပ်ရန် ရည်ရွယ် စီစဉ်ထားပါသည်.</p>
                   <div class="btn-box">
                     <a href="{{route('stu.reg')}}" class="btn1">ကျောင်းအပ်မည်</a>
@@ -21,7 +21,7 @@
               <div class="col-md-1">
 
               </div>
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <div class="img text-right">
                   <img src="{{ asset('user/images/logo.png') }}" alt="" style="height: 300px;width:300px">
                 </div>

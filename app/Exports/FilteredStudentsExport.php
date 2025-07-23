@@ -2,11 +2,10 @@
 
 namespace App\Exports;
 
-
 use Carbon\Carbon;
 use App\Models\User;
+
 use App\Helper\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -17,35 +16,59 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
-
-class StopStudentExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents, WithDrawings
+class FilteredStudentsExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents, WithDrawings
 {
-    public $users;
+    public $request, $students;
 
-    public function __construct()
+    public function __construct($request)
     {
-        $this->users = User::where('stop', 'yes')->with(['studentRegistrations'])->get();
+        $this->request = $request;
     }
 
     public function collection()
     {
-        return $this->users;
+        $this->students = User::with('studentRegistrations')
+            ->where('role', 'user');
+
+        if ($this->request->filled('searchKey')) {
+            $this->students->where('name', 'like', '%' . $this->request->input('searchKey') . '%');
+        }
+
+        if ($this->request->filled('major')) {
+            $this->students->whereHas('studentRegistrations', function ($q) {
+                $q->where('major', $this->request->input('major'));
+            });
+        }
+
+        if ($this->request->filled('year')) {
+            $this->students->whereHas('studentRegistrations', function ($q) {
+                $q->where('academic_year', $this->request->input('year'));
+            });
+        }
+
+        if ($this->request->filled('academic_class')) {
+            $this->students->whereHas('studentRegistrations', function ($q) {
+                $q->where('academic_year_id', $this->request->input('academic_class'));
+            });
+        }
+
+        return $this->students->get();
     }
 
     public function drawings()
     {
         $drawings = [];
 
-        foreach ($this->users as $index => $user) {
+        foreach ($this->students as $index => $student) {
             $drawing = new Drawing();
             $drawing->setName('User Image');
             $drawing->setDescription('User Image');
 
-            $imagePath = public_path(File::GetStudentDataPath($user) . $user->image);
+            $imagePath = public_path(File::GetStudentDataPath($student) . $student->image);
 
             if (file_exists($imagePath)) {
                 $drawing->setPath($imagePath);
-                $drawing->setHeight(50); // adjust size as needed
+                $drawing->setHeight(50); 
                 $drawing->setCoordinates('B' . ($index + 7));
                 $drawings[] = $drawing;
             }
@@ -79,8 +102,8 @@ class StopStudentExport implements FromCollection, WithMapping, WithHeadings, Wi
             'Image',
             'Name',
             'Roll No',
-            'Father name',
-            'Mother name',
+            'Father Name',
+            'Mother Name',
             'NRC Student',
             'Date of Birth',
             'Permanent Address',
@@ -91,7 +114,7 @@ class StopStudentExport implements FromCollection, WithMapping, WithHeadings, Wi
 
     public function title(): string
     {
-        return 'ရပ်နား ကျောင်းသားများစာရင်း';
+        return 'ကျောင်းသားများစာရင်း';
     }
 
     public function startCell(): string
@@ -103,7 +126,7 @@ class StopStudentExport implements FromCollection, WithMapping, WithHeadings, Wi
     {
         return [
             BeforeSheet::class => function (BeforeSheet $event) {
-                $event->sheet->setCellValue('A1', 'ကွန်ပျူတာတက္ကသိုလ် (ဟင်္သာတ) ရပ်နား ကျောင်းသားများစာရင်း');
+                $event->sheet->setCellValue('A1', 'ကွန်ပျူတာတက္ကသိုလ် (ဟင်္သာတ) ကျောင်းသားများစာရင်း');
                 $event->sheet->setCellValue('A2', 'Generated on: ' . Carbon::now()->format('F j, Y, g:i A'));
                 $event->sheet->mergeCells('A1:G1');
                 $event->sheet->mergeCells('A2:G2');

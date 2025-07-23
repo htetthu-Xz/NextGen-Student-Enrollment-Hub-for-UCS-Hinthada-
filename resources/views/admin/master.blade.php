@@ -107,8 +107,8 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('service.review.list') ? 'active' : '' }}">
-            <a class="nav-link" href="{{route('admin.stu.reg.accept.classes')}}">
+        <li class="nav-item {{ request()->routeIs('admin.stu.reg.list') ? 'active' : '' }}">
+            <a class="nav-link" href="{{route('admin.stu.reg.list')}}">
                 <i class="fab fa-imdb"></i>
                 <span>ကျောင်းအပ်သူများ</span>
             </a>
@@ -117,6 +117,13 @@
             <a class="nav-link" href="{{ route('admin.stu.reg.accept.list') }}">
                 <i class="fab fa-imdb"></i>
                 <span>ကျောင်းအပ်လက်ခံထားမှု</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ request()->routeIs('students.list') ? 'active' : '' }}">
+            <a class="nav-link" href="{{route('students.list')}}">
+                <i class="fas fa-users"></i>
+                <span>ကျောင်းသားအားလုံးကြည့်ရန်</span>
             </a>
         </li>
 

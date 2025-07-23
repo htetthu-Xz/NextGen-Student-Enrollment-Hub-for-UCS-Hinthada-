@@ -8,7 +8,7 @@
                     <form action="{{ route('stu.reg.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="wizard-header text-center">
-                            <h3 class="wizard-title">Student Registration Form</h3>
+                            <h3 class="wizard-title">Student Registration System</h3>
                             <p class="category">Please fill in the details accurately</p>
                         </div>
 
@@ -46,14 +46,14 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ပညာသင်နှစ်</label>
-                                                    <input name="academic_year" value="{{ old('academic_year') }}" type="text" class="form-control" placeholder="2024-2025" required>
+                                                    <input name="academic_year" value="{{ old('academic_year') ?? \Carbon\Carbon::now()->format('Y') . '-' . (\Carbon\Carbon::now()->addYear()->format('y')) }}" type="text" class="form-control" readonly>
                                                     @error('academic_year')<div class="text-danger">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>သင်တန်းနှစ်</label>
-                                                    <select name="academic_year_id" class="form-control" required>
+                                                    <select name="academic_year_id" class="form-control" id="academic_year_id" required>
                                                         <option value="">-- သင်တန်းနှစ် --</option>
                                                         @foreach($years as $year)
                                                             <option value="{{ $year->id }}" {{ old('academic_year_id') == $year ? 'selected' : '' }}>{{ $year->name }}</option>
@@ -70,18 +70,6 @@
                                                     @error('roll_no')<div class="text-danger">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
-
-                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Semester</label>
-                                                    <select name="semester" class="form-control" required>
-                                                        <option value="">-- select semester --</option>
-                                                        <option value="1">ပထမ နှစ်ဝက်</option>
-                                                        <option value="2">ဒုတိယ နှစ်ဝက်</option>
-                                                    </select>
-                                                    @error('semester')<div class="text-danger">{{ $message }}</div>@enderror
-                                                </div>
-                                            </div> 
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -114,28 +102,44 @@
 
                                     <input type="hidden" name="step" value="2">
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>‌‌တက္ကသိုလ်ဝင်တန်း စာမေးပွဲရမှက် (ပုံ)</label>
                                             <input name="matriculation_result" value="{{ old('matriculation_result') }}" class="form-control" type="file" required>
                                             @error('matriculation_result')<div class="text-danger">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>ဆယ်တန်းအောင်လက်မှက်</label>
+                                            <input name="matriculation_certificate" value="{{ old('matriculation_certificate') }}" class="form-control" type="file" required>
+                                            @error('matriculation_certificate')<div class="text-danger">{{ $message }}</div>@enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>ပြီးခဲ့သောနှစ်အောင်လက်မှတ် (ပုံ)</label>
+                                            <input name="last_year_pass_document_screenshot" value="{{ old('last_year_pass_document_screenshot') }}" class="form-control" type="file" required>
+                                            @error('last_year_pass_document_screenshot')<div class="text-danger">{{ $message }}</div>@enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>အီးမေးလ်</label>
                                             <input name="reg_email" value="{{ old('reg_email') }}" class="form-control" type="reg_email" required>
                                             @error('reg_email')<div class="text-danger">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>ဖုန်း</label>
                                             <input name="phone" value="{{ old('phone') }}" class="form-control" type="text" required>
                                             @error('phone')<div class="text-danger">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>DOB</label>
                                             <input name="dob" value="{{ old('dob') }}" class="form-control" type="date" required>
@@ -318,8 +322,8 @@
 
                                     <!-- QR Code Display -->
                                     <div class="col-md-12 d-flex justify-content-center mb-3">
-                                        <img src="{{ asset('storage/images/Payment_qr1.jpg') }}" alt="Payment QR Code" class="img-fluid mx-2" style="max-width: 300px;">
-                                        <img src="{{ asset('storage/images/Payment_qr1.jpg') }}" alt="Payment QR Code" class="img-fluid mx-2" style="max-width: 300px;">
+                                        <img src="{{ asset('user/images/Qr.jpg') }}" alt="Payment QR Code" class="img-fluid mx-2" style="max-width: 300px;">
+                                        <img src="{{ asset('user/images/Qr.jpg') }}" alt="Payment QR Code" class="img-fluid mx-2" style="max-width: 300px;">
                                     </div>
 
                                     <input type="hidden" name="step" value="3">
@@ -425,3 +429,27 @@
     </div> <!-- End Row -->
 </div> <!-- End Container -->
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            var selectedYear,
+                selectedSemester;
+            $(document).on('change', '#academic_year_id', function() {
+                selectedYear = $(this).val();
+                if (selectedYear == 1) {
+                    showWarningMessage();
+                }
+            });
+
+            function showWarningMessage() {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'ပထနှစ် ပထမနှစ်ဝက်ကျောင်းအပ်ရန် ကျောင်းသိုလာရန်လိုအပ်ပါသည်။',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    </script>
+@endpush

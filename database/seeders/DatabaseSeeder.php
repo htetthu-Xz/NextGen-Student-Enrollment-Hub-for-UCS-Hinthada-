@@ -186,29 +186,60 @@ class DatabaseSeeder extends Seeder
 
 
         AcademicYear::create([
-            "name" => "ပထမနှစ်",
+            "name" => "ပထမနှစ် ပထမနှစ်ဝက်",
             "enrollment" => 35000
 
         ]);
 
         AcademicYear::create([
-            "name" => "ဒုတိယနှစ်",
+            "name" => "ပထမနှစ် ဒုတိယနှစ်ဝက်",
+            "enrollment" => 0
+
+        ]);
+
+        AcademicYear::create([
+            "name" => "ဒုတိယနှစ် ပထမနှစ်ဝက်",
             "enrollment" => 38000
 
         ]);
+
         AcademicYear::create([
-            "name" => "တတိယနှစ်",
+            "name" => "ဒုတိယနှစ် ဒုတိယနှစ်ဝက်",
+            "enrollment" => 0
+
+        ]);
+
+        AcademicYear::create([
+            "name" => "တတိယနှစ် ပထမနှစ်ဝက်",
             "enrollment" => 40000
 
         ]);
+
         AcademicYear::create([
-            "name" => "စတုတ္ထနှစ်",
-            "enrollment" => 45000
+            "name" => "တတိယနှစ် ဒုတိယနှစ်ဝက်",
+            "enrollment" => 0
 
         ]);
         AcademicYear::create([
-            "name" => "ပဉ္စမနှစ်",
+            "name" => "စတုတ္ထနှစ် ပထမနှစ်ဝက်",
+            "enrollment" => 45000
+
+        ]);
+
+        AcademicYear::create([
+            "name" => "စတုတ္ထနှစ် ဒုတိယနှစ်ဝက်",
+            "enrollment" => 0
+
+        ]);
+
+        AcademicYear::create([
+            "name" => "ပဉ္စမနှစ် ပထမနှစ်ဝက်",
             "enrollment" => 55000
+
+        ]);
+        AcademicYear::create([
+            "name" => "ပဉ္စမနှစ် ဒုတိယနှစ်ဝက်",
+            "enrollment" => 0
 
         ]);
         Notice::create([

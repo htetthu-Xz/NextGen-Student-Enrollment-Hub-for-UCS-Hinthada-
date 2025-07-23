@@ -5,28 +5,63 @@ namespace App\Exports;
 use Carbon\Carbon;
 use App\Models\User;
 
+use App\Helper\Facades\File;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
-class TransferStudentExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents
+class TransferStudentExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents, WithDrawings
 {
+    public $users;
+
+    public function __construct()
+    {
+        $this->users = User::whereIn('transfer', ['in', 'out'])->with(['studentRegistrations'])->get();
+    }
+
     public function collection()
     {
-        return User::whereIn('transfer', ['in', 'out'])->with(['studentRegistrations'])->get();
+        return $this->users;
     }
+
+    public function drawings()
+    {
+        $drawings = [];
+
+        foreach ($this->users as $index => $user) {
+            $drawing = new Drawing();
+            $drawing->setName('User Image');
+            $drawing->setDescription('User Image');
+
+            $imagePath = public_path(File::GetStudentDataPath($user) . $user->image);
+
+            if (file_exists($imagePath)) {
+                $drawing->setPath($imagePath);
+                $drawing->setHeight(50); // adjust size as needed
+                $drawing->setCoordinates('B' . ($index + 7));
+                $drawings[] = $drawing;
+            }
+        }
+
+        return $drawings;
+    }
+
 
     public function map($user): array
     {
         return [
             $this->rowCounter = ($this->rowCounter ?? 0) + 1,
-            $user->image,
+            '',
             $user->name,
             $user->CurrentUserAcademicInfo()->roll_no ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->father_name ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->mother_name ?? 'N/A',
             $user->CurrentUserAcademicInfo()->nrc_student ?? 'N/A',
             $user->CurrentUserAcademicInfo()->dob ?? 'N/A',
             $user->CurrentUserAcademicInfo()->permanent_address ?? 'N/A',
@@ -42,6 +77,8 @@ class TransferStudentExport implements FromCollection, WithMapping, WithHeadings
             'Image',
             'Name',
             'Roll No',
+            'Father Name',
+            'Mother Name',
             'NRC Student',
             'Date of Birth',
             'Permanent Address',

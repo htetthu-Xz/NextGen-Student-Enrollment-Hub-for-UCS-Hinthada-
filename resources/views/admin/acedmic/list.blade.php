@@ -65,7 +65,7 @@
                                             {{ $year->name }}
                                         </td>
 
-                                        <td style="font-size: 1.1rem">{{ $year->enrollment }} ကျပ်</td>
+                                        <td style="font-size: 1.1rem">{{ $year->enrollment == 0.00 ? '-' : $year->enrollment . ' ကျပ်' }}</td>
 
                                         <th style="font-size: 1.1rem"><a href="{{route('admin.acedimic.edit',$year->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>
                                     <th style="font-size: 1.1rem"><a href="{{route('admin.acedimic.delete',$year->id)}}"  onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
@@ -86,3 +86,4 @@
             @endif
 
 @endsection
+
