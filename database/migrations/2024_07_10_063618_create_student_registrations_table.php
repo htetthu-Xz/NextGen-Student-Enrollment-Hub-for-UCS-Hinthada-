@@ -65,7 +65,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('academic_year_id')->references('id')->on('academic_years');
-            $table->enum('status', ['pending', 'confirm', 'reviewing'])->default('pending');
+            $table->enum('status', ['pending', 'confirm', 'rejected'])->default('pending');
         });
     }
 

@@ -14,7 +14,7 @@
                                         <form class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
                                             action="{{ route('admin.stu.reg.accept.list.search') }}" method="GET">
                                             @csrf
-                                            <div class="input-group mb-2">
+                                            <div class="input-group mb-2  mx-2">
                                                 <input type="text" name="student_name"
                                                     class="form-control border-success small" placeholder="Student Name"
                                                     value="{{ request('student_name') }}">
@@ -31,7 +31,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="input-group mb-2">
+                                            <div class="input-group mb-2 mx-2">
                                                 <select name="specialist" class="form-control border-success">
                                                     <option value="">Select Specialist</option>
                                                     <option value="computer_science"
@@ -99,15 +99,16 @@
                                         <td  style="font-size: 1.1rem">{{ $reg->academicYear ? $reg->academicYear->name : 'N/A' }}</td>
 
                                         <td  style="font-size: 1.1rem">
-                                            @if ($reg->specialist === 'computer_science')
+                                            {{-- @if ($reg->specialist === 'computer_science')
                                                 CS-{{ $reg->roll_no }}
                                             @elseif ($reg->specialist === 'computer_technology')
                                                 CT-{{ $reg->roll_no }}
                                             @else
                                                 CST-{{ $reg->roll_no }}
-                                            @endif
+                                            @endif --}}
+                                            {{ $reg->roll_no }}
                                         </td>
-                                        <td  style="font-size: 1.1rem">{{ $reg->student_phone }}</td>
+                                        <td  style="font-size: 1.1rem">{{ $reg->phone }}</td>
 
                                         <td>
                                             @if ($reg->status === 'pending')

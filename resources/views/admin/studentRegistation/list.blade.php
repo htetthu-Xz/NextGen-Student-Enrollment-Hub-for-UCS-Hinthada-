@@ -44,14 +44,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2 d-flex justify-content-end mt-3">
+                        {{-- <div class="col-2 d-flex justify-content-end mt-3">
                             <a href="{{ route('admin.stu.reg.export', [
                                 'search' => request('search'),
                                 'academic_year_id' => request('academic_year_id'),
                                 'specialist' => request('specialist')
                             ]) }}" class="btn btn-success"><i class="fa fa-download"></i></a>
 
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 @if ($registrations->isEmpty())

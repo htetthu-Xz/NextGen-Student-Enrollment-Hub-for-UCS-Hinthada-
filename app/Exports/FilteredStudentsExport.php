@@ -22,37 +22,38 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
 
     public function __construct($request)
     {
-        $this->request = $request;
+        $query = User::with('studentRegistrations')
+            ->where('role', 'user');
+
+        if ($request->filled('searchKey')) {
+            $query->where('name', 'like', '%' . $request->input('searchKey') . '%');
+        }
+
+        if ($request->filled('major')) {
+            $query->whereHas('studentRegistrations', function ($q) use ($request) {
+                $q->where('major', $request->input('major'));
+            });
+        }
+
+        if ($request->filled('academic_year')) {
+            $query->whereHas('studentRegistrations', function ($q) use ($request) {
+                $q->where('academic_year', $request->input('academic_year'));
+            });
+        }
+
+        if ($request->filled('academic_class')) {
+            $query->whereHas('studentRegistrations', function ($q) use ($request) {
+                $q->where('academic_year_id', $request->input('academic_class'));
+            });
+        }
+
+        $this->students = $query->get();
     }
+
 
     public function collection()
     {
-        $this->students = User::with('studentRegistrations')
-            ->where('role', 'user');
-
-        if ($this->request->filled('searchKey')) {
-            $this->students->where('name', 'like', '%' . $this->request->input('searchKey') . '%');
-        }
-
-        if ($this->request->filled('major')) {
-            $this->students->whereHas('studentRegistrations', function ($q) {
-                $q->where('major', $this->request->input('major'));
-            });
-        }
-
-        if ($this->request->filled('year')) {
-            $this->students->whereHas('studentRegistrations', function ($q) {
-                $q->where('academic_year', $this->request->input('year'));
-            });
-        }
-
-        if ($this->request->filled('academic_class')) {
-            $this->students->whereHas('studentRegistrations', function ($q) {
-                $q->where('academic_year_id', $this->request->input('academic_class'));
-            });
-        }
-
-        return $this->students->get();
+        return $this->students;
     }
 
     public function drawings()
@@ -68,7 +69,7 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
 
             if (file_exists($imagePath)) {
                 $drawing->setPath($imagePath);
-                $drawing->setHeight(50); 
+                $drawing->setHeight(50);
                 $drawing->setCoordinates('B' . ($index + 7));
                 $drawings[] = $drawing;
             }
@@ -135,6 +136,22 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
                 $event->sheet->getStyle('A1')->getFont()->setBold(true)->setSize(16);
                 $event->sheet->getStyle('A2')->getFont()->setItalic(true)->setSize(12);
                 $event->sheet->getStyle('A3')->getFont()->setSize(12);
+
+                // for ($i = 7; $i < 7 + count($this->students); $i++) {
+                //     $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(55);
+                // }
+
+                // $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(5);
+                // $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(12);
+                // $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(20);
+                // $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(15);
+                // $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
+                // $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
+                // $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(20);
+                // $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(15);
+                // $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(25);
+                // $event->sheet->getDelegate()->getColumnDimension('J')->setWidth(18);
+                // $event->sheet->getDelegate()->getColumnDimension('K')->setWidth(15);
             }
         ];
     }

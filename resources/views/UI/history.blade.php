@@ -52,13 +52,19 @@
                                 @elseif ($reg->status==="confirm")
                                     လက်ခံထားသည်</td>
                                 @else
-                                    ပြန်ပြင်ခိုင်းထားသည်
+                                    ပယ်ဖျက်ထားသည်
                                 @endif
                             </td>
                             <td class="text-white">
-                                    <a href="{{route('ui.reg.delete',$reg->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a>
+                                    {{-- <a href="{{route('ui.reg.delete',$reg->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a>
                                 @if($reg->status==="edit")
                                     <a href="{{route('ui.reg.edit',$reg->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></i></a>
+                                @endif --}}
+                                @if ($reg->status === 'pending' || $reg->status === 'confirm')
+                                -
+                                @else
+                                    <a href="{{ route('stu.reg') }}" class="btn btn-success btn-sm mx-2"> အသစ်တင်ရန်</a>
+                                    <a href="{{ route('ui.reg.delete', $reg->id) }}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');" class="btn btn-danger btn-sm"> ဖျက်ရန်</a>
                                 @endif
                             </td>
                           </tr>

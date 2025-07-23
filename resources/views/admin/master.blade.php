@@ -113,10 +113,17 @@
                 <span>ကျောင်းအပ်သူများ</span>
             </a>
         </li>
-          <li class="nav-item {{ request()->routeIs('service.review.list') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('admin.stu.reg.accept.list') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.stu.reg.accept.list') }}">
                 <i class="fab fa-imdb"></i>
                 <span>ကျောင်းအပ်လက်ခံထားမှု</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ request()->routeIs('fresher.reg.list') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('fresher.reg.list') }}">
+                <i class="fab fa-imdb"></i>
+                <span>ဝင်ခွင့်လျှောက်ထားမှု</span>
             </a>
         </li>
 

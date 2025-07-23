@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\AcademicYearController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\NoticeController;
-use App\Http\Controllers\StudentRegistrationController;
-use App\Http\Controllers\MarkCalculationController;
-use App\Http\Controllers\UiController;
 use App\Models\Notice;
 use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UiController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\MarkCalculationController;
+use App\Http\Controllers\FresherRegistrationController;
+use App\Http\Controllers\StudentRegistrationController;
 
 
 
@@ -17,6 +18,9 @@ Route::get('/', [UiController::class, 'home'])->name('ui.home');
 Route::get('contact', [UiController::class, 'contact'])->name('ui.contact');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/ui/notice/board', [NoticeController::class, 'uiAll'])->name('ui.noticeAll');
+
+Route::get('fresher-registration', [FresherRegistrationController::class, 'fresherRegister'])->name('fresher.register');
+Route::post('fresher-registration/store', [FresherRegistrationController::class, 'fresherStore'])->name('fresher.store');
 
 Route::group([
     'middleware' => 'guest',
@@ -58,6 +62,11 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('nostop/mail/{id}', [AdminController::class, 'nostopMail'])->name('no.stop.mail');
     Route::get('/reg/give/edit/{id}', [StudentRegistrationController::class, 'giveEdit'])->name('admin.stu.give.edit');
     Route::get('/reg/accept/{student_registration}', [StudentRegistrationController::class, 'regAccept'])->name('admin.stu.accept');
+
+    Route::get('fresher-registration/list', [FresherRegistrationController::class, 'fresherRegList'])->name('fresher.reg.list');
+    Route::get('/fresher/accept/{fresher}', [FresherRegistrationController::class, 'fresherAccept'])->name('fresher.accept');
+    Route::post('/fresher/accept/{fresher}', [FresherRegistrationController::class, 'fresherAcceptStore'])->name('fresher.accept.store');
+    Route::delete('/fresher/delete/{fresher}', [FresherRegistrationController::class, 'fresherDelete'])->name('fresher.delete');
 
     Route::get('/home', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/register', [AuthController::class, 'register'])->name('register');

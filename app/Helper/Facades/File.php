@@ -43,7 +43,6 @@ class File
 
     public static function GetStudentDataPath($user  = null)
     {
-        dd('storage/images/' . ($user ? $user->uuid : Auth::user()->uuid) . '/');
         return 'storage/images/' . ($user ? $user->uuid : Auth::user()->uuid) . '/';
     }
 }

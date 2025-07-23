@@ -55,6 +55,9 @@ class AdminController extends Controller
             ->whereHas('user', function ($query) {
                 $query->where('stop', 'no');
             })
+            ->wherehas('user', function ($query) {
+                $query->where('transfer', 'present');
+            })
             ->paginate(5);
         return view('admin.accept.acceptList', compact('regs', 'years'));
     }
@@ -106,7 +109,8 @@ class AdminController extends Controller
 
         // Start query builder
         $students = User::with('studentRegistrations')
-            ->where('role', 'user');
+            ->where('role', 'user')
+            ->whereIn('transfer', ['present', 'in']);
 
         if (!empty($searchKey)) {
             $students->where(function ($query) use ($searchKey) {
@@ -136,11 +140,6 @@ class AdminController extends Controller
         $students = $students->latest()->paginate(10);
 
         return view('admin.students.index', compact('students', 'academicYears', 'academicClasses'));
-    }
-
-    public function studentsExport(Request $request)
-    {
-        return Excel::download(new FilteredStudentsExport($request), 'students_list.xlsx');
     }
 
     public function stopStuList(Request $request)
@@ -177,6 +176,11 @@ class AdminController extends Controller
     public function transferExport()
     {
         return Excel::download(new TransferStudentExport, 'transfer_student_list.xlsx');
+    }
+
+    public function studentsExport(Request $request)
+    {
+        return Excel::download(new FilteredStudentsExport($request), 'students_list.xlsx');
     }
 
     public function adminEdit($id)

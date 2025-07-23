@@ -265,7 +265,7 @@ class StudentRegistrationController extends Controller
         // }
 
         $studentRegistration->update(['status' => 'rejected']);
-        return back()->with('success', 'ကျောင်းသားအား ပယ်ဖျက်လိုက်ပါပြီ');
+        return back()->with('success', 'ကျောင်းသား registration ကို ပယ်ဖျက်လိုက်ပါပြီ။');
     }
 
     public function form()
@@ -742,7 +742,7 @@ class StudentRegistrationController extends Controller
         }
 
         // Save the Word document to a temporary file
-        $filePath = storage_path('app/public/registrations.docx');
+        $filePath = storage_path('app/registrations.docx');
         $writer = IOFactory::createWriter($phpWord, 'Word2007');
         $writer->save($filePath);
 

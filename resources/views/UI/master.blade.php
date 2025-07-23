@@ -116,6 +116,9 @@
               <li class="nav-item {{ request()->routeIs('ui.contact') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('ui.contact') }}">ဆက်သွယ်ရန်</a>
               </li>
+              <li class="nav-item {{ request()->routeIs('fresher.register') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('fresher.register') }}">ဝင်ခွင့်လျှောက်ရန်</a>
+              </li>
               @if(Auth::check())
 
                     @if(Auth::user()->role=="user")

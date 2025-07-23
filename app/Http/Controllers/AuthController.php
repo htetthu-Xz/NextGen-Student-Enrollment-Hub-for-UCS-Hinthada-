@@ -19,7 +19,7 @@ class AuthController extends Controller
             "name" => "required",
             "email" => ['required', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@ucsh\.edu\.mm$/'],
             "uni_id_no" => ['required', 'unique:users,uni_id_no', 'regex:/^CU\(Hinthada\)\d{4}$/'],
-            "image" => "required|image|mimes:png,jpg,jpeg",
+            "image" => "nullable|image|mimes:png,jpg,jpeg",
             "transfer" => "nullable"
         ], [
             "name.required" => "Name is required.",

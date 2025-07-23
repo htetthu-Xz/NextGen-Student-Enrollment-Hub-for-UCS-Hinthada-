@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="card shadow-2xl p-3">
-                            <img src="{{asset('storage/images/'.$notice->image)}}" style="height: 200px;width:100%">
+                            <img src="{{asset('storage/images/notice/'.$notice->image)}}" style="height: 200px;width:100%">
                         </div>
                     </div>
                     <div class="col-8">
