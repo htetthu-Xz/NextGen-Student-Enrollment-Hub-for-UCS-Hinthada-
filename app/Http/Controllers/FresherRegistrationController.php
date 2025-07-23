@@ -63,7 +63,7 @@ class FresherRegistrationController extends Controller
             'name' => $fresher->name,
             'email' => $request->email,
             'uni_id_no' => $request->uni_id_no,
-            'password' => bcrypt('P@ssw0rd'),
+            'password' => 'P@ssw0rd',
             'uuid' => Str::uuid()
         ]);
 
