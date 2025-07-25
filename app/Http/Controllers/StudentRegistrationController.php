@@ -26,11 +26,15 @@ class StudentRegistrationController extends Controller
                 return redirect()->back()->with('error', 'ကျောင်းသားတစ်ယောက်သည် တစ်နှစ်လျှင် စာသင်နှစ်တစ်ခုကိုသာ ကျောင်းအပ်ခွင့်လျှောက်ထားနိုင်သည်။');
             };
 
+
+
             $academicYear = AcademicYear::findOrFail($attributes['academic_year_id']);
 
-            if ($academicYear->name == 'ပထမနှစ်' && $attributes['major'] !== 'CST') {
+            //dd(($academicYear->name == 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name == 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && $attributes['major'] !== 'CST');
+
+            if (($academicYear->name == 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name == 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && $attributes['major'] !== 'CST') {
                 return redirect()->back()->with('error', 'ပထမနှစ်အတွက် CST ကိုသာရွေးချယ်နိုင်ပါသည်။');
-            } elseif ($academicYear->name !== 'ပထမနှစ်' && !in_array($attributes['major'], ['computer science', 'computer technology'])) {
+            } elseif (($academicYear->name !== 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name !== 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && in_array($attributes['major'], ['computer science', 'computer technology'])) {
                 return redirect()->back()->with('error', 'ဤနှစ်အတွက် CS သို့မဟုတ် CT ကိုသာရွေးချယ်နိုင်ပါသည်။');
             }
 

@@ -21,6 +21,17 @@
                                                         <input type="text" name="search" class="form-control border-success small"
                                                                aria-label="Search" aria-describedby="basic-addon2"
                                                                value="{{ request('search') }}">
+                                                        <select name="major" class="form-control border-success">
+                                                            <option value="">Select Transfer Type</option>
+                                                            <option value="computer science"
+                                                                {{ request('major') == 'computer science' ? 'selected' : '' }}>
+                                                                Computer Science</option>
+                                                            <option value="computer technology"
+                                                                {{ request('major') == 'computer technology' ? 'selected' : '' }}>
+                                                                Computer Technology</option>
+                                                            <option value="CST"
+                                                                {{ request('major') == 'CST' ? 'selected' : '' }}>CST</option>
+                                                        </select>
                                                         <div class="input-group-append">
                                                             <button class="btn wbtn" type="submit">
                                                                 <i class="fas fa-search fa-sm text-white"></i>

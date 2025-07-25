@@ -28,7 +28,7 @@ class StudentRegistrationRequest extends FormRequest
             'profile' => 'required_if:step,1|image|mimes:jpg,jpeg,png|max:2048',
             'academic_year' => 'required_if:step,1|string',
             'academic_year_id' => 'required_if:step,1|exists:academic_years,id',
-            'major' => 'required_if:step,1|in:computer science,computer technology',
+            'major' => 'required_if:step,1|in:computer science,computer technology,CST',
             'roll_no' => 'required_if:step,1|string',
 
             // STEP 2

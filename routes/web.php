@@ -8,7 +8,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\AcademicYearController;
-use App\Http\Controllers\MarkCalculationController;
 use App\Http\Controllers\FresherRegistrationController;
 use App\Http\Controllers\StudentRegistrationController;
 
