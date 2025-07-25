@@ -32,11 +32,11 @@ class StudentRegistrationController extends Controller
 
             //dd(($academicYear->name == 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name == 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && $attributes['major'] !== 'CST');
 
-            if (($academicYear->name == 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name == 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && $attributes['major'] !== 'CST') {
-                return redirect()->back()->with('error', 'ပထမနှစ်အတွက် CST ကိုသာရွေးချယ်နိုင်ပါသည်။');
-            } elseif (($academicYear->name !== 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name !== 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && in_array($attributes['major'], ['computer science', 'computer technology'])) {
-                return redirect()->back()->with('error', 'ဤနှစ်အတွက် CS သို့မဟုတ် CT ကိုသာရွေးချယ်နိုင်ပါသည်။');
-            }
+            // if (($academicYear->name == 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name == 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && $attributes['major'] !== 'CST') {
+            //     return redirect()->back()->with('error', 'ပထမနှစ်အတွက် CST ကိုသာရွေးချယ်နိုင်ပါသည်။');
+            // } elseif (($academicYear->name !== 'ပထမနှစ် ပထမနှစ်ဝက်' || $academicYear->name !== 'ပထမနှစ် ဒုတိယနှစ်ဝက်') && in_array($attributes['major'], ['computer science', 'computer technology'])) {
+            //     return redirect()->back()->with('error', 'ဤနှစ်အတွက် CS သို့မဟုတ် CT ကိုသာရွေးချယ်နိုင်ပါသည်။');
+            // }
 
             $path = 'images/' . Auth::user()->uuid . '/';
             $registration['profile'] = File::upload($request->file('profile'), $path);
