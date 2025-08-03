@@ -408,7 +408,7 @@
                                     <div class="col-sm-12 text-center">
                                         <div class="checkbox">
                                             <label class="mt-2">
-                                                <input type="checkbox" name="agree_rules" required> အထက်ပါလိုက်နာရမည့် စည်းကမ်းချက်များကို လိုက်နာဆောင်ရွက်ပါမည်ဟု ဝန်ခံကတိပြပါသည်။
+                                                <input type="checkbox" name="agree_rules" required> အထက်ပါလိုက်နာရမည့် စည်းကမ်းချက်များကို လိုက်နာဆောင်ရွက်ပါမည်ဟု ဝန်ခံကတိပြုပါသည်။
                                             </label>
                                             @error('agree_rules')<div class="text-danger">{{ $message }}</div>@enderror
                                         </div>

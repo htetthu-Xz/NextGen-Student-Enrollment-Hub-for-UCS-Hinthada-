@@ -9,10 +9,14 @@ use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+use App\Mail\FresherAcceptedMail;
 use App\Models\StudentRegistration;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StudentRegistrationRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\StudentRegistrationRequest;
+use App\Mail\RegistrationSuccessMail;
 
 class StudentRegistrationController extends Controller
 {
@@ -55,14 +59,14 @@ class StudentRegistrationController extends Controller
 
             $res = $response->json()['results'][0] ?? null;
 
-            if($res) {
+            if ($res) {
                 if ($res['status'] == 'FAIL' || $res['status'] == 'INCOMPLETE') {
                     return back()
                         ->with('error', 'You are "Failed" in your last academic exam. Son you can\'t register for this academic year.');
                 }
             } else {
                 return back()
-                        ->with('error', 'No results found for your last academic exam.');
+                    ->with('error', 'No results found for your last academic exam.');
             }
 
             $path = 'images/' . Auth::user()->uuid . '/';
@@ -108,7 +112,18 @@ class StudentRegistrationController extends Controller
             auth()->user()->update([
                 'image' => $registration['profile'],
             ]);
-            StudentRegistration::create($registration);
+
+            $user = Auth::user();
+
+            if ($user) {
+                try {
+                    $studentReg = StudentRegistration::create($registration);
+                    Mail::to($studentReg->reg_email)->send(new RegistrationSuccessMail($user));
+                } catch (\Exception $e) {
+                    // Log the error for debugging
+                    Log::error('Mail sending failed: ' . $e->getMessage());
+                }
+            }
 
             return redirect()->route('ui.home')->with('success', 'Student Registration Form submitted successfully!');
         }
@@ -759,14 +774,14 @@ class StudentRegistrationController extends Controller
 
                 $rollNumber = $registration->roll_no;
                 if ($registration->specialist === 'computer_science') {
-                    $formattedRollNumber = "CS-$rollNumber";
+                    $formattedRollNumber = "$rollNumber";
                 } elseif ($registration->specialist === 'computer_technology') {
-                    $formattedRollNumber = "CT-$rollNumber";
+                    $formattedRollNumber = "$rollNumber";
                 } else {
-                    $formattedRollNumber = "CST-$rollNumber";
+                    $formattedRollNumber = "$rollNumber";
                 }
                 $table->addCell(4000)->addText($formattedRollNumber);
-                $table->addCell(6000)->addText($registration->student_phone);
+                $table->addCell(6000)->addText($registration->phone);
                 $table->addCell(8000)->addText($registration->created_at->format('d-m-Y'));
                 $table->addCell(8000)->addText($registration->status === "pending" ? "စောင့်ဆိုင်းနေသည်" : ($registration->status === "confirm" ? "ကျောင်းအပ်လက်ခံထားသည်" : "ပြန်ပြင်ခိုင်းထားသည်"));
             }
