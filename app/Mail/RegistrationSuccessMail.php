@@ -13,13 +13,13 @@ class RegistrationSuccessMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    protected $reg;
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($reg)
     {
-        $this->user = $user;
+        $this->reg = $reg;
     }
 
     /**
@@ -38,9 +38,9 @@ class RegistrationSuccessMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.student_accepted',
+            view: 'emails.student_accept',
             with: [
-                'student' => $this->user
+                'reg' => $this->reg
             ]
         );
     }

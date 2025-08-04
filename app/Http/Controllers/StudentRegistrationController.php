@@ -115,15 +115,7 @@ class StudentRegistrationController extends Controller
 
             $user = Auth::user();
 
-            if ($user) {
-                try {
-                    $studentReg = StudentRegistration::create($registration);
-                    Mail::to($studentReg->reg_email)->send(new RegistrationSuccessMail($user));
-                } catch (\Exception $e) {
-                    // Log the error for debugging
-                    Log::error('Mail sending failed: ' . $e->getMessage());
-                }
-            }
+            $studentReg = StudentRegistration::create($registration);
 
             return redirect()->route('ui.home')->with('success', 'Student Registration Form submitted successfully!');
         }
@@ -578,6 +570,7 @@ class StudentRegistrationController extends Controller
     public function regAccept(StudentRegistration $studentRegistration)
     {
         $studentRegistration->update(['status' => 'confirm']);
+        Mail::to($studentRegistration->reg_email)->send(new RegistrationSuccessMail($studentRegistration));
         return back()->with('success', 'ကျောင်းအပ် လက်ခံလိုက်ပါပြီ');
     }
 

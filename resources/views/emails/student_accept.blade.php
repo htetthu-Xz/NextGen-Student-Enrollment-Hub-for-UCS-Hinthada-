@@ -61,10 +61,10 @@
             <div class="title">Welcome to UCS Hinthada!</div>
         </div>
         <div class="content">
-            <p>Dear {{ $student->name }},</p>
+            <p>Dear {{ $reg->User->name }},</p>
             <p>
                 Congratulations! Your registration has been <strong> successfully completed</strong>.<br>
-                An now you are ready to attend to {{ $student->AcademicYear->name }}.
+                An now you are ready to attend to {{ $reg->academicYear->name }}.
             </p>
             <p>
                 You can now access your student portal to view your profile, courses, and important updates.
