@@ -51,7 +51,7 @@ class StudentRegistrationController extends Controller
 
             $search = Auth::user()->name;
 
-            $response = Http::get('https://student-grading-system-mauve.vercel.app/api/results-by-semester', [
+            $response = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
                 'search' => $search,
                 'class' => $academicYear->ename,
                 'semester' => $academicYear->esemester,
