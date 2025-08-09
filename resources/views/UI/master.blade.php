@@ -98,7 +98,7 @@
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container">
           <a class="navbar-brand" href="{{ route('ui.home') }}">
-            <img src="{{ asset('user/images/logo.png') }}" style="height:40px;width:40px"><span>ကွန်ပျူတာ တက္ကသိုလ် ဟင်္သာတ</span>
+            <img src="{{ asset('user/images/logo.png') }}" style="height:40px;width:40px"><span>ကွန်ပျူတာ တက္ကသိုလ် (ဟင်္သာတ) </span>
           </a>
 
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

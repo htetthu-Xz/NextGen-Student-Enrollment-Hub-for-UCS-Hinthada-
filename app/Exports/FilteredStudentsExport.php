@@ -15,8 +15,11 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class FilteredStudentsExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents, WithDrawings
+class FilteredStudentsExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents, WithDrawings, WithStyles
 {
     public $request, $students;
 
@@ -69,13 +72,38 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
 
             if (file_exists($imagePath)) {
                 $drawing->setPath($imagePath);
-                $drawing->setHeight(50);
+                $drawing->setWidthAndHeight(150, 65);
                 $drawing->setCoordinates('B' . ($index + 7));
                 $drawings[] = $drawing;
             }
         }
 
         return $drawings;
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getDefaultRowDimension()->setRowHeight(100);
+
+        $sheet->getColumnDimension('A')->setWidth(5);
+        $sheet->getColumnDimension('B')->setWidth(9);
+
+        $sheet->getColumnDimension('C')->setWidth(20);
+        $sheet->getColumnDimension('D')->setWidth(15);
+        $sheet->getColumnDimension('E')->setWidth(20);
+        $sheet->getColumnDimension('F')->setWidth(20);
+        $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('I')->setWidth(25);
+        $sheet->getColumnDimension('J')->setWidth(18);
+        $sheet->getColumnDimension('K')->setWidth(20);
+
+        $sheet->getStyle('A6:K' . ($this->students->count() + 6))
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
+            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+            ->setWrapText(true);
+
+        return [];
     }
 
 
@@ -136,22 +164,24 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
                 $event->sheet->getStyle('A1')->getFont()->setBold(true)->setSize(16);
                 $event->sheet->getStyle('A2')->getFont()->setItalic(true)->setSize(12);
                 $event->sheet->getStyle('A3')->getFont()->setSize(12);
+            },
 
-                // for ($i = 7; $i < 7 + count($this->students); $i++) {
-                //     $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(55);
-                // }
+            AfterSheet::class => function (AfterSheet $event) {
+                $sheet = $event->sheet->getDelegate();
 
-                // $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(5);
-                // $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(12);
-                // $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(20);
-                // $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(15);
-                // $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
-                // $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
-                // $event->sheet->getDelegate()->getColumnDimension('G')->setWidth(20);
-                // $event->sheet->getDelegate()->getColumnDimension('H')->setWidth(15);
-                // $event->sheet->getDelegate()->getColumnDimension('I')->setWidth(25);
-                // $event->sheet->getDelegate()->getColumnDimension('J')->setWidth(18);
-                // $event->sheet->getDelegate()->getColumnDimension('K')->setWidth(15);
+                // Bold headers
+                $sheet->getStyle('A6:K6')->getFont()->setBold(true);
+
+                // Set border for all data cells
+                $sheet->getStyle('A6:K' . ($this->students->count() + 6))
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $startRow = 7;
+                $endRow = $this->students->count() + 6;
+                for ($row = $startRow; $row <= $endRow; $row++) {
+                    $sheet->getRowDimension($row)->setRowHeight(50);
+                }
             }
         ];
     }

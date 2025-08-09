@@ -12,7 +12,7 @@
               <div class="col-md-7">
                 <div class="detail-box">
                     <h2 style="width:auto; font-size: 3rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">Student Enrollment System For University of Computer Studies Hinthada</h2>
-                    <p>ကျောင်းသားများ လွယ်ကူလျှင်မြန်စွာ ကျောင်းအပ်ရန် ရည်ရွယ် စီစဉ်ထားပါသည်.</p>
+                    <p>ကျောင်းသားကျောင်ူၐးသူများ လွယ်ကူလျှင်မြန်စွာ ကျောင်းအပ်ရန် ရည်ရွယ် စီစဉ်ထားပါသည်.</p>
                   <div class="btn-box">
                     <a href="{{route('login')}}" class="btn1">ကျောင်းအပ်မည်</a>
                   </div>
@@ -41,7 +41,7 @@
     <div class="container">
       <div class="heading_container heading_center">
         <h2 style=" font-size: 2rem; text-shadow: 2px 2px 4px rgba(93, 101, 216, 0.5);font-family: 'Arial', sans-serif;color:rgb(250, 250, 250)" >ရနိုင်သော<span class="">၀န်ဆောင်မှုများ</span></h2>
-        <p class="text-white">ကွန်ပျူတာ တက္ကသိုလ် ဟင်္သာတ ကျောင်းသားရေးရာမှ ရရှိနိင်သော ၀န်ဆောင်မှုများ</p>
+        <p class="text-white">ကွန်ပျူတာ တက္ကသိုလ် (ဟင်္သာတ) ကျောင်းသားရေးရာမှ ရရှိနိင်သော ၀န်ဆောင်မှုများ</p>
       </div>
       <div class="row">
         <div class="col-md-4">
