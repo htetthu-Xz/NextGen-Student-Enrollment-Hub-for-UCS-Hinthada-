@@ -13,6 +13,7 @@ use PhpOffice\PhpWord\IOFactory;
 use App\Exports\StopStudentExport;
 use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TransferStudentExport;
 use App\Exports\FilteredStudentsExport;
@@ -104,6 +105,12 @@ class AdminController extends Controller
         $major = $request->input('major');
         $year = $request->input('academic_year');
         $academicClasses = AcademicYear::all()->pluck('name', 'id')->toArray();
+        $academic_class = AcademicYear::find($request->input('academic_class') - 1);
+        $response_by_all_pages[] = null;
+        $user_ids = null;
+        $filtered_students = [];
+
+        //dd($academic_class);
 
         $academicYears = StudentRegistration::distinct()->pluck('academic_year')->toArray();
 
@@ -119,30 +126,91 @@ class AdminController extends Controller
         }
 
         if (!empty($major)) {
-            $students->whereHas('studentRegistrations', function ($query) use ($major) {
-                $query->where('major', $major);
+            $students->where(function ($query) use ($major) {
+                $query->where('major', 'like', '%' . $major . '%');
             });
         }
 
         if (!empty($year)) {
-            $students->whereHas('studentRegistrations', function ($query) use ($year) {
-                $query->where('academic_year', $year);
+            $students->where(function ($query) use ($year) {
+                $query->where('current_academic_year', $year);
             });
         }
 
         if (!empty($request->academic_class)) {
-            $students->whereHas('studentRegistrations', function ($query) use ($request) {
-                $query->where('academic_year_id', $request->academic_class);
+            $students->where(function ($query) use ($request) {
+                $query->where('current_academic_year_id', $request->academic_class);
             });
         }
 
 
-        if ($request->has('is_register')) {
-            if ($request->is_register == '1') {
-                $students->whereHas('studentRegistrations');
-            } else if ($request->is_register == '0') {
-                $students->whereDoesntHave('studentRegistrations');
+        if ($request->has('is_register') && $request->is_register != null) {
+            $response = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
+                'search' => $searchKey,
+                'academicYear' => $year,
+                'class' => $academic_class->ename,
+                'semester' => $academic_class->esemester,
+                'status' => 'PASS'
+            ]);
+
+            $pageCount = $response->json()['pageCount'] ?? 0;
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $response_by_all_pages = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
+                    'search' => $searchKey,
+                    'academicYear' => $year,
+                    'class' => $academic_class->ename,
+                    'semester' => $academic_class->esemester,
+                    'status' => 'PASS',
+                    'page' => $i
+                ]);
+
+                if (!isset($res[0])) {
+                    $res[0] = [];
+                }
+                $results = $response_by_all_pages->json()['results'] ?? [];
+                $res[0] = array_merge($res[0], $results);
             }
+
+            foreach ($res[0] as $item) {
+                $uni_id_nos = collect($res[0])->pluck('enrollment.student.admissionId')->toArray();
+            }
+
+            $users = User::whereIn('uni_id_no', $uni_id_nos)->get();
+
+            if ($request->is_register == '1') {
+                foreach ($users as $user) {
+                    if ($user->StudentRegistrations) {
+                        // Check if the user has a registration in the selected academic year and class
+                        $hasRegistration = $user->studentRegistrations()
+                            ->where('academic_year', $request->academic_year)
+                            ->where('academic_year_id', $request->academic_class)
+                            ->exists();
+
+                        if ($hasRegistration) {
+                            $filtered_students[] = $user->id;
+                        }
+                    }
+                }
+            } else {
+                foreach ($users as $user) {
+                    if ($user->StudentRegistrations) {
+                        // Check if the user has no registration in the selected academic year and class
+                        $hasRegistration = $user->studentRegistrations()
+                            ->where('academic_year', $request->academic_year)
+                            ->where('academic_year_id', $request->academic_class)
+                            ->exists();
+
+                        if (!$hasRegistration) {
+                            $filtered_students[] = $user->id;
+                        }
+                    }
+                }
+            }
+
+            $students = User::whereIn('id', $filtered_students)->paginate(10);
+
+            return view('admin.students.index', compact('students', 'academicYears', 'academicClasses'));
         }
 
         // Final result

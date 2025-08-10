@@ -46,7 +46,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ပညာသင်နှစ်</label>
-                                                    <input name="academic_year" value="{{ old('academic_year') ?? \Carbon\Carbon::now()->format('Y') . '-' . (\Carbon\Carbon::now()->addYear()->format('y')) }}" type="text" class="form-control" readonly>
+                                                    <input name="academic_year" value="{{ old('academic_year') ?? \Carbon\Carbon::now()->format('Y') . '-' . (\Carbon\Carbon::now()->addYear()->format('Y')) }}" type="text" class="form-control" readonly>
                                                     @error('academic_year')<div class="text-danger">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>

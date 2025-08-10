@@ -27,6 +27,14 @@ class User extends Authenticatable
         "uni_id_no",
         'uuid',
         'transfer',
+        'current_academic_year',
+        'current_academic_year_id',
+        'current_father_name',
+        'current_mother_name',
+        'current_NRC',
+        'DOB',
+        'permanent_address',
+        'phone',
     ];
 
     /**
@@ -60,6 +68,11 @@ class User extends Authenticatable
     public function studentRegistrations()
     {
         return $this->hasMany(StudentRegistration::class, 'user_id');
+    }
+
+    public function AcademicYear()
+    {
+        return $this->belongsTo(AcademicYear::class, 'current_academic_year_id');
     }
 
     public function CurrentUserAcademicYear()

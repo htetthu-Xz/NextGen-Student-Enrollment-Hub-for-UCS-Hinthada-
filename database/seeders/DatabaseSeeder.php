@@ -34,154 +34,94 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'စိုးဇေယျာကျော်',
+            'name' => 'Mu Yar',
             'uuid' => Str::uuid(),
-            'email' => 'student1@ucsh.edu.mm',
+            'email' => 'myyar@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၇၆၈၈၉",
             'password' => 'P@ssw0rd',
             'image' => 'logo.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8885',
         ]);
         User::create([
-            'name' => 'နိုင်၀င်းကို',
+            'name' => 'Aye Aye',
             'uuid' => Str::uuid(),
-            'email' => 'student13@ucsh.edu.mm',
+            'email' => 'ayeaye@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၅၇၉၁၀",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8881',
         ]);
         User::create([
-            'name' => 'ဟိန်းမင်းထွန်း',
+            'name' => 'Zaw Aung',
             'uuid' => Str::uuid(),
-            'email' => 'student2@ucsh.edu.mm',
+            'email' => 'zawaung@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၃၈၆၂၁",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)1108',
         ]);
         User::create([
-            'name' => 'သော်ဇင်ဖြိုး',
+            'name' => 'Ei Phyu',
             'uuid' => Str::uuid(),
-            'email' => 'student3@ucsh.edu.mm',
+            'email' => 'eiphyu@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၇၈၃၈၄",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8918',
         ]);
         User::create([
-            'name' => 'စုစု',
+            'name' => 'Zoe Lay',
             'uuid' => Str::uuid(),
-            'email' => 'student4@ucsh.edu.mm',
+            'email' => 'zoelay@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၅၇၆၉၀",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8917',
         ]);
         User::create([
-            'name' => 'ခင်ခင်',
+            'name' => 'Khant Bo',
             'uuid' => Str::uuid(),
-            'email' => 'student5@ucsh.edu.mm',
+            'email' => 'khantbo@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၈၂၇၁၆",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8913',
         ]);
         User::create([
-            'name' => 'ဖြူဖြူ',
+            'name' => 'Amy',
             'uuid' => Str::uuid(),
-            'email' => 'student6@ucsh.edu.mm',
+            'email' => 'amy@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၃၂၉၄၁",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8912',
         ]);
         User::create([
-            'name' => 'ဇင်မင်းထွဠ်',
+            'name' => 'Si Si',
             'uuid' => Str::uuid(),
-            'email' => 'student8@ucsh.edu.mm',
+            'email' => 'sisi@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၆၄၇၉၈",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8904',
         ]);
         User::create([
-            'name' => 'ရဲမြတ်အောင်',
+            'name' => 'Dee Dee',
             'uuid' => Str::uuid(),
-            'email' => 'student9@ucsh.edu.mm',
+            'email' => 'deedee@ucsh.edu.mm',
             'role' => 'user',
             //'sch_no'=>"၀၅၃၃၈၅",
             'password' => 'P@ssw0rd',
             'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
-        ]);
-        User::create([
-            'name' => 'ဖြိုးမင်း',
-            'uuid' => Str::uuid(),
-            'email' => 'student10@ucsh.edu.mm',
-            'role' => 'user',
-            //'sch_no'=>"၀၂၂၆၄၈",
-            'password' => 'P@ssw0rd',
-            'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
-        ]);
-        User::create([
-            'name' => 'ဟိန်းလင်းသန့်',
-            'uuid' => Str::uuid(),
-            'email' => 'student11@ucsh.edu.mm',
-            'role' => 'user',
-            //'sch_no'=>"၀၃၈၉၀၅",
-            'password' => 'P@ssw0rd',
-            'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
-        ]);
-        User::create([
-            'name' => 'ပိုင်စိုးလင်း',
-            'uuid' => Str::uuid(),
-            'email' => 'student12@ucsh.edu.mm',
-            'role' => 'user',
-            //'sch_no'=>"၀၄၆၃၄၇",
-            'password' => 'P@ssw0rd',
-            'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
-        ]);
-        User::create([
-            'name' => 'ထက်ဝေယံဦး',
-            'uuid' => Str::uuid(),
-            'email' => 'student51@ucsh.edu.mm',
-            'role' => 'user',
-            //'sch_no'=>"၀၅၈၂၄၉",
-            'password' => 'P@ssw0rd',
-            'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
-        ]);
-        User::create([
-            'name' => 'တင်သန့်လွင်',
-            'uuid' => Str::uuid(),
-            'email' => 'student14@ucsh.edu.mm',
-            'role' => 'user',
-            //'sch_no'=>"၀၈၂၃၅၆",
-            'password' => 'P@ssw0rd',
-            'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
-        ]);
-        User::create([
-            'name' => 'ထက်အောင်ကျော်',
-            'uuid' => Str::uuid(),
-            'email' => 'student15@ucsh.edu.mm',
-            'role' => 'user',
-            //'sch_no'=>"၀၇၆၃၂၉",
-            'password' => 'P@ssw0rd',
-            'image' => 'default.jpg',
-            'uni_Id_no' => 'CU(Hinthada)' . rand(0000, 9999),
+            'uni_Id_no' => 'CU(Hinthada)8903',
         ]);
 
         User::create([
@@ -275,7 +215,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Notice::create([
             "image" => "logo.png",
-            "text" => "ကွန်ပျူတာတက္ကသိုလ်(ဟင်္သာတ)၂၀၂၄-၂၀၂၅ ပညာသင်နှစ်ပထမနှစ်၊ ဒုတိယနှစ်၊ တတိယနှစ်၊ စတုတ္ထနှစ်နှင့် D.C.Sc.(ပထမနှစ်ဝက်နှင့် ဒုတိယနှစ်ဝက်)သင်တန်းများအားလုံးကျောင်းအပ်စတင်လက်ခံမည့်ရက်		-၂၇.၅.၂၀၂၅ (၂ပတ်အတွင်းကျောင်းအပ်ရန်)
+            "text" => "ကွန်ပျူတာတက္ကသိုလ်(ဟင်္သာတ)၂၀၂၅-၂၀၂၆ ပညာသင်နှစ်ပထမနှစ်၊ ဒုတိယနှစ်၊ တတိယနှစ်၊ စတုတ္ထနှစ်နှင့် D.C.Sc.(ပထမနှစ်ဝက်နှင့် ဒုတိယနှစ်ဝက်)သင်တန်းများအားလုံးကျောင်းအပ်စတင်လက်ခံမည့်ရက်		-၂၇.၅.၂၀၂၅ (၂ပတ်အတွင်းကျောင်းအပ်ရန်)
             ကျောင်းစတင်ဖွင့်လှစ်မည့်ရက်	-၃.၆.၂၀၂၅"
         ]);
         Notice::create([

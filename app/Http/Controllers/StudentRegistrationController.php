@@ -117,6 +117,17 @@ class StudentRegistrationController extends Controller
 
             $studentReg = StudentRegistration::create($registration);
 
+            $user->update([
+                'current_academic_year_id' => $registration['academic_year_id'],
+                'current_academic_year' => $registration['academic_year'],
+                'current_father_name' => $registration['father_name'],
+                'current_mother_name' => $registration['mother_name'],
+                'current_NRC' => $registration['nrc_student'],
+                'DOB' => $registration['dob'],
+                'permanent_address' => $registration['permanent_address'],
+                'phone' => $registration['phone'] . '/' . $registration['guardian_phone'],
+            ]);
+
             return redirect()->route('ui.home')->with('success', 'Student Registration Form submitted successfully!');
         }
 
@@ -570,8 +581,21 @@ class StudentRegistrationController extends Controller
     public function regAccept(StudentRegistration $studentRegistration)
     {
         $studentRegistration->update(['status' => 'confirm']);
+        $user = User::findOrFail($studentRegistration->user_id);
+        $user->update([
+            'current_academic_year_id' => $studentRegistration->academic_year_id,
+            'current_academic_year' => $studentRegistration->academic_year,
+            'current_father_name' => $studentRegistration->father_name,
+            'current_mother_name' => $studentRegistration->mother_name,
+            'current_NRC' => $studentRegistration->nrc_student,
+            'DOB' => $studentRegistration->dob,
+            'permanent_address' => $studentRegistration->permanent_address,
+            'phone' => $studentRegistration->phone . '/' . $studentRegistration->guardian_phone,
+        ]);
+
         Mail::to($studentRegistration->reg_email)->send(new RegistrationSuccessMail($studentRegistration));
-        return back()->with('success', 'ကျောင်းအပ် လက်ခံလိုက်ပါပြီ');
+
+        return redirect()->route('admin.stu.reg.accept.list')->with('success', 'ကျောင်းအပ် လက်ခံလိုက်ပါပြီ');
     }
 
     public function exportToWord(Request $request)

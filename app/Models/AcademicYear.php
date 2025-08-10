@@ -15,5 +15,8 @@ class AcademicYear extends Model
         return $this->hasMany(StudentRegistration::class);
     }
 
-    
+    public function users()
+    {
+        return $this->hasMany(User::class, 'current_academic_year_id');
+    }
 }

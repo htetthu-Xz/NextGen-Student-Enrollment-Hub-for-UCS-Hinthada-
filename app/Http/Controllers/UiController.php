@@ -101,8 +101,6 @@ class UiController extends Controller
         $reg = StudentRegistration::find($id);
         if ($reg->status === "confirm") {
             return back()->with('error', 'ကျောင်းသားရေးရာမှ ကျောင်းအပ်ခြင်းကို လက်ခံထားပီးဖစ်သောကြောင့် ဖျက်၍မရနိုင်ပါ');
-        } elseif ($reg->status === "edit") {
-            return back()->with('error', 'သင့်ရဲ့ ကျောင်းအပ်ခြင်းကို ကျောင်းသားရေးရာမှ စစ်ဆေး၍ ပြင်ဆင်ခွင့်ပေးထားပီးဖြစ်သောကြောင့် ဖျက်မရနိုင်ပါ');
         } else {
             $reg->delete();
             return back()->with('success', 'သင်၏ ကျောင်းအပ်ထားသော formအားဖျက်ပီးပါပီ');

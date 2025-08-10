@@ -106,18 +106,6 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('/notice/edit/{id}', [NoticeController::class, 'edit'])->name('notice.edit');
     Route::put('/notice/update/{id}', [NoticeController::class, 'update'])->name('notice.update');
     Route::get('/notice/delete/{id}', [NoticeController::class, 'delete'])->name('notice.delete');
-
-    // Route::get('/calcu', [MarkCalculationController::class, 'index'])->name('user.get.calculationForm');
-    // Route::post('/store', [MarkCalculationController::class, 'store'])->name('user.store.calculation');
-    // Route::get('students/{student}/get-grading-list', [MarkCalculationController::class, 'getGrading'])->name('user.get.grading');
-    // Route::get('students/{student}/download-mark', [MarkCalculationController::class, 'downloadMark'])->name('download');;
-    // Route::get('students/{student}/get-grading-list', [MarkCalculationController::class, 'getGrading'])->name('user.get.grading');
-    // Route::delete('students/{student}/delete-record', [MarkCalculationController::class, 'delete'])->name('user.grade.delete');
-    // Route::get('students/grading-lists', [MarkCalculationController::class, 'gradingLists'])->name('user.get.gradingList');
-
-    // Route::post('/search-student', [MarkCalculationController::class, 'search'])->name('student.search');
-    // Route::get('students/{student}/download-markworld', [MarkCalculationController::class, 'downloadMarkworld'])->name('downloadworld');
-
 });
 
 include_once(base_path('routes/grading.php'));

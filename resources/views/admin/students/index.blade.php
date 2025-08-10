@@ -48,7 +48,7 @@
                                                             @endforeach
                                                         </select>
 
-                                                        <select name="is_register" id="" class="form-control border-success mx-2">
+                                                        <select name="is_register" id="" class="form-control border-success">
                                                             <option value="">Select Registration Status</option>
                                                             <option value="1"
                                                                 {{ request('is_register') == '1' ? 'selected' : '' }}>
@@ -58,7 +58,7 @@
                                                                 Not Registered</option>
                                                         </select>
 
-                                                        <input type="text" name="search" class="form-control border-success small"
+                                                        <input type="text" name="search" class="form-control border-success small mx-2"
                                                                aria-label="Search" aria-describedby="basic-addon2" placeholder="Student name"
                                                                value="{{ request('search') }}">
 
