@@ -184,12 +184,12 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
             '',
             $user->name,
             $user->CurrentUserAcademicInfo()->roll_no ?? 'N/A',
-            $user->current_father_name ?? 'N/A',
-            $user->current_mother_name ?? 'N/A',
-            $user->current_NRC ?? 'N/A',
-            $user->dob ?? 'N/A',
-            $user->permanent_address ?? 'N/A',
-            $user->phone ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->father_name ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->mother_name ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->nrc ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->dob ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->permanent_address ?? 'N/A',
+            $user->CurrentUserAcademicInfo()->phone ?? 'N/A',
             $user->uni_id_no,
         ];
     }

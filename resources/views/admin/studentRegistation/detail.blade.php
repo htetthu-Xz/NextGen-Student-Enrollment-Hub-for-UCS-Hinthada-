@@ -142,12 +142,6 @@
                         <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->matriculation_certificate) }}" class="img-thumbnail" width="150">
                     </a>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Last year pass document screenshot</label>
-                    <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->last_year_pass_document_screenshot) }}" target="_blank">
-                        <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->last_year_pass_document_screenshot) }}" class="img-thumbnail" width="150">
-                    </a>
-                </div>
             </div>
         </div>
     </div>

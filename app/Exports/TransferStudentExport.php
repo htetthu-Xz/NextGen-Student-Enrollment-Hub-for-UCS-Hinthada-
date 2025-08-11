@@ -58,7 +58,7 @@ class TransferStudentExport implements FromCollection, WithMapping, WithHeadings
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getDefaultRowDimension()->setRowHeight(100);
+        $sheet->getDefaultRowDimension()->setRowHeight(50);
 
         $sheet->getColumnDimension('A')->setWidth(5);
         $sheet->getColumnDimension('B')->setWidth(9);

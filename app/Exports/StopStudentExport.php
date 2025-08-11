@@ -59,7 +59,7 @@ class StopStudentExport implements FromCollection, WithMapping, WithHeadings, Wi
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getDefaultRowDimension()->setRowHeight(100);
+        $sheet->getDefaultRowDimension()->setRowHeight(50);
 
         $sheet->getColumnDimension('A')->setWidth(5);
         $sheet->getColumnDimension('B')->setWidth(9);
