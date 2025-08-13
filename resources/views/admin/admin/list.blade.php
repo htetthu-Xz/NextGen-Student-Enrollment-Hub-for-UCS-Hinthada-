@@ -88,7 +88,7 @@
                                         </td>
 
                                         <td style="font-size: 1.1rem">{{ $admin->email }}</td>
-                                        <td style="font-size: 1.1rem">{{ $admin->CurrentUserAcademicYear() }}</td>
+                                        <td style="font-size: 1.1rem">{{ $admin->AcademicYear->name }}</td>
                                         <td style="font-size: 1.1rem"><a href="{{route('stop.mail',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-ban" style="color: red"></i></a></td>
                                         <td style="font-size: 1.1rem"><a href="{{route('student.transfer',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-exchange-alt" style="color: green"></i></a></td>
                                         <th><a href="{{route('admin.info.edit',$admin->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>

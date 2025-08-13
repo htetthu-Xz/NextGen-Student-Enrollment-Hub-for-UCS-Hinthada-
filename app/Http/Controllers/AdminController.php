@@ -106,15 +106,14 @@ class AdminController extends Controller
         $year = $request->input('academic_year');
         $academicClasses = AcademicYear::all()->pluck('name', 'id')->toArray();
         $academic_class = AcademicYear::find($request->input('academic_class') - 1);
+        $filter_academic_class = AcademicYear::find($request->input('academic_class'));
         $response_by_all_pages[] = null;
         $user_ids = null;
         $filtered_students = [];
 
-        //dd($academic_class);
 
         $academicYears = StudentRegistration::distinct()->pluck('academic_year')->toArray();
 
-        // Start query builder
         $students = User::with('studentRegistrations')
             ->where('role', 'user')
             ->whereIn('transfer', ['present', 'in']);
@@ -143,11 +142,12 @@ class AdminController extends Controller
             });
         }
 
-
         if ($request->has('is_register') && $request->is_register != null) {
             $response = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
                 'search' => $searchKey,
-                'academicYear' => $year,
+                'academicYear' => !empty($year) && preg_match('/^\d{4}-\d{4}$/', $year)
+                    ? ((intval(explode('-', $year)[0]) - 1) . '-' . (intval(explode('-', $year)[1]) - 1))
+                    : $year,
                 'class' => $academic_class->ename,
                 'semester' => $academic_class->esemester,
                 'status' => 'PASS'
@@ -155,20 +155,26 @@ class AdminController extends Controller
 
             $pageCount = $response->json()['pageCount'] ?? 0;
 
+            $res = [[]];
+
             for ($i = 1; $i <= $pageCount; $i++) {
                 $response_by_all_pages = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
                     'search' => $searchKey,
-                    'academicYear' => $year,
+                    'academicYear' => !empty($year) && preg_match('/^\d{4}-\d{4}$/', $year)
+                        ? ((intval(explode('-', $year)[0]) - 1) . '-' . (intval(explode('-', $year)[1]) - 1))
+                        : $year,
                     'class' => $academic_class->ename,
                     'semester' => $academic_class->esemester,
                     'status' => 'PASS',
                     'page' => $i
                 ]);
 
+                $results = $response_by_all_pages->json()['results'] ?? [];
+
                 if (!isset($res[0])) {
                     $res[0] = [];
                 }
-                $results = $response_by_all_pages->json()['results'] ?? [];
+
                 $res[0] = array_merge($res[0], $results);
             }
 
@@ -181,10 +187,12 @@ class AdminController extends Controller
             if ($request->is_register == '1') {
                 foreach ($users as $user) {
                     if ($user->StudentRegistrations) {
-                        // Check if the user has a registration in the selected academic year and class
                         $hasRegistration = $user->studentRegistrations()
-                            ->where('academic_year', $request->academic_year)
-                            ->where('academic_year_id', $request->academic_class)
+                            ->where('academic_year', $year)
+                            ->when($major, function ($query) use ($major) {
+                                return $query->where('major', $major);
+                            })
+                            ->where('academic_year_id', $filter_academic_class->id)
                             ->exists();
 
                         if ($hasRegistration) {
@@ -195,11 +203,14 @@ class AdminController extends Controller
             } else {
                 foreach ($users as $user) {
                     if ($user->StudentRegistrations) {
-                        // Check if the user has no registration in the selected academic year and class
                         $hasRegistration = $user->studentRegistrations()
-                            ->where('academic_year', $request->academic_year)
-                            ->where('academic_year_id', $request->academic_class)
+                            ->where('academic_year', $year)
+                            ->when($major, function ($query) use ($major) {
+                                return $query->where('major', $major);
+                            })
+                            ->where('academic_year_id', $filter_academic_class->id)
                             ->exists();
+                        $a[] = $hasRegistration;
 
                         if (!$hasRegistration) {
                             $filtered_students[] = $user->id;
@@ -213,7 +224,6 @@ class AdminController extends Controller
             return view('admin.students.index', compact('students', 'academicYears', 'academicClasses'));
         }
 
-        // Final result
         $students = $students->latest()->paginate(10);
 
         return view('admin.students.index', compact('students', 'academicYears', 'academicClasses'));

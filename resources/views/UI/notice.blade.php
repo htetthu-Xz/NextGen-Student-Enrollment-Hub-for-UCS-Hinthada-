@@ -1,39 +1,54 @@
 @extends('UI.master')
 
+@push('css')
+    <style>
+        /* Smooth shadow & rounded card */
+        .notice-card {
+            border-radius: 12px;
+            transition: all 0.3s ease-in-out;
+        }
+        .notice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Notice text styling */
+        .notice-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .notice-text {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+@endpush
+
 @section('content')
     <div style="height: 50px"></div>
 
-    <div class="container">
-       @foreach ($notices as $notice )
-       <div class="row mb-3">
-        <div class="col-12">
-            <div class="card  " style="height:400px;padding:20px">
-                <div class="mt-3 mb-2 text-center">
-                    <img src="{{ asset('user/images/logo.png') }}" style="height: 70px; width: 70px;">
-                    <span class="pcolor  fw-bold  mb-3" style="font-size: 1rem; font-weight: bold;">
-                        ကွန်ပျူတာ တက္ကသိုလ် ဟင်္သာတ
-                    </span>
-                </div>
+    <div class="container my-4">
+        @foreach ($notices as $notice)
+            <div class="card shadow-lg border-0 mb-4 notice-card">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h4 class="fw-bold text-primary m-0">{{ $notice->title }}</h4>
+                    </div>
+                    <p class="notice-text text-dark fw-semibold mb-0">
+                        {{ $notice->text }}
+                    </p>
 
-                <div class="row">
-                    <div class="col-4">
-                        <div class="card shadow-2xl p-3">
-                            <img src="{{asset('storage/images/notice/'.$notice->image)}}" style="height: 200px;width:100%">
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div >
-                            <p class="pcolor fw-bold">{{$notice->text}}</p>
-                        </div>
-                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                    <small class="text-muted">
+                        Published: {{ \Carbon\Carbon::parse($notice->created_date)->format('M d, Y') }}
+                    </small>
                 </div>
             </div>
-        </div>
-    </div>
-
-       @endforeach
-
-
+        @endforeach
     </div>
 
     <div style="height: 200px"></div>

@@ -123,6 +123,7 @@ class StudentRegistrationController extends Controller
                 'current_father_name' => $registration['father_name'],
                 'current_mother_name' => $registration['mother_name'],
                 'current_NRC' => $registration['nrc_student'],
+                'current_roll_number' => $registration['roll_no'],
                 'DOB' => $registration['dob'],
                 'permanent_address' => $registration['permanent_address'],
                 'phone' => $registration['phone'] . '/' . $registration['guardian_phone'],

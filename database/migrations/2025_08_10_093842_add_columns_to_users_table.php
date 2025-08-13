@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('permanent_address')->nullable()->after('DOB');
             $table->string('phone')->nullable()->after('permanent_address');
             $table->string('major')->nullable()->after('current_academic_year_id');
+            $table->string('current_roll_number')->nullable()->after('phone');
         });
     }
 
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->dropColumn('permanent_address');
             $table->dropColumn('phone');
             $table->dropColumn('major');
+            $table->dropColumn('current_roll_number');
         });
     }
 };

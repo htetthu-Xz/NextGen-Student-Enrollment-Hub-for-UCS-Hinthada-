@@ -220,7 +220,7 @@
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    Computer University Final Year Thesis Project
+                     &copy; 2025 UCSH. All Right Reserved
                 </div>
             </div>
         </footer>

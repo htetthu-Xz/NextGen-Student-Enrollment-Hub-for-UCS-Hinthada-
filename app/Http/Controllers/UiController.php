@@ -57,21 +57,12 @@ class UiController extends Controller
             "image.mimes" => "The image must be a file of type: png, jpg, jpeg."
         ]);
 
-        // Process the uploaded image
-
         $image = $request->file('image');
         $imageName = uniqid() . 'soe' . $image->getClientOriginalName();
         $image->storeAs('public/images/', $imageName);
         $data['image'] = $imageName;
         $data['password'] = bcrypt('P@ssw0rd');
 
-
-        // Ensure the password is hashed
-
-        dd($data);
-
-
-        // Create the user
         User::create($data);
 
         return redirect()->route('ui.login')->with('success', 'Success Register');

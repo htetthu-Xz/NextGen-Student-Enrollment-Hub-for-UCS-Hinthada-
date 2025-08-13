@@ -19,11 +19,19 @@
                         <form action="{{route('notice.store')}}" method="post" enctype="multipart/form-data"> @csrf
                             <h5 class="mt-3 mb-4 text-center pcolor"><b>ကျောင်းသားများအတွက်အသိပေးစာရေးရန်</b></h5>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="image-upload" class="mb-1 pcolor"><b>ပုံထည့်ရန်</b></label>
                                 <input id="image-upload" type="file" class="form-control @error('image') is-invalid @enderror" name="image">
                                 @error('image')
                                     <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div> --}}
+
+                            <div class="mb-3">
+                                <label for="title" class="mb-2 pcolor"><b>ခေါင်းစဉ်</b></label>
+                                <input type="text" name="title" value="{{old('title')}}" class="form-control @error('title') is-invalid @enderror">
+                                @error('title')
+                                    <span class="invalid-feedback">{{$message}}</span>
                                 @enderror
                             </div>
 

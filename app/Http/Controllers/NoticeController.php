@@ -21,12 +21,9 @@ class NoticeController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "image" => "required|image",
+            'title' => "required|string|max:255",
             "text" => "required"
         ]);
-
-
-        $data['image'] = File::NoticeImageUpload($request->file('image'), 'images/notice');
 
         Notice::create($data);
         return redirect()->route('notice.list')->with('success', 'အောင်မြင်စွာ ဖန်တီးပီးပါပြီ');
@@ -42,18 +39,11 @@ class NoticeController extends Controller
     {
 
         $data = $request->validate([
-            "image" => "nullable|image",
+            'title' => "required|string|max:255",
             "text" => "required"
         ]);
 
         $notice = Notice::find($id);
-
-        if ($request->hasFile('image')) {
-            $data['image'] = File::NoticeImageUpload($request->file('image'), 'images/notice');
-        } else {
-            $data['image'] = $notice->image;
-        }
-
 
         $notice->update($data);
         return redirect()->route('notice.list')->with('success', 'အောင်မြင်စွာ ပြင်ဆင်ပီးပါပြီ');

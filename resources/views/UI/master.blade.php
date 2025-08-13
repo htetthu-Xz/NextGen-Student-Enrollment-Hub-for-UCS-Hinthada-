@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <!-- Basic -->
+  <!-- ...existing head content... -->
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <!-- Mobile Metas -->
@@ -78,6 +78,38 @@
     .header_section {
       padding: 0;
     }
+      @media (max-width: 991.98px) {
+        .navbar-brand span {
+          font-size: 0.9rem;
+        }
+        .navbar-nav .nav-link {
+          padding-left: 1rem;
+          padding-right: 1rem;
+          text-align: left;
+        }
+        .navbar-nav .dropdown-menu {
+          position: static !important;
+          float: none;
+        }
+        .navbar-nav .nav-item {
+          width: 100%;
+        }
+        .navbar-nav .dropdown-toggle .d-lg-inline {
+          display: inline !important;
+        }
+      }
+      @media (max-width: 575.98px) {
+        .navbar-brand span {
+          font-size: 0.8rem;
+        }
+        .navbar-brand img {
+          height: 32px !important;
+          width: 32px !important;
+        }
+        .navbar-nav .nav-link {
+          font-size: 0.95rem;
+        }
+      }
   </style>
   @stack('css')
 </head>
@@ -88,86 +120,82 @@
   use App\Helper\Facades\File;
 @endphp
 
-  <div class="hero_area">
+  <div class="hero_area" style="background: none !important;">
     <div class="hero_bg_box">
 
     </div>
 
     <!-- Header section starts -->
-    <header class="header_section fixed-top">
-      <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg custom_nav-container">
-          <a class="navbar-brand" href="{{ route('ui.home') }}">
-            <img src="{{ asset('user/images/logo.png') }}" style="height:40px;width:40px"><span>ကွန်ပျူတာ တက္ကသိုလ် (ဟင်္သာတ) </span>
-          </a>
+<header class="header_section fixed-top">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg custom_nav-container">
+      
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="{{ route('ui.home') }}">
+        <img src="{{ asset('user/images/logo.png') }}" alt="Logo" style="height:40px;width:40px" class="mr-2">
+        <span style="font-size: 1.3rem;">Smart Register</span>
+      </a>
 
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+      <!-- Mobile toggle -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item {{ request()->routeIs('ui.home') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('ui.home') }}">ပင်မစာမျက်နှာ</a>
-              </li>
-               <li class="nav-item {{ request()->routeIs('ui.noticeAll') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('ui.noticeAll') }}">အသိပေးစာများ</a>
-              </li>
-              <li class="nav-item {{ request()->routeIs('ui.contact') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('ui.contact') }}">ဆက်သွယ်ရန်</a>
-              </li>
-              <li class="nav-item {{ request()->routeIs('fresher.register') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('fresher.register') }}">ဝင်ခွင့်လျှောက်ရန်</a>
-              </li>
-              @if(Auth::check())
+      <!-- Menu -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto align-items-lg-center">
+          <li class="nav-item mx-1 {{ request()->routeIs('ui.home') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('ui.home') }}">ပင်မစာမျက်နှာ</a>
+          </li>
+          <li class="nav-item mx-1 {{ request()->routeIs('ui.noticeAll') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('ui.noticeAll') }}">အသိပေးစာများ</a>
+          </li>
+          <li class="nav-item mx-1 {{ request()->routeIs('ui.contact') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('ui.contact') }}">ဆက်သွယ်ရန်</a>
+          </li>
+          <li class="nav-item mx-1 {{ request()->routeIs('fresher.register') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('fresher.register') }}">ဝင်ခွင့်လျှောက်ရန်</a>
+          </li>
 
-                    @if(Auth::user()->role=="user")
-                      <li class="nav-item {{ request()->routeIs('stu.reg') ? 'active' : '' }}">
+          @if(Auth::check())
+            @if(Auth::user()->role=="user")
+              <li class="nav-item {{ request()->routeIs('stu.reg') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('stu.reg') }}">ကျောင်းအပ်ရန်</a>
               </li>
               <li class="nav-item {{ request()->routeIs('history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('history') }}">History</a>
               </li>
-                    @endif
+            @endif
+          @else
+            <li class="nav-item {{ request()->routeIs('ui.login') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('ui.login') }}">အကောင့်၀င်ရန်</a>
+            </li>
+          @endif
 
-              @else
-              <li class="nav-item {{ request()->routeIs('ui.login') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('ui.login') }}">အကောင့်၀င်ရန်</a>
-              </li>
-              @endif
+          @if(Auth::check())
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{{ asset(File::GetStudentDataPath() . Auth::user()->image) }}"
+                  class="rounded-circle mr-2" style="width: 30px; height: 30px;" alt="User">
+                <span class="d-none d-lg-inline">{{ Auth::user()->name }}</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                @if(Auth::user()->role == 'admin')
+                  <a href="{{route('admin.index')}}" class="dropdown-item mt-2">Admin DashBoard</a>
+                @endif
+                <a href="{{route('logout')}}" class="dropdown-item mt-2" onclick="return confirm('Are you sure?')">အကောင့်ထွက်ရန်</a>
+              </div>
+            </li>
+          @endif
 
-              @if(Auth::check() && Auth::user()->role == 'admin')
-
-
-
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle wtext" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   <img src="{{ asset(File::GetStudentDataPath() . Auth::user()->image) }}" class="rounded-circle" style="width: 30px; height: 30px; vertical-align: middle;"> {{ Auth::user()->name }}
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a href="{{route('admin.index')}}" type="submit" class="dropdown-item mt-2" >Admin DashBoard</a>
-
-                  <a href="{{route('logout')}}" type="submit" class="dropdown-item mt-2" onclick="return confirm('Are you sure?')">အကောင့်ထွက်ရန်</a>
-
-              </li>
-
-              @endif
-              @if(Auth::check() && Auth::user()->role == 'user')
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle wtext" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{ asset(File::GetStudentDataPath() . Auth::user()->image) }}" class="rounded-circle" style="width: 30px; height: 30px; vertical-align: middle;"> {{ Auth::user()->name }}
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-                  <a href="{{route('logout')}}" type="submit" class="dropdown-item mt-2" onclick="return confirm('Are you sure?')">အကောင့်ထွက်ရန်</a>
-
-              </li>
-              @endif
-            </ul>
-          </div>
-        </nav>
+        </ul>
       </div>
-    </header>
+    </nav>
+  </div>
+</header>
+
     <!-- End header section -->
 
     <!-- Image Preview Modal -->
@@ -196,7 +224,7 @@
     <section class="footer_section" style="background-color: rgb(14, 98, 131)">
       <div class="container">
         <p class="text-white">
-          &copy; <span id="displayYear"></span> All Rights Reserved By Aye Myat Mon
+            <span id="displayYear"></span> &copy; 2025 UCSH. All Right Reserved
         </p>
       </div>
     </section>

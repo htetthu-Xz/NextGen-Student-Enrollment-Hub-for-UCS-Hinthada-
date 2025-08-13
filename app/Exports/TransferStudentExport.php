@@ -47,7 +47,7 @@ class TransferStudentExport implements FromCollection, WithMapping, WithHeadings
 
             if (file_exists($imagePath)) {
                 $drawing->setPath($imagePath);
-                $drawing->setHeight(50); // adjust size as needed
+                $drawing->setWidthAndHeight(150, 65);
                 $drawing->setCoordinates('B' . ($index + 7));
                 $drawings[] = $drawing;
             }
@@ -68,6 +68,7 @@ class TransferStudentExport implements FromCollection, WithMapping, WithHeadings
         $sheet->getColumnDimension('E')->setWidth(20);
         $sheet->getColumnDimension('F')->setWidth(20);
         $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(20);
         $sheet->getColumnDimension('I')->setWidth(25);
         $sheet->getColumnDimension('J')->setWidth(18);
         $sheet->getColumnDimension('K')->setWidth(20);
@@ -87,13 +88,13 @@ class TransferStudentExport implements FromCollection, WithMapping, WithHeadings
             $this->rowCounter = ($this->rowCounter ?? 0) + 1,
             '',
             $user->name,
-            $user->CurrentUserAcademicInfo()->roll_no ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->father_name ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->mother_name ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->nrc_student ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->dob ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->permanent_address ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->phone ?? 'N/A',
+            $user->current_roll_number ?? 'N/A',
+            $user->current_father_name ?? 'N/A',
+            $user->current_mother_name ?? 'N/A',
+            $user->current_NRC ?? 'N/A',
+            $user->DOB ?? 'N/A',
+            $user->permanent_address ?? 'N/A',
+            $user->phone ?? 'N/A',
             $user->uni_id_no,
         ];
     }

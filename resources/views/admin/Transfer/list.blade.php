@@ -18,7 +18,7 @@
                                                 <div class="input-group">
                                                     <form action="{{ route('admin.list') }}" method="GET">
                                                         @csrf
-                                                        <input type="text" name="search" class="form-control border-success small"
+                                                        <input type="text" name="search" class="form-control mx-1 border-success small"
                                                                aria-label="Search" aria-describedby="basic-addon2"
                                                                value="{{ request('search') }}">
                                                         <select name="major" class="form-control border-success">

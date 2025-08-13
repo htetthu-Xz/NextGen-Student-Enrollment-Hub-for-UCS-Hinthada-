@@ -50,9 +50,8 @@
                             <thead class=" border-success">
                                 <tr>
                                     <th  style="font-size: 1.3rem">စဉ်</th>
-
+                                    <th style="font-size: 1.3rem">ခေါင်းစဉ်</th>
                                     <th style="font-size: 1.3rem">အသိပေးစာ</th>
-                                    <th style="font-size: 1.3rem">Image</th>
                                     <th style="font-size: 1.3rem">Edit</th>
                                     <th style="font-size: 1.3rem">Trash</th>
 
@@ -66,14 +65,12 @@
                                     <tr>
                                         <td>{{ $offset + $loop->iteration }}</td>
 
+                                        <td>{{ $notice->title }}</td>
+
                                         <td >
                                             {{ $notice->text }}
                                         </td>
 
-
-                                        <td class="text-white">
-                                            <img src="{{asset('storage/images/notice/' . $notice->image)}}" style="height: 30px;width:30px" class="rounded-circle">
-                                        </td>
                                         <th><a href="{{route('notice.edit',$notice->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>
                                     <th><a href="{{route('notice.delete',$notice->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
 

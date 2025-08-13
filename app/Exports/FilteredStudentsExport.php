@@ -6,27 +6,44 @@ use Carbon\Carbon;
 use App\Models\User;
 
 use App\Helper\Facades\File;
+use App\Models\AcademicYear;
+use App\Models\StudentRegistration;
+use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use Maatwebsite\Excel\Concerns\WithCustomStartCell;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 class FilteredStudentsExport implements FromCollection, WithMapping, WithHeadings, WithTitle, WithCustomStartCell, WithEvents, WithDrawings, WithStyles
 {
-    public $request, $students;
+    public $students;
 
     public function __construct($request)
     {
-        $query = User::with('studentRegistrations')
-            ->where('role', 'user');
+        $searchKey = $request->input('search');
+        $major = $request->input('major');
+        $year = $request->input('academic_year');
+        $academicClasses = AcademicYear::all()->pluck('name', 'id')->toArray();
+        $academic_class = AcademicYear::find($request->input('academic_class') - 1);
+        $filter_academic_class = AcademicYear::find($request->input('academic_class'));
+        $response_by_all_pages[] = null;
+        $user_ids = null;
+        $filtered_students = [];
+
+
+        $academicYears = StudentRegistration::distinct()->pluck('academic_year')->toArray();
+
+        $students = User::with('studentRegistrations')
+            ->where('role', 'user')
+            ->whereIn('transfer', ['present', 'in']);
 
         if (!empty($searchKey)) {
             $students->where(function ($query) use ($searchKey) {
@@ -52,7 +69,6 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
             });
         }
 
-
         if ($request->has('is_register') && $request->is_register != null) {
             $response = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
                 'search' => $searchKey,
@@ -64,6 +80,8 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
 
             $pageCount = $response->json()['pageCount'] ?? 0;
 
+            $res = [[]];
+
             for ($i = 1; $i <= $pageCount; $i++) {
                 $response_by_all_pages = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
                     'search' => $searchKey,
@@ -74,10 +92,12 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
                     'page' => $i
                 ]);
 
+                $results = $response_by_all_pages->json()['results'] ?? [];
+
                 if (!isset($res[0])) {
                     $res[0] = [];
                 }
-                $results = $response_by_all_pages->json()['results'] ?? [];
+
                 $res[0] = array_merge($res[0], $results);
             }
 
@@ -90,10 +110,9 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
             if ($request->is_register == '1') {
                 foreach ($users as $user) {
                     if ($user->StudentRegistrations) {
-                        // Check if the user has a registration in the selected academic year and class
                         $hasRegistration = $user->studentRegistrations()
-                            ->where('academic_year', $request->academic_year)
-                            ->where('academic_year_id', $request->academic_class)
+                            ->where('academic_year', $year)
+                            ->where('academic_year_id', $filter_academic_class->id)
                             ->exists();
 
                         if ($hasRegistration) {
@@ -104,11 +123,11 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
             } else {
                 foreach ($users as $user) {
                     if ($user->StudentRegistrations) {
-                        // Check if the user has no registration in the selected academic year and class
                         $hasRegistration = $user->studentRegistrations()
-                            ->where('academic_year', $request->academic_year)
-                            ->where('academic_year_id', $request->academic_class)
+                            ->where('academic_year', $year)
+                            ->where('academic_year_id', $filter_academic_class->id)
                             ->exists();
+                        $a[] = $hasRegistration;
 
                         if (!$hasRegistration) {
                             $filtered_students[] = $user->id;
@@ -117,12 +136,15 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
                 }
             }
 
-            $students = User::whereIn('id', $filtered_students)->get();
+            $this->students = User::whereIn('id', $filtered_students)->paginate(10);
 
-            $this->students = $students;
+            return $this->students;
         }
-    }
 
+        $this->students = $students->latest()->paginate(10);
+
+        return $this->students;
+    }
 
     public function collection()
     {
@@ -163,6 +185,7 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
         $sheet->getColumnDimension('E')->setWidth(20);
         $sheet->getColumnDimension('F')->setWidth(20);
         $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(20);
         $sheet->getColumnDimension('I')->setWidth(25);
         $sheet->getColumnDimension('J')->setWidth(18);
         $sheet->getColumnDimension('K')->setWidth(20);
@@ -183,13 +206,13 @@ class FilteredStudentsExport implements FromCollection, WithMapping, WithHeading
             $this->rowCounter = ($this->rowCounter ?? 0) + 1,
             '',
             $user->name,
-            $user->CurrentUserAcademicInfo()->roll_no ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->father_name ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->mother_name ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->nrc ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->dob ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->permanent_address ?? 'N/A',
-            $user->CurrentUserAcademicInfo()->phone ?? 'N/A',
+            $user->current_roll_number ?? 'N/A',
+            $user->current_father_name ?? 'N/A',
+            $user->current_mother_name ?? 'N/A',
+            $user->current_NRC ?? 'N/A',
+            $user->DOB ?? 'N/A',
+            $user->permanent_address ?? 'N/A',
+            $user->phone ?? 'N/A',
             $user->uni_id_no,
         ];
     }

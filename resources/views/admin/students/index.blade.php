@@ -20,6 +20,7 @@
                                                         @csrf
                                                         <select name="academic_year" class="form-control mx-2 border-success">
                                                             <option value="">Select Academic Year</option>
+                                                            <option value="2024-2025" {{ request('academic_year') == '2024-2025' ? 'selected' : '' }}>2024-2025</option>
                                                             @foreach ($academicYears as $key => $year)
                                                                 <option value="{{ $year }}"
                                                                     {{ request('academic_year') == $year ? 'selected' : '' }}>
@@ -122,7 +123,7 @@
 
                                         <td style="font-size: 1.1rem">{{ $student->email }}</td>
 
-                                        <td style="font-size: 1.1rem">{{ $student->CurrentUserAcademicYear() ?? '-' }}</td>
+                                        <td style="font-size: 1.1rem">{{ $student->AcademicYear->name ?? '-' }}</td>
                                         <td style="font-size: 1.1rem">{{ $student->uni_id_no }}</td>
 
 
@@ -135,7 +136,7 @@
                         </table>
                         <div class="row mt-2">
                             <div class="col-12 d-flex justify-content-center custom-pagination pagination">
-                                {{ $students->links() }}
+                                {{ $students->appends(request()->query())->links() }}
                             </div>
 
             </div>
