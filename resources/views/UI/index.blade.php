@@ -25,7 +25,7 @@
                         <div class="col-md-7 col-12 mb-4 mb-md-0">
                             <div class="detail-box">
                               <h2 class="w-100 desktop-title" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">
-                                  Student Enrollment System For University of Computer Studies, Hinthada
+                                  Student Registration System For University of Computer Studies, Hinthada
                               </h2>
 
                               <h2 class="w-100 mobile-title" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">
