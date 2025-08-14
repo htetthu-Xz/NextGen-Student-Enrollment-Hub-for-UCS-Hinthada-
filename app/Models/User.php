@@ -31,6 +31,7 @@ class User extends Authenticatable
         'current_academic_year_id',
         'current_father_name',
         'current_mother_name',
+        'current_roll_number',
         'current_NRC',
         'DOB',
         'permanent_address',

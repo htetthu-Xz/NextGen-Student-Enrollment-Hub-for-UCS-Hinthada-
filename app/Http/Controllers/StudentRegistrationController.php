@@ -115,7 +115,11 @@ class StudentRegistrationController extends Controller
 
             $user = Auth::user();
 
+            //dd($registration['roll_no']);
+
             $studentReg = StudentRegistration::create($registration);
+
+            //dd($studentReg);
 
             $user->update([
                 'current_academic_year_id' => $registration['academic_year_id'],
