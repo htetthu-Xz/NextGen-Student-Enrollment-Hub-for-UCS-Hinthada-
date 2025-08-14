@@ -93,7 +93,7 @@ class StopStudentExport implements FromCollection, WithMapping, WithHeadings, Wi
             $user->current_roll_number ?? 'N/A',
             $user->current_father_name ?? 'N/A',
             $user->current_mother_name ?? 'N/A',
-            $user->current_NRCt ?? 'N/A',
+            $user->current_NRC ?? 'N/A',
             $user->DOB ?? 'N/A',
             $user->permanent_address ?? 'N/A',
             $user->phone ?? 'N/A',
