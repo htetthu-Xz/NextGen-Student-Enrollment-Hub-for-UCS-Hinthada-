@@ -1,19 +1,5 @@
 @extends('UI.master')
 
-@push('css')
-    <style>
-      .mobile-title { display: none; }
-
-      @media (max-width: 768px) {
-          .desktop-title { display: none; }
-          .mobile-title { display: block; }
-
-          .img-mt {
-            margin-top: 70px;
-          }
-      }
-    </style>
-@endpush
 @section('content')
 <div class="mb-4"></div>
 <section class="slider_section">
@@ -24,14 +10,14 @@
                     <div class="row mt-4 align-items-center">
                         <div class="col-md-7 col-12 mb-4 mb-md-0">
                             <div class="detail-box">
-                              <h2 class="w-100 desktop-title" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">
+                              {{-- <h2 class="w-100 desktop-title" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">
                                   Student Registration System For University of Computer Studies, Hinthada
-                              </h2>
+                              </h2> --}}
 
-                              <h2 class="w-100 mobile-title" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">
+                              <h2 class="w-100 mobile-title text-white" style="font-size: 2.2rem;text-shadow: 2px 2px 4px rgba(82, 87, 155, 0.5);font-family: 'Arial', sans-serif;">
                                   Student Registration System
                               </h2>
-                              <p>ကျောင်းသားကျောင်းသူများ လွယ်ကူလျှင်မြန်စွာ ကျောင်းအပ်ရန် ရည်ရွယ် စီစဉ်ထားပါသည်.</p>
+                              <p>ကျောင်းသားကျောင်းသူများ လွယ်ကူလျှင်မြန်စွာ ကျောင်းအပ်ရန် ရည်ရွယ် စီစဉ်ထားပါသည်။</p>
                               <div class="btn-box">
                                 <a href="{{route('login')}}" class="btn1">ကျောင်းအပ်မည်</a>
                               </div>

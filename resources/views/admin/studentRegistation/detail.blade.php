@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <div class="text-center mb-4">
-                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->profile) }}" class="profileimg img-thumbnail" style="width: 300px" alt="Profile">
+                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->profile) }}" class="profileimg img-thumbnail" style="width: 150px; height: 150px;" alt="Profile">
             </div>
             <table class="table custom-table">
                 <tr>
@@ -147,38 +147,71 @@
     </div>
 
 
-    <div class="card shadow mb-4">
-        <div class="card-header bg-success text-white">
-            <strong>Payment Information</strong>
+    @if($registration->payment_screenshot)
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <strong>Payment Information</strong>
+            </div>
+            <div class="card-body">
+                <table class="table custom-table">
+                    <tr>
+                        <th>Payment Screenshot</th>
+                        <td colspan="3">
+                            <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" target="_blank">
+                                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" width="150" class="img-thumbnail">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div class="card-body">
-            <table class="table custom-table">
-                <tr>
-                    <th>Payment Method</th>
-                    <td>{{ $registration->payment_method }}</td>
-                    <th>Transaction ID</th>
-                    <td>{{ $registration->transaction_id }}</td>
-                </tr>
-                <tr>
-                    <th>Payment Screenshot</th>
-                    <td colspan="3">
-                        <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" target="_blank">
-                            <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" width="150" class="img-thumbnail">
-                        </a>
-                    </td>
-                </tr>
-                @if ($registration->payment_note)
-                <tr>
-                    <th>Note</th>
-                    <td colspan="3">{{ $registration->payment_note }}</td>
-                </tr>
-                @endif
-            </table>
-        </div>
-    </div>
+    @endif
 
     <div class="text-center mt-4">
-        <a href="{{ route('admin.stu.reg.list', ['academic_year' => $registration->academic_year_id]) }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
+        @if ($registration->payment_screenshot != null && $registration->status === "pending")
+            <a href="{{ route('admin.stu.accept', $registration->id) }}" class="btn btn-success mx-2">
+                <i class="fa fa-check"></i> Accept
+            </a>
+        @endif
+        @if($registration->is_request_payment != '1') 
+            <a href="#" onclick="showRejectPrompt({{ $registration->id }}); return false;" class="btn btn-danger mx-2">
+                <i class="fa fa-times"></i> Reject
+                <form id="reject-form-{{ $registration->id }}" action="{{ route('admin.stu.reg.delete', $registration->id) }}" method="POST" style="display:none;">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="reject_message" id="reject-message-{{ $registration->id }}">
+                </form>
+            </a>
+            <a href="{{ route('admin.stu.reg.request.payment', $registration->id) }}" class="btn btn-warning mx-2">
+                <i class="fa fa-money-bill"></i> Request Payment
+            </a>
+        @endif
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function showRejectPrompt(regId) {
+            Swal.fire({
+                title: 'Reject Message',
+                input: 'textarea',
+                inputLabel: 'Enter the reason for rejection',
+                inputPlaceholder: 'Type your message here...',
+                showCancelButton: true,
+                confirmButtonText: 'Reject',
+                cancelButtonText: 'Cancel',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to write a message!'
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('reject-message-' + regId).value = result.value;
+                    document.getElementById('reject-form-' + regId).submit();
+                }
+            });
+        }
+    </script>
+@endpush

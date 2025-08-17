@@ -8,15 +8,17 @@ use App\Helper\Facades\File;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
+use App\Mail\PaymentRequestMail;
 use PhpOffice\PhpWord\IOFactory;
 use App\Mail\FresherAcceptedMail;
 use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Log;
+use App\Mail\RegistrationRejectMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\StudentRegistrationRequest;
 use App\Mail\RegistrationSuccessMail;
+use App\Http\Requests\StudentRegistrationRequest;
 
 class StudentRegistrationController extends Controller
 {
@@ -81,7 +83,6 @@ class StudentRegistrationController extends Controller
             $registration['nrc_mother_front'] = File::upload($request->file('nrc_mother_front'), $path);
             $registration['nrc_mother_back'] = File::upload($request->file('nrc_mother_back'), $path);
             $registration['family_member_docs'] = File::upload($request->file('family_member_docs'), $path);
-            $registration['payment_screenshot'] = File::upload($request->file('payment_screenshot'), $path);
             $registration['user_id'] = Auth::user()->id;
             $registration['academic_year_id'] = $attributes['academic_year_id'];
             $registration['academic_year'] = $attributes['academic_year'];
@@ -104,9 +105,6 @@ class StudentRegistrationController extends Controller
             $registration['guardian_relation'] = $attributes['guardian_relation'];
             $registration['guardian_job'] = $attributes['guardian_job'];
             $registration['guardian_phone'] = $attributes['guardian_phone'];
-            $registration['payment_method'] = $attributes['payment_method'];
-            $registration['transaction_id'] = $attributes['transaction_id'];
-            $registration['payment_note'] = $attributes['payment_note'] ?? null;
             $registration['agree_rules'] = $attributes['agree_rules'] == "on" ? true : false;
 
             auth()->user()->update([
@@ -115,11 +113,16 @@ class StudentRegistrationController extends Controller
 
             $user = Auth::user();
 
-            //dd($registration['roll_no']);
-
             $studentReg = StudentRegistration::create($registration);
 
-            //dd($studentReg);
+            // if($studentReg->academicYear->esemester == "Second Semester") 
+            // {
+            //     $studentReg->update([
+            //         'is_request_payment' => true,
+            //         'payment_screenshot' => '-'
+            //     ]);
+            // }
+
 
             $user->update([
                 'current_academic_year_id' => $registration['academic_year_id'],
@@ -299,27 +302,40 @@ class StudentRegistrationController extends Controller
         return redirect()->route('admin.stu.reg.list')->with('success', 'အောင်မြင်စွာပြင်လိုက်ပါပြီ');
     }
 
-
-    public function stuRegDelete(StudentRegistration $studentRegistration)
+    public function requestPayment(StudentRegistration $studentRegistration)
     {
-        // $da = StudentRegistration::find($id);
-        // $stu_id = $da->user_id;
-        // try {
-        //     $data = User::find($stu_id);
+        $studentRegistration->update(['is_request_payment' => true]);
+        Mail::to($studentRegistration->reg_email)->send(new PaymentRequestMail($studentRegistration));
 
-        //     if ($data) {
-        //         $data->stop = "yes";
-        //         $data->save();
-        //         return back()->with('success', 'ကျောင်းသားအား ရပ်နားထားသည်');
-        //     } else { 
-        //         return back()->with('error', 'ကျောင်းသားကို မတွေ့ပါ');
-        //     }
-        // } catch (\Exception $e) {
-        //     return back()->with('error', 'တစ်စုံတစ်ရာအမှားအယွင်းရှိပါသည်: ' . $e->getMessage());
-        // }
+        return redirect()
+            ->route('admin.stu.reg.list')
+            ->with('success', 'Payment လုပ်ဆောင်ရန် ကျောင်းသားအား အကြောင်းကြားပြီးပါပြီ။');
+    }
 
-        $studentRegistration->update(['status' => 'rejected']);
-        return back()->with('success', 'ကျောင်းသား registration ကို ပယ်ဖျက်လိုက်ပါပြီ။');
+    public function submitPayment(StudentRegistration $studentRegistration, Request $request)
+    {
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'payment_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $studentRegistration->update(['payment_screenshot' => File::upload($request->file('payment_file'), 'images/' . Auth::user()->uuid . '/')]);
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    public function stuRegDelete(StudentRegistration $studentRegistration, Request $request)
+    {
+        $validatedData = $request->validate([
+            'reject_message' => 'required|string',
+        ]);
+
+        $studentRegistration->update(['status' => 'rejected', 'status_message' => $validatedData['reject_message']]);
+        Mail::to($studentRegistration->reg_email)->send(new RegistrationRejectMail($studentRegistration));
+
+        return redirect()
+            ->route('admin.stu.reg.list')
+            ->with('success', 'ကျောင်းသား registration ကို ပယ်ဖျက်လိုက်ပါပြီ။');
     }
 
     public function form()

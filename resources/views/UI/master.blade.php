@@ -224,7 +224,7 @@
     <section class="footer_section" style="background-color: rgb(14, 98, 131)">
       <div class="container">
         <p class="text-white">
-            <span id="displayYear"></span> &copy; 2025 UCSH. All Right Reserved
+            © {{ date('Y') }} UCSH. All Rights Reserved
         </p>
       </div>
     </section>

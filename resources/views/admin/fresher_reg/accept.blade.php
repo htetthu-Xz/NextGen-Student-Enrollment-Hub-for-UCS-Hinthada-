@@ -19,6 +19,8 @@
                     <td>{{ $fresher->name }}</td>
                     <th>Email</th>
                     <td>{{ $fresher->email }}</td>
+                    <th>Phone</th>
+                    <td>{{ $fresher->phone }}</td>
                 </tr>
                 <tr>
                     <th>Admission Document photo</th>

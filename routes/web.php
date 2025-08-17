@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('ui/reg/detele/{id}', [UiController::class, 'regDelete'])->name('ui.reg.delete');
     Route::get('ui/reg/edit/{id}', [UiController::class, 'regEdit'])->name('ui.reg.edit');
     Route::put('ui/reg/update/{id}', [StudentRegistrationController::class, 'regUpdate'])->name('ui.reg.update');
+
+    Route::post('studentReg/{student_registration}/submit-payment', [StudentRegistrationController::class, 'submitPayment'])->name('admin.stu.reg.submit.payment');
 });
 
 Route::middleware('admin', 'auth')->group(function () {
@@ -90,7 +92,8 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('/studentReg/detail/{id}', [StudentRegistrationController::class, 'stuRegDetail'])->name('admin.stu.reg.detail');
     Route::get('/studentReg/edit/{id}', [StudentRegistrationController::class, 'stuRegEdit'])->name('admin.stu.reg.edit');
     Route::put('/studentReg/update/{id}', [StudentRegistrationController::class, 'stuRegUpdate'])->name('admin.stu.reg.update');
-    Route::get('/studentReg/delete/{student_registration}', [StudentRegistrationController::class, 'stuRegDelete'])->name('admin.stu.reg.delete');
+    Route::delete('/studentReg/delete/{student_registration}', [StudentRegistrationController::class, 'stuRegDelete'])->name('admin.stu.reg.delete');
+    Route::get('studentReg/request-payment/{student_registration}', [StudentRegistrationController::class, 'requestPayment'])->name('admin.stu.reg.request.payment');
 
 
 

@@ -36,7 +36,7 @@
                     
                     <!-- Form -->
                     <div class="col-lg-7 col-md-7 col-12 p-3">
-                        <form action="{{ route('fresher.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('fresher.store') }}" id="fresherRegisterForm" method="post" enctype="multipart/form-data">
                             @csrf
                             <h3 class="mb-3 mt-0">ဝင်ခွင့်လျှောက်ရန်....</h3>
 
@@ -63,6 +63,16 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="phone" class="mb-2"><b>Phone</b></label>
+                                    <input type="text" name="phone" value="{{ old('phone') }}"
+                                           class="form-control border-0 shadow @error('phone') is-invalid @enderror"
+                                           id="phone" placeholder="Enter your phone">
+                                    @error('phone')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
                                 <!-- Admission Docs -->
                                 <div class="mb-3">
                                     <label for="admission_docs" class="mb-2"><b>Admission Docs</b></label>
@@ -76,7 +86,7 @@
 
                                 <!-- Submit -->
                                 <div class="my-2">
-                                    <button class="btn btn-sm wbtn text-white border border-primary">တင်မည်</button>
+                                    <button class="btn btn-sm wbtn text-white border border-primary" id="submitBtn">တင်မည်</button>
                                 </div>
                             </div>
                         </form>
@@ -90,3 +100,25 @@
 
 <div style="height: 65px"></div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#submitBtn').on('click', function(e) {
+            e.preventDefault(); 
+
+            Swal.fire({
+                icon: 'info',
+                title: 'အသိပေးစာ',
+                text: 'သင်တန်းရေးရာဌာနသို လူကိုယ်တိုင် ကျောင်းလာရောက်အပ်နှံရန်လိုအပ်ပါသည်။ကျောင်းသားရဲ့ gmailသို ကျောင်းမှစာပိုထားပါမည် ဝင်ရောက်စစ်ဆေးပါ။ ',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                $('#fresherRegisterForm')[0].submit();
+                }
+            });
+            });
+        });
+
+    </script>
+@endpush

@@ -20,7 +20,7 @@
                             <ul>                                                                                  
                                 <li><a href="#information" data-toggle="tab"><div class="icon-circle"><i class="ri-user-line" style="position: absolute; bottom: 18px; right: 23px;"></i></div>Information</a></li>
                                 <li><a href="#bio" data-toggle="tab"><div class="icon-circle"><i class="ri-info-card-line" style="position: absolute; bottom: 18px; right: 23px;"></i></div>Biography / Family</a></li>
-                                <li><a href="#payment" data-toggle="tab"><div class="icon-circle"><i class="ri-wallet-3-line" style="position: absolute; bottom: 18px; right: 23px;"></i></div>Payment</a></li>
+                                {{-- <li><a href="#payment" data-toggle="tab"><div class="icon-circle"><i class="ri-wallet-3-line" style="position: absolute; bottom: 18px; right: 23px;"></i></div>Payment</a></li> --}}
                                 <li><a href="#rules" data-toggle="tab"><div class="icon-circle"><i class="ri-shield-check-line" style="position: absolute; bottom: 18px; right: 23px;"></i></div>Rules</a></li>
                             </ul>
                         </div>
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>DOB</label>
+                                            <label>Date of Birth</label>
                                             <input name="dob" value="{{ old('dob') }}" class="form-control" type="date" required>
                                             @error('dob')<div class="text-danger">{{ $message }}</div>@enderror
                                         </div>
@@ -318,7 +318,7 @@
                             </div>
 
                             <!-- PAYMENT TAB -->
-                            <div class="tab-pane" id="payment">
+                            {{-- <div class="tab-pane" id="payment">
                                 <div class="row">
                                     <div class="col-sm-12 text-center mb-4">
                                         <h5 class="info-text">Payment Instructions</h5>
@@ -375,7 +375,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <!-- RULES TAB -->
                             <div class="tab-pane" id="rules">

@@ -17,6 +17,7 @@
                                     <th  style="font-size: 1.3rem">စဉ်</th>
                                     <th style="font-size: 1.3rem">အမည်</th>
                                     <th style="font-size: 1.3rem">Email</th>
+                                    <th style="font-size: 1.3rem">Phone</th>
                                     <th style="font-size: 1.3rem">Action</th>
                                 </tr>
                             </thead>
@@ -31,6 +32,7 @@
                                             {{ $fresher->name }}
                                         </td>
                                         <td style="font-size: 1.1rem">{{ $fresher->email }}</td>
+                                        <td style="font-size: 1.1rem">{{ $fresher->phone }}</td>
                                         <td style="font-size: 1.1rem">
                                             @if ($fresher->status == 'accepted')
                                                 -

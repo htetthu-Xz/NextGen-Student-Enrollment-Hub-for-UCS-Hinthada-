@@ -25,12 +25,14 @@ class FresherRegistrationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:freshers,email',
+            'phone' => ['required', 'regex:/^(09|\+959)[0-9]{7,9}$/'],
             'admission_docs' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $fresher = new Fresher();
         $fresher->name = $request->name;
         $fresher->email = $request->email;
+        $fresher->phone = $request->phone;
 
         if ($request->hasFile('admission_docs')) {
             $fresher->admission_document_screenshot = File::upload($request->file('admission_docs'), 'admission_docs_ss');

@@ -66,11 +66,11 @@ class StudentRegistrationRequest extends FormRequest
             'guardian_job' => 'required_if:step,2|string',
             'guardian_phone' => ['required_if:step,2', 'string', 'regex:/^09(2|4|6|7|8|9)[0-9]{7,9}$/'],
 
-            // STEP 3
-            'payment_method' => 'required_if:step,3|string',
-            'payment_screenshot' => 'required_if:step,3|image|mimes:jpg,jpeg,png|max:2048',
-            'transaction_id' => 'required_if:step,3|digits:6',
-            'payment_note' => 'nullable|string',
+            // // STEP 3
+            // 'payment_method' => 'required_if:step,3|string',
+            // 'payment_screenshot' => 'required_if:step,3|image|mimes:jpg,jpeg,png|max:2048',
+            // 'transaction_id' => 'required_if:step,3|digits:6',
+            // 'payment_note' => 'nullable|string',
 
             // STEP 4
             'agree_rules' => 'required_if:step,4|accepted',

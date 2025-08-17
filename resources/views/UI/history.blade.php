@@ -40,31 +40,35 @@
                               <td class="text-white">{{ $reg->academicYear ? $reg->academicYear->name : 'N/A' }}</td>
                               <td class="text-white">{{ Str::ucfirst($reg->major) }}</td>
                               <td class="text-white">{{ $reg->roll_no }}</td>
-                              {{-- @if($reg->specialist==="computer_science") CS-{{ $reg->roll_no }}
-                                                     @elseif ($reg->specialist==="computer_technology") CT-{{ $reg->roll_no }}
-                                                     @else CST-{{ $reg->roll_no }}
-                                                     @endif   --}}
                               <td class="text-white">{{ $reg->phone }}</td>
                               <td class="text-white"><a href="{{route('ui.view.reg.detail', $reg->id)}}"><i class="fas fa-eye"></i></a></td>
                               <td class="text-white">
-                                @if($reg->status==="pending")
-                                    ကျောင်းအပ်လက်ခံရန်စောင့်ဆိုင်းနေသည်
-                                @elseif ($reg->status==="confirm")
-                                    လက်ခံထားသည်</td>
+                                @if ($reg->is_request_payment == '1' && $reg->payment_screenshot == null)
+                                    <span class="badge bg-info p-2">ငွေသွင်းရန် လိုအပ်ပါသည်။</span>
                                 @else
-                                    ပယ်ဖျက်ထားသည်
+                                    @if($reg->status==="pending")
+                                        <span class="badge bg-warning text-dark p-2">ကျောင်းအပ်လက်ခံရန်စောင့်ဆိုင်းနေသည်</span>
+                                    @elseif ($reg->status==="confirm")
+                                        <span class="badge bg-success p-2">လက်ခံထားသည်</span>
+                                    @else
+                                        <span class="badge bg-danger p-2">ပယ်ဖျက်ထားသည်</span>
+                                    @endif
                                 @endif
                             </td>
                             <td class="text-white">
-                                    {{-- <a href="{{route('ui.reg.delete',$reg->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a>
-                                @if($reg->status==="edit")
-                                    <a href="{{route('ui.reg.edit',$reg->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></i></a>
-                                @endif --}}
-                                @if ($reg->status === 'pending' || $reg->status === 'confirm')
-                                -
+                                @if($reg->is_request_payment == '1' && $reg->payment_screenshot == null)
+                                <form action="{{ route('admin.stu.reg.submit.payment', $reg->id) }}" method="POST" enctype="multipart/form-data" class="d-inline" id="paymentForm-{{ $reg->id }}">
+                                    @csrf
+                                    <button type="button" class="btn btn-info btn-sm" onclick="showPaymentModal({{ $reg->id }})">ငွေပေးချေမည်</button>
+                                </form>
+                                
                                 @else
-                                    <a href="{{ route('stu.reg') }}" class="btn btn-success btn-sm mx-2"> အသစ်တင်ရန်</a>
-                                    <a href="{{ route('ui.reg.delete', $reg->id) }}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');" class="btn btn-danger btn-sm"> ဖျက်ရန်</a>
+                                    @if ($reg->status === 'pending' || $reg->status === 'confirm')
+                                        -
+                                    @else
+                                        <a href="{{ route('stu.reg') }}" class="btn btn-success btn-sm mx-2"> အသစ်တင်ရန်</a>
+                                        <a href="{{ route('ui.reg.delete', $reg->id) }}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');" class="btn btn-danger btn-sm"> ဖျက်ရန်</a>
+                                    @endif
                                 @endif
                             </td>
                           </tr>
@@ -81,3 +85,58 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function showPaymentModal(regId) {
+            Swal.fire({
+                title: 'Payment',
+                html: `
+                    <div>
+                        <p>Transfer Phone Number: <strong>09-783543903</strong></p>
+                        <label for="paymentFile-${regId}">Payment Proof File:</label>
+                        <input type="file" id="paymentFile-${regId}" name="payment_file" class="form-control mb-2" accept="image/*">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    const fileInput = document.getElementById(`paymentFile-${regId}`);
+                    if (!fileInput.files.length) {
+                        Swal.showValidationMessage('Please upload payment proof file.');
+                        return false;
+                    }
+                    // Attach file to form and submit
+                    const form = document.getElementById(`paymentForm-${regId}`);
+                    // Create a FormData object and append file
+                    const formData = new FormData(form);
+                    formData.append('payment_file', fileInput.files[0]);
+                    // Submit via AJAX
+                    return fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        
+                        Swal.showValidationMessage('Submission failed.');
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Success!', 'Payment has been submitted.', 'success').then(() => {
+                        window.location.reload();
+                    });
+                }
+            });
+        }
+    </script>
+@endpush

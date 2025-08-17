@@ -69,10 +69,6 @@
 
                                 <th style="font-size: 1.1rem">အခြေအနေ</th>
                                 <th style="font-size: 1.1rem">View</th>
-                                {{-- <th style="font-size: 1.1rem">GiveEdit</th> --}}
-                                <th style="font-size: 1.1rem">Accept</th>
-                                {{-- <th style="font-size: 1.1rem">Edit</th> --}}
-                                <th style="font-size: 1.1rem">Reject</th>
                             </tr>
                         </thead>
                         <tbody class="border-success">
@@ -91,19 +87,31 @@
                                     <td style="font-size: 1.1rem">{{ $reg->phone }}</td>
 
                                     <td style="font-size: 1.1rem">
-                                        @if ($reg->status === "pending")
-                                            <p style="font-size: 1.1rem"> စောင့်ဆိုင်းနေသည်</p>
+                                        @if ($reg->is_request_payment == '1' && $reg->payment_screenshot != null && $reg->status === "pending")
+                                            <p style="font-size: 1.1rem"> ငွေပေးချေမှု အတည်ပြုရန် </p>
                                         @elseif ($reg->status === "confirm")
                                             <p style="font-size: 1.1rem"> ကျောင်းအပ်လက်ခံထားသည်</p>
+                                        @elseif ($reg->status === "pending")
+                                            <p style="font-size: 1.1rem">စောင့်ဆိုင်းနေသည်</p>
                                         @else
                                             <p style="font-size: 1.1rem"> ပြန်ပြင်ခိုင်းထားသည်</p>
                                         @endif
                                     </td>
                                     <td><a href="{{ route('admin.stu.reg.detail', $reg->id) }}"><i class="fas fa-eye" style="color:azure"></i></a></td>
                                     {{-- <td><a href="{{ route('admin.stu.give.edit', $reg->id) }}"><i class="fas fa-key" style="color:azure"></i></a></td> --}}
-                                    <td><a href="{{ route('admin.stu.accept', $reg->id) }}"><i class="fas fa-check" style="color:azure"></i></a></td>
+                                    {{-- <td><a href="{{ route('admin.stu.accept', $reg->id) }}"><i class="fas fa-check" style="color:azure"></i></a></td> --}}
                                     {{-- <td><a href="{{ route('admin.stu.reg.edit', $reg->id) }}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></i></a></td> --}}
-                                    <td><a href="{{ route('admin.stu.reg.delete', $reg->id) }}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-window-close text-danger"></i></a></td>
+                                    {{-- <td>
+                                        <a href="#" onclick="showRejectPrompt({{ $reg->id }}); return false;">
+                                            <i class="fas fa-window-close text-danger"></i>
+                                        </a>
+                                        <form id="reject-form-{{ $reg->id }}" action="{{ route('admin.stu.reg.delete', $reg->id) }}" method="POST" style="display:none;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="reject_message" id="reject-message-{{ $reg->id }}">
+                                        </form>
+                                    </td> --}}
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
