@@ -38,8 +38,6 @@ class AuthController extends Controller
         $data['image'] = File::upload($request->file('image'), 'storage/images/' . $data['uuid']);
         $data['password'] = 'P@ssw0rd';
 
-        dd();
-
         User::create($data);
 
         return redirect()->route('admin.list')->with('success', 'ကျောင်းသားသုံး Account တစ်ခု ထည့်လိုက်ပါပြီ');
