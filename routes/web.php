@@ -27,7 +27,7 @@ Route::group([
     Route::get('login', [UiController::class, 'login'])->name('ui.login');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('custom.auth')->group(function () {
     Route::get('ui/view/detail/{id}', [UiController::class, 'viewDetail'])->name('ui.view.reg.detail');
     Route::get('student/history', [UiController::class, 'history'])->name('history');
     Route::get('sturegistration', [UiController::class, 'stuReg'])->name('stu.reg');

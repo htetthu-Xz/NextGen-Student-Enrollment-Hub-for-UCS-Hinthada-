@@ -100,25 +100,3 @@
 
 <div style="height: 65px"></div>
 @endsection
-
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#submitBtn').on('click', function(e) {
-            e.preventDefault(); 
-
-            Swal.fire({
-                icon: 'info',
-                title: 'အသိပေးစာ',
-                text: 'သင်တန်းရေးရာဌာနသို လူကိုယ်တိုင် ကျောင်းလာရောက်အပ်နှံရန်လိုအပ်ပါသည်။ကျောင်းသားရဲ့ gmailသို ကျောင်းမှစာပိုထားပါမည် ဝင်ရောက်စစ်ဆေးပါ။ ',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                $('#fresherRegisterForm')[0].submit();
-                }
-            });
-            });
-        });
-
-    </script>
-@endpush

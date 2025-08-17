@@ -1,4 +1,15 @@
 @extends('UI.master')
+
+@push('css')
+    <style>
+    body {
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        background-color: #eeeeee !important;
+        color: #222 !important;
+    }
+    </style>
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row">

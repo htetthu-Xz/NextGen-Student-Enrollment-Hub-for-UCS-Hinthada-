@@ -5,6 +5,11 @@
     .map-container iframe {
         border-radius: 12px;
     }
+    body {
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        background-color: #eeeeee !important;
+        color: #222;
+    }
     @media (max-width: 768px) {
         .map-container iframe {
             height: 300px;

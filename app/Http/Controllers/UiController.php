@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UiController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
         return view('UI.index');
     }

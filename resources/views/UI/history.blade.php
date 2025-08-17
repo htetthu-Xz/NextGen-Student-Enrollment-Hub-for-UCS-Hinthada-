@@ -1,32 +1,37 @@
 @extends('UI.master')
+
+@push('css')
+    <style>
+    body {
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        background-color: #eeeeee !important;
+        color: #222 !important;
+    }
+    </style>
+@endpush
+
 @section('content')
 <div style="height: 50px"></div>
-
-<div class="container my-1 d-flex justify-content-center">
-    <div class="col-12 text-end">
-        <a href="{{ url()->previous() }}" class="btn btn-primary btn-sm mb-2">Back</a>
-    </div>
-</div>
-
-<div class="container">
+<div class="container-fluid md-px-5 sm-px-2" style="width: 100%;">
     <div class="row justify-content-center">
         <div class="col-md-12 mb-4">
           @if(is_null($regs))
-              <h1 class="text-white text-center">သင်အပ်ခဲ့သော  အချက်လက်များ မရှိပါ</h1>
+              <h1 class="text-center">သင်အပ်ခဲ့သော  အချက်လက်များ မရှိပါ</h1>
           @else
-             <div class="text-white">သင်အပ်ခဲ့သော အချက်လက်များ</div>
-              <table class="custom-table border-success table-hover">
+             <div class="mb-3">သင်အပ်ခဲ့သော အချက်လက်များ</div>
+             <div class="table-responsive">
+                <table class="custom-table border-success w-100">
                   <thead class="border-success">
                       <tr>
-                          <th class="text-white">စဉ်</th>
-                          <th class="text-white">အမည်</th>
-                          <th class="text-white">သင်တန်းနှစ်</th>
-                          <th class="text-white">အထူးပြုဘာသာ</th>
-                          <th class="text-white">ခုံနံပါတ်</th>
-                          <th class="text-white">ဖုန်းနံပါတ်</th>
-                          <th class="text-white">View</th>
-                          <th class="text-white">အခြေအနေ</th>
-                          <th class="text-white">Manage</th>
+                          <th class="">စဉ်</th>
+                          <th class="">အမည်</th>
+                          <th class="">သင်တန်းနှစ်</th>
+                          <th class="">အထူးပြုဘာသာ</th>
+                          <th class="">ခုံနံပါတ်</th>
+                          <th class="">ဖုန်းနံပါတ်</th>
+                          <th class="">View</th>
+                          <th class="">အခြေအနေ</th>
+                          <th class="">Manage</th>
                       </tr>
                   </thead>
                   <tbody class="border-success">
@@ -35,14 +40,14 @@
                       @endphp
                       @foreach ($regs as $reg)
                           <tr>
-                              <td class="text-white">{{ $offset + $loop->iteration }}</td>
-                              <td class="text-white">{{ $reg->user->name }}</td>
-                              <td class="text-white">{{ $reg->academicYear ? $reg->academicYear->name : 'N/A' }}</td>
-                              <td class="text-white">{{ Str::ucfirst($reg->major) }}</td>
-                              <td class="text-white">{{ $reg->roll_no }}</td>
-                              <td class="text-white">{{ $reg->phone }}</td>
-                              <td class="text-white"><a href="{{route('ui.view.reg.detail', $reg->id)}}"><i class="fas fa-eye"></i></a></td>
-                              <td class="text-white">
+                              <td class="">{{ $offset + $loop->iteration }}</td>
+                              <td class="">{{ $reg->user->name }}</td>
+                              <td class="">{{ $reg->academicYear ? $reg->academicYear->name : 'N/A' }}</td>
+                              <td class="">{{ Str::ucfirst($reg->major) }}</td>
+                              <td class="">{{ $reg->roll_no }}</td>
+                              <td class="">{{ $reg->phone }}</td>
+                              <td class=""><a href="{{route('ui.view.reg.detail', $reg->id)}}"><i class="fas fa-eye"></i></a></td>
+                              <td class="">
                                 @if ($reg->is_request_payment == '1' && $reg->payment_screenshot == null)
                                     <span class="badge bg-info p-2">ငွေသွင်းရန် လိုအပ်ပါသည်။</span>
                                 @else
@@ -55,13 +60,12 @@
                                     @endif
                                 @endif
                             </td>
-                            <td class="text-white">
+                            <td class="">
                                 @if($reg->is_request_payment == '1' && $reg->payment_screenshot == null)
                                 <form action="{{ route('admin.stu.reg.submit.payment', $reg->id) }}" method="POST" enctype="multipart/form-data" class="d-inline" id="paymentForm-{{ $reg->id }}">
                                     @csrf
                                     <button type="button" class="btn btn-info btn-sm" onclick="showPaymentModal({{ $reg->id }})">ငွေပေးချေမည်</button>
                                 </form>
-                                
                                 @else
                                     @if ($reg->status === 'pending' || $reg->status === 'confirm')
                                         -
@@ -74,7 +78,8 @@
                           </tr>
                       @endforeach
                   </tbody>
-              </table>
+                </table>
+            </div>
               <div class="row mt-2">
                   <div class="col-12 d-flex justify-content-center custom-pagination pagination">
                       {{ $regs->links() }}

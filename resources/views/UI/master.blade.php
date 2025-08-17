@@ -42,9 +42,9 @@
     <link rel="stylesheet" href="{{ asset('Css/themify-icons.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
   <style>
-    body {
-      background-color: rgb(61, 141, 168); /* Example background color */
-    }
+    /* body {
+      background-color: rgb(61, 141, 168);
+    } */
 
     .pcolor {
       color: rgb(8, 59, 77);
@@ -127,13 +127,12 @@
 
     <!-- Header section starts -->
 <header class="header_section fixed-top">
-  <div class="container-fluid">
+  <div class="container-fluid" style="background-color: rgb(14, 98, 131);">
     <nav class="navbar navbar-expand-lg custom_nav-container">
       
       <!-- Logo -->
       <a class="navbar-brand d-flex align-items-center" href="{{ route('ui.home') }}">
-        <img src="{{ asset('user/images/logo.png') }}" alt="Logo" style="height:40px;width:40px" class="mr-2">
-        <span style="font-size: 1.3rem;">Smart Register</span>
+        <span style="font-size: 1.3rem;">Smart Register UCSH</span>
       </a>
 
       <!-- Mobile toggle -->
@@ -154,9 +153,9 @@
           <li class="nav-item mx-1 {{ request()->routeIs('ui.contact') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('ui.contact') }}">ဆက်သွယ်ရန်</a>
           </li>
-          <li class="nav-item mx-1 {{ request()->routeIs('fresher.register') ? 'active' : '' }}">
+          {{-- <li class="nav-item mx-1 {{ request()->routeIs('fresher.register') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('fresher.register') }}">ဝင်ခွင့်လျှောက်ရန်</a>
-          </li>
+          </li> --}}
 
           @if(Auth::check())
             @if(Auth::user()->role=="user")
@@ -168,9 +167,9 @@
               </li>
             @endif
           @else
-            <li class="nav-item {{ request()->routeIs('ui.login') ? 'active' : '' }}">
+            {{-- <li class="nav-item {{ request()->routeIs('ui.login') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('ui.login') }}">အကောင့်၀င်ရန်</a>
-            </li>
+            </li> --}}
           @endif
 
           @if(Auth::check())
@@ -221,7 +220,7 @@
       @yield('content')
     </div>
 
-    <section class="footer_section" style="background-color: rgb(14, 98, 131)">
+    <section class="footer_section fixed-bottom" style="background-color: rgb(14, 98, 131)">
       <div class="container">
         <p class="text-white">
             © {{ date('Y') }} UCSH. All Rights Reserved
