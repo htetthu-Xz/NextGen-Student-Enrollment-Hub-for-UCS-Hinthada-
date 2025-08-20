@@ -184,7 +184,33 @@
                 @if(Auth::user()->role == 'admin')
                   <a href="{{route('admin.index')}}" class="dropdown-item mt-2">Admin DashBoard</a>
                 @endif
-                <a href="{{route('logout')}}" class="dropdown-item mt-2" onclick="return confirm('Are you sure?')">အကောင့်ထွက်ရန်</a>
+                <a href="#" class="dropdown-item mt-2" id="logout-link">အကောင့်ထွက်ရန်</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+                <script>
+                  document.getElementById('logout-link').addEventListener('click', function(e) {
+                  e.preventDefault();
+                  Swal.fire({
+                    title: '<span style="font-size:16px;">လော့ခ်အောက် ထွက်ရန်သေချာပါသလား</span>',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '<span style="font-size:13px; padding:2px 10px;">ထွက်ရန်</span>',
+                    cancelButtonText: '<span style="font-size:13px; padding:2px 10px;">မထွက်တော့ပါ</span>',
+                    icon: null,
+                    width: 300,
+                    customClass: {
+                        confirmButton: 'py-1 px-2',
+                        cancelButton: 'py-1 px-2'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '{{ route('logout') }}';
+                    }
+                });
+                  });
+                </script>
               </div>
             </li>
           @endif
@@ -245,7 +271,7 @@
       toast: true,
       position: 'top-end',
       showConfirmButton: false,
-      timer: 2000,
+      timer: 3000,
       timerProgressBar: true,
       didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer);

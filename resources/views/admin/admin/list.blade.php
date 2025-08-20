@@ -89,14 +89,22 @@
 
                                         <td style="font-size: 1.1rem">{{ $admin->email }}</td>
                                         <td style="font-size: 1.1rem">{{ $admin->AcademicYear->name }}</td>
-                                        <td style="font-size: 1.1rem"><a href="{{route('stop.mail',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-ban" style="color: red"></i></a></td>
-                                        <td style="font-size: 1.1rem"><a href="{{route('student.transfer',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-exchange-alt" style="color: green"></i></a></td>
+                                        <td style="font-size: 1.1rem">
+                                        <a href="#" onclick="showSweetConfirm(event, '{{ route('stop.mail', $admin->id) }}', 'Are you sure you want to stop mail for this student?')">
+                                            <i class="fas fa-ban" style="color: red"></i>
+                                        </a>
+                                        </td>
+                                        <td style="font-size: 1.1rem">
+                                        <a href="#" onclick="showSweetConfirm(event, '{{ route('student.transfer', $admin->id) }}', 'Are you sure you want to transfer this student?')">
+                                            <i class="fas fa-exchange-alt" style="color: green"></i>
+                                        </a>
+                                        </td>
                                         <th><a href="{{route('admin.info.edit',$admin->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>
-                                    <th><a href="{{route('admin.delete',$admin->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
-
-
-
-
+                                        <th>
+                                        <a href="#" onclick="showSweetConfirm(event, '{{ route('admin.delete', $admin->id) }}', 'Are you sure you want to delete this admin?')">
+                                            <i class="fas fa-trash-alt" style="color: red"></i>
+                                        </a>
+                                        </th>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -110,3 +118,29 @@
             @endif
         @endsection
 
+        @push('scripts')
+            <script>
+
+                function showSweetConfirm(event, route, message) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: '<span style="font-size:16px;">' + message + '</span>',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '<span style="font-size:13px; padding:2px 10px;">ထွက်ရန်</span>',
+                        cancelButtonText: '<span style="font-size:13px; padding:2px 10px;">မထွက်တော့ပါ</span>',
+                        icon: null,
+                        width: 300,
+                        customClass: {
+                            confirmButton: 'py-1 px-2',
+                            cancelButton: 'py-1 px-2'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = route;
+                        }
+                    });
+                }
+            </script>
+        @endpush
