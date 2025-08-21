@@ -60,7 +60,7 @@ class AcademicYearController extends Controller
         $year->update($data);
 
         // Redirect to the academic list with a success message
-        return redirect()->route('admin.acedimcList')->with('success', 'အောင်မြင်စွာပြင်ဆင်ပီးပါပြီ');
+        return redirect()->route('admin.acedimcList')->with('success', 'အောင်မြင်စွာပြင်ဆင်ပြီးပါပြီ');
     }
 
     public function acedmicDelete($id)
@@ -71,6 +71,6 @@ class AcademicYearController extends Controller
         }
 
         $academicYear->delete();
-        return back()->with('success', 'အောင်မြင်စွာဖြတ်လိုက်ပါပြီ');
+        return back()->with('success', 'အောင်မြင်စွာဖျက်လိုက်ပါပြီ');
     }
 }

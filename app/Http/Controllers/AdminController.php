@@ -314,14 +314,14 @@ class AdminController extends Controller
         try {
             $userId = Auth::user()->id;
             if ($id == $userId) {
-                return back()->with('error', 'သင်သည် ကိုယ့်ကိုကိုယ် ဖြတ်၍မရပါ။');
+                return back()->with('error', 'သင်သည် ကိုယ့်ကိုကိုယ် ဖျက်၍မရပါ။');
             } else {
                 $user = User::findOrFail($id);
                 $user->delete();
-                return back()->with('success', 'အောင်မြင်စွာဖြတ်လိုက်ပါပြီ');
+                return back()->with('success', 'အောင်မြင်စွာဖျက်လိုက်ပါပြီ');
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'မူလကျားကိုဖြတ်၍မရပါ။');
+            return back()->with('error', 'မူလကျားကိုဖျက်၍မရပါ။');
         }
     }
 
@@ -402,7 +402,7 @@ class AdminController extends Controller
         $table->addCell()->addText('Email', ['size' => 10]);
         //$table->addCell()->addText('ကျောင်း oင်ခွင့်အမှတ်', ['size' => 10]);
 
-        $table->addCell()->addText('ရပ်နားစရင်းထည့်ထားသည်', ['size' => 10]);
+        $table->addCell()->addText('ရပ်နားစာရင်းထည့်ထားသည်', ['size' => 10]);
 
 
 

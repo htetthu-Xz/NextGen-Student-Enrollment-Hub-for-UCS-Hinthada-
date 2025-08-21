@@ -15,7 +15,7 @@
                             <div class="card" style="height: 650px">
                                 <h1 class="pcolor text-center fw-bold mt-4 mb-3"
                                     style="font-size: 1rem; font-weight: bold;">
-                                    ကွန်ပျူတာ တက္ကသိုလ် ဟင်္သာတ
+                                    ကွန်ပျူတာတက္ကသိုလ်(ဟင်္သာတ)
                                 </h1>
                                 <h2 class="pcolor text-center fw-bold  mb-3" style="font-size: 1rem; font-weight: bold;">
                                     ပြင်ဆင်ရန်</h2>
@@ -222,7 +222,7 @@
                                             <div class="col-3">
 
                                                 <label for="family"
-                                                    class="col-form-label pcolor ml-5"><b>ငွေလွဲပြေစာ</b></label>
+                                                    class="col-form-label pcolor ml-5"><b>ငွေလွှဲပြေစာ</b></label>
                                                 <div class="">
                                                     <input id="family" type="file"
                                                         class="form-control @error('family') is-invalid @enderror"

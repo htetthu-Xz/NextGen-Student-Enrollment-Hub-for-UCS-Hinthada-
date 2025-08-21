@@ -26,7 +26,7 @@ class NoticeController extends Controller
         ]);
 
         Notice::create($data);
-        return redirect()->route('notice.list')->with('success', 'အောင်မြင်စွာ ဖန်တီးပီးပါပြီ');
+        return redirect()->route('notice.list')->with('success', 'အောင်မြင်စွာ ဖန်တီးပြီးပါပြီ');
     }
 
     public function edit($id)
@@ -46,13 +46,13 @@ class NoticeController extends Controller
         $notice = Notice::find($id);
 
         $notice->update($data);
-        return redirect()->route('notice.list')->with('success', 'အောင်မြင်စွာ ပြင်ဆင်ပီးပါပြီ');
+        return redirect()->route('notice.list')->with('success', 'အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ');
     }
 
     public function delete($id)
     {
         Notice::find($id)->delete();
-        return back()->with('success', 'အောင်မြင်စွာဖြတ်လိုက်ပါပြီ');
+        return back()->with('success', 'အောင်မြင်စွာဖျက်လိုက်ပါပြီ');
     }
 
     public function uiAll()

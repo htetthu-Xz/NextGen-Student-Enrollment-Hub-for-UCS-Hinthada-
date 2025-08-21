@@ -134,20 +134,20 @@
   }
 
   .uni {
-    font-size:1.15rem; 
+    font-size:1.15rem;
     letter-spacing:.70em;
   }
 
   .sh {
-    letter-spacing:.08em !important; 
+    letter-spacing:.08em !important;
     font-size: 13px !important;
   }
 
   .uni-line {
-    height:2px; 
-    background:#2C5E72; 
-    border-radius:1px; 
-    flex-basis: 100px; 
+    height:2px;
+    background:#2C5E72;
+    border-radius:1px;
+    flex-basis: 100px;
     flex-grow: 0;
   }
 
@@ -163,7 +163,7 @@
     }
 
     .sh {
-      letter-spacing:.04em !important; 
+      letter-spacing:.04em !important;
       font-size: 11px !important;
     }
 
@@ -243,7 +243,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="mb-2"><b>လျှိုဝှက်နံပါတ်ထည့်ရန်</b></label>
+                    <label for="password" class="mb-2"><b>လျှို့ဝှက်နံပါတ်ထည့်ရန်</b></label>
                     <input type="password" name="password"
                         class="form-control border-0 shadow-sm @error('password') is-invalid @enderror"
                         id="password" placeholder="Enter your password">
@@ -334,11 +334,11 @@
       });
 
       $('#submitBtn').on('click', function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         Swal.fire({
           icon: 'info',
           title: 'အသိပေးစာ',
-          text: 'သင်တန်းရေးရာဌာနသို့ လူကိုယ်တိုင် ကျောင်းလာရောက်အပ်နှံရန်လိုအပ်ပါသည်။ကျောင်းသားရဲ့ gmailသို ကျောင်းမှစာပိုထားပါမည် ဝင်ရောက်စစ်ဆေးပါ။ ',
+          text: 'သင်တန်းရေးရာဌာနသို့ လူကိုယ်တိုင် ကျောင်းလာရောက်အပ်နှံရန်လိုအပ်ပါသည်။ကျောင်းသားရဲ့ gmailသို့ ကျောင်းမှစာပို့ထားပါမည် ဝင်ရောက်စစ်ဆေးပါ။ ',
           confirmButtonText: 'OK'
         }).then((result) => {
           if (result.isConfirmed) {
