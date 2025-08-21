@@ -133,8 +133,9 @@ class StopStudentExport implements FromCollection, WithMapping, WithHeadings, Wi
         return [
             BeforeSheet::class => function (BeforeSheet $event) {
                 $event->sheet->setCellValue('A1', 'ကွန်ပျူတာတက္ကသိုလ် (ဟင်္သာတ) ရပ်နား ကျောင်းသားများစာရင်း');
+                $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->setCellValue('A2', 'Generated on: ' . Carbon::now()->format('F j, Y, g:i A'));
-                $event->sheet->mergeCells('A1:G1');
+                $event->sheet->mergeCells('A1:K1');
                 $event->sheet->mergeCells('A2:G2');
                 $event->sheet->mergeCells('A3:G3');
 

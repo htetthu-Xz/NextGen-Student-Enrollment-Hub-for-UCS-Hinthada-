@@ -187,10 +187,24 @@
         <script>
             function confirmLogout(event) {
                 event.preventDefault();
-
-                if (confirm('Are you sure you want to logout?')) {
-                    window.location.href = '{{ route('logout') }}';
-                }
+                Swal.fire({
+                    title: '<span style="font-size:16px;">လော့ခ်အောက် ထွက်ရန်သေချာပါသလား</span>',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '<span style="font-size:13px; padding:2px 10px;">ထွက်ရန်</span>',
+                    cancelButtonText: '<span style="font-size:13px; padding:2px 10px;">မထွက်တော့ပါ</span>',
+                    icon: null,
+                    width: 300,
+                    customClass: {
+                        confirmButton: 'py-1 px-2',
+                        cancelButton: 'py-1 px-2'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '{{ route('logout') }}';
+                    }
+                });
             }
         </script>
 
