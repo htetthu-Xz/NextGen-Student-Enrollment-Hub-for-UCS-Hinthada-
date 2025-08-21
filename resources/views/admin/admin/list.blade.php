@@ -88,7 +88,7 @@
                                         </td>
 
                                         <td style="font-size: 1.1rem">{{ $admin->email }}</td>
-                                        <td style="font-size: 1.1rem">{{ $admin->AcademicYear->name }}</td>
+                                        <td style="font-size: 1.1rem">{{ $admin->AcademicYear->name ?? 'N/A' }}</td>
                                         <td style="font-size: 1.1rem">
                                         <a href="#" onclick="showSweetConfirm(event, '{{ route('stop.mail', $admin->id) }}', 'Are you sure you want to stop mail for this student?')">
                                             <i class="fas fa-ban" style="color: red"></i>
