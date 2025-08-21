@@ -115,7 +115,7 @@ class StudentRegistrationController extends Controller
 
             $studentReg = StudentRegistration::create($registration);
 
-            // if($studentReg->academicYear->esemester == "Second Semester") 
+            // if($studentReg->academicYear->esemester == "Second Semester")
             // {
             //     $studentReg->update([
             //         'is_request_payment' => true,
@@ -795,11 +795,11 @@ class StudentRegistrationController extends Controller
             $table->addRow();
             $table->addCell(2000)->addText('စဉ်');
             $table->addCell(4000)->addText('ကျောင်းသားအမည်');
-            $table->addCell(4000)->addText('တတ်ရောက်သောနှစ်');
+            $table->addCell(4000)->addText('တက်ရောက်သောနှစ်');
             $table->addCell(4000)->addText('ခုံနံပါတ်');
             $table->addCell(6000)->addText('ဖုန်းနံပါတ်');
             $table->addCell(8000)->addText('ကျောင်းအပ်သည့်နေ့စွဲ');
-            $table->addCell(8000)->addText('ကျောင်းအပ်ခြင်းအခြေနေ');
+            $table->addCell(8000)->addText('ကျောင်းအပ်ခြင်းအခြေအနေ');
 
             // Add data rows
             $counter = 1;

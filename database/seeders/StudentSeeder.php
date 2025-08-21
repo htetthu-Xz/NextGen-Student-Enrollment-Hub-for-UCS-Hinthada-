@@ -95,6 +95,27 @@ class StudentSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'Mu Yar',
+            'uuid' => Str::uuid(),
+            'email' => 'muyar@ucsh.edu.mm',
+            'role' => 'user',
+            'major' => 'CS',
+            'password' => 'P@ssw0rd',
+            'image' => 'logo.jpg',
+            'uni_Id_no' => 'CU(Hinthada)8885',
+            'current_father_name' => 'U Zaw Aung',
+            'current_mother_name' => 'Daw Soe Htet',
+            'current_NRC' => '12/ABK(N)123456',
+            'DOB' => '2000-01-01',
+            'permanent_address' => 'Hinthada, Myanmar',
+            'phone' => '09123236789',
+            'current_academic_year' => '2024-2025',
+            'current_roll_number' => '2CS-15',
+            'current_academic_year_id' =>4,
+        ]);
+
+
+        User::create([
             'name' => 'Wai Yan',
             'uuid' => Str::uuid(),
             'email' => 'waiyan@ucsh.edu.mm',

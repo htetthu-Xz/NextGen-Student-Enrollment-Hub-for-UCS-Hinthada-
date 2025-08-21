@@ -68,7 +68,7 @@
                                     <th style="">သင်တန်းနှစ်</th>
 
 
-                                    <th style="">ရပ်နားစရင်းထည့်ရန်</th>
+                                    <th style="">ရပ်နားစာရင်းထည့်ရန်</th>
                                     <th style="">ကျောင်းပြောင်းစာရင်းထည့်ရန်</th>
                                     <th style="">Edit</th>
                                     <th style="">Trash</th>
@@ -88,11 +88,11 @@
                                         </td>
 
                                         <td style="font-size: 1.1rem">{{ $admin->email }}</td>
-                                        <td style="font-size: 1.1rem">{{ $admin->AcademicYear->name }}</td>
+                                        <td style="font-size: 1.1rem">{{ $admin->AcademicYear->name ?? 'N/A' }}</td>
                                         <td style="font-size: 1.1rem"><a href="{{route('stop.mail',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-ban" style="color: red"></i></a></td>
                                         <td style="font-size: 1.1rem"><a href="{{route('student.transfer',$admin->id)}}" onclick="return confirm('သေချာလား?');" ><i class="fas fa-exchange-alt" style="color: green"></i></a></td>
                                         <th><a href="{{route('admin.info.edit',$admin->id)}}"><i class="fas fa-edit" style="color:rgb(18, 124, 18)"></a></i></th>
-                                    <th><a href="{{route('admin.delete',$admin->id)}}" onclick="return confirm('ဖြတ်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
+                                    <th><a href="{{route('admin.delete',$admin->id)}}" onclick="return confirm('ဖျက်ရန်သေချာလား?');"><i class="fas fa-trash-alt" style="color: red"></i></a></th>
 
 
 

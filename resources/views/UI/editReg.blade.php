@@ -222,7 +222,7 @@
                                             <div class="col-3">
 
                                                 <label for="family"
-                                                    class="col-form-label pcolor ml-5"><b>ငွေလွဲပြေစာ</b></label>
+                                                    class="col-form-label pcolor ml-5"><b>ငွေလွှဲပြေစာ</b></label>
                                                 <div class="">
                                                     <input id="family" type="file"
                                                         class="form-control @error('family') is-invalid @enderror"

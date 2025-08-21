@@ -49,7 +49,7 @@
                         @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="uni_id_no" class="form-label">တက္ကသိုလ်မှက်ပုံတင်အမှတ်</label>
+                    <label for="uni_id_no" class="form-label">တက္ကသိုလ်မှတ်ပုံတင်အမှတ်</label>
                     <input type="text" name="uni_id_no" id="uni_id_no" class="form-control" placeholder="CU(Hinthada)XXXX" required>
                         @error('uni_id_no')
                             <span class="invalid-feedback">{{$message}}</span>

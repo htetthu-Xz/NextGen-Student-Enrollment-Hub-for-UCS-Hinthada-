@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-lg-7">
                             <div class="mr-5" >
-                                <form action="{{route('register')}}" method="post" enctype="multipart/form-data"> 
+                                <form action="{{route('register')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <h4 class="mt-3 mb-4 text-center pcolor"><b>ကျောင်းသားသုံး Account တစ်ခုဖန်တီးရန်</b></h4>
 
@@ -45,7 +45,7 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="uni_id_no" class="mb-2 pcolor"><b>တက္ကသိုလ်မှက်ပုံတင်အမှက်</b></label>
+                                        <label for="uni_id_no" class="mb-2 pcolor"><b>တက္ကသိုလ်မှတ်ပုံတင်အမှတ်</b></label>
                                         <input type="text" name="uni_id_no" value="{{old('uni_id_no')}}" class="form-control @error('uni_id_no') is-invalid @enderror" id="uni_id_no" placeholder="CU(Hinthada)XXXX">
                                         @error('uni_id_no')
                                             <span class="invalid-feedback">{{$message}}</span>
@@ -60,7 +60,7 @@
                                         @enderror
                                     </div>
 
-                                        
+
 
                                     <div class="my-2 text-center pcolor" >
                                         <button class="btn wbtn text-white w-100 mb-3">အကောင့် လုပ်မည်</button>

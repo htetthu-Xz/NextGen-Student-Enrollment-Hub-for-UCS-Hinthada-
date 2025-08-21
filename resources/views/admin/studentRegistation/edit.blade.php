@@ -198,7 +198,7 @@
                               <div class="mb-3 row align-items-center container">
                                            <div class="col-4">
                                              <label for="family" class=" col-form-label pcolor ml-5"><b>
-                                                    ငွေလွဲပြေစာ</b></label>
+                                                    ငွေလွှဲပြေစာ</b></label>
                                             <div class="">
                                                 <input id="family" type="file"
                                                     class="form-control @error('family') is-invalid @enderror"
