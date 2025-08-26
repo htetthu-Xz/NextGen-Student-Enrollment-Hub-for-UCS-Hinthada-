@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicYear;
-use App\Models\StudentRegistration;
 use App\Models\User;
-use Illuminate\Auth\AuthServiceProvider;
+use App\Models\Year;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthServiceProvider;
 
 class UiController extends Controller
 {
@@ -28,8 +29,8 @@ class UiController extends Controller
     public function stuReg()
     {
         $years = AcademicYear::all();
-
-        return view('UI.sturegist', compact('years'));
+        $yrs = Year::where('is_current', 1)->first();
+        return view('UI.sturegist', ['years' => $years, 'yrs' => $yrs]);
     }
 
     public function uiRegister()
@@ -70,8 +71,35 @@ class UiController extends Controller
 
     public function history()
     {
-        $regs = StudentRegistration::where('user_id', Auth::user()->id)->paginate();
-        return view('UI.history', compact('regs'));
+        $regs = StudentRegistration::where('user_id', Auth::user()->id)->with(['payments' => function ($q) {
+            $q->orderByDesc('created_at');
+        }])->paginate();
+
+        $paymentInfo = [];
+        $reg = $regs->where('status', 'pending')->first();
+        $current_payment = $reg->payments()->where('status', 'pending')->first();
+        if ($reg) {
+            $successPayment = $reg->payments->where('status', 'completed')->first();
+            if ($successPayment) {
+                $paymentInfo[$reg->id] = [
+                    'bank_name' => $successPayment->bank_name ?? '',
+                    'payment_method' => $successPayment->payment_method ?? '',
+                    'phone_number' => $successPayment->phone_number ?? '',
+                    'account_number' => $successPayment->account_number ?? '',
+                    'account_holder_name' => $successPayment->account_holder_name ?? '',
+                    'transaction_image' => $successPayment->transaction_image ?? '',
+                    'transaction_note' => $successPayment->transaction_note ?? '',
+                    'paid_amount' => $successPayment->paid_amount ?? '',
+                    'full_paid' => $successPayment->payment_type == 'fully Paid' ? true : false,
+                    'partial_paid' => $successPayment->payment_type == 'partially Paid' ? true : false,
+                    'left_amount' => $reg->academicYear->enrollment - $reg->paid_amount
+                ];
+            } else {
+                $paymentInfo[$reg->id] = null;
+            }
+        }
+        //dd($paymentInfo, $reg, $successPayment);
+        return view('UI.history', compact('regs', 'paymentInfo', 'reg', 'current_payment'));
     }
     public function showImage($name)
     {

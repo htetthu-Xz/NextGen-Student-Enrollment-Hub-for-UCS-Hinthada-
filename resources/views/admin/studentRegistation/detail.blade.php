@@ -147,7 +147,7 @@
     </div>
 
 
-    @if($registration->payment_screenshot)
+    @if($payment->transaction_image ?? false)
         <div class="card shadow mb-4">
             <div class="card-header bg-success text-white">
                 <strong>Payment Information</strong>
@@ -157,8 +157,8 @@
                     <tr>
                         <th>Payment Screenshot</th>
                         <td colspan="3">
-                            <a href="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" target="_blank">
-                                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $registration->payment_screenshot) }}" width="150" class="img-thumbnail">
+                            <a href="{{ asset(File::GetStudentDataPath($registration->User) . $payment->transaction_image) }}" target="_blank">
+                                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $payment->transaction_image) }}" width="150" class="img-thumbnail">
                             </a>
                         </td>
                     </tr>
@@ -168,12 +168,10 @@
     @endif
 
     <div class="text-center mt-4">
-        @if ($registration->payment_screenshot != null && $registration->status === "pending")
+        @if ($payment->transaction_image ?? false && $registration->status === "pending")
             <a href="{{ route('admin.stu.accept', $registration->id) }}" class="btn btn-success mx-2">
                 <i class="fa fa-check"></i> Accept
             </a>
-        @endif
-        @if($registration->is_request_payment != '1') 
             <a href="#" onclick="showRejectPrompt({{ $registration->id }}); return false;" class="btn btn-danger mx-2">
                 <i class="fa fa-times"></i> Reject
                 <form id="reject-form-{{ $registration->id }}" action="{{ route('admin.stu.reg.delete', $registration->id) }}" method="POST" style="display:none;">
@@ -182,7 +180,9 @@
                     <input type="hidden" name="reject_message" id="reject-message-{{ $registration->id }}">
                 </form>
             </a>
-            <a href="{{ route('admin.stu.reg.request.payment', $registration->id) }}" class="btn btn-warning mx-2">
+        @endif
+        @if (!$payment->transaction_image ?? false && $registration->status === "pending")
+            <a href="#" onclick="showRequestPaymentPrompt({{ $registration->id }}); return false;" class="btn btn-warning mx-2">
                 <i class="fa fa-money-bill"></i> Request Payment
             </a>
         @endif
@@ -192,6 +192,7 @@
 
 @push('scripts')
     <script>
+        
         function showRejectPrompt(regId) {
             Swal.fire({
                 title: 'Reject Message',
@@ -213,5 +214,98 @@
                 }
             });
         }
+
+        function showRequestPaymentPrompt(regId) {
+            Swal.fire({
+                title: 'Request Payment',
+                html: `
+                    <label for="bankName" class="form-label text-start d-block">Bank Name</label>
+                    <input type="text" id="bankName" class="form-control mb-2" value="KBZ" placeholder="Bank Name" required>
+
+                    <label for="paymentMethod" class="form-label text-start d-block">Payment Method & Account information</label>
+                    <select id="paymentMethod" class="form-control mb-2">
+                        <option value="">Select Method</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                    </select>
+
+                    <input type="text" id="phoneNumber" class="form-control mb-2" placeholder="Phone Number" style="display:none;">
+
+                    <input type="text" id="accountNumber" class="form-control mb-2" placeholder="Account Number" style="display:none;">
+
+                    <input type="text" id="accountHolderName" class="form-control mb-2" placeholder="Account Holder Name" style="display:none;">
+
+                    <hr class="my-3 bg-dark">
+
+                    <label for="fee1" class="form-label text-start d-block">သင်တန်းနှစ်ကြေး</label>
+                    <input type="number" id="reg_fee" class="form-control mb-2">
+
+                    <label for="fee2" class="form-label text-start d-block">ကျောင်းဝင်ကြေး</label>
+                    <input type="number" id="school_entry_fee" class="form-control mb-2" value="0.00">
+
+                    <label for="fee3" class="form-label text-start d-block">စာမေးပွဲကြေး</label>
+                    <input type="number" id="exam_fee" class="form-control mb-2" value="0.00">
+
+                    <label for="fee4" class="form-label text-start d-block">အားကစားကြေး</label>
+                    <input type="number" id="sport_fee" class="form-control mb-2" value="0.00">
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Request',
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    
+                    const bankName = document.getElementById('bankName').value;
+                    const method = document.getElementById('paymentMethod').value;
+                    const phoneNumber = document.getElementById('phoneNumber').value;
+                    const accountNumber = document.getElementById('accountNumber').value;
+                    const accountHolderName = document.getElementById('accountHolderName').value;
+                    const regFee = document.getElementById('reg_fee').value;
+                    const schoolEntryFee = document.getElementById('school_entry_fee').value;
+                    const examFee = document.getElementById('exam_fee').value;
+                    const sportFee = document.getElementById('sport_fee').value;
+
+                    if (!bankName) return 'Bank name is required';
+                    if (!method) return 'Payment method is required';
+                    if (method === 'mobile' && !phoneNumber) return 'Phone number is required';
+                    if (method === 'bank_transfer' && !accountNumber) return 'Account number is required';
+
+                    return { bank_name: bankName, payment_method: method, phone_number: phoneNumber, account_number: accountNumber, account_holder_name: accountHolderName, reg_fee: regFee, school_entry_fee: schoolEntryFee, exam_fee: examFee, sport_fee: sportFee };
+                },
+                didOpen: () => {
+                    document.getElementById('reg_fee').value = "{{ $registration->academicYear->enrollment }}";
+                    document.getElementById('paymentMethod').addEventListener('change', function() {
+                        const method = this.value;
+                        document.getElementById('phoneNumber').style.display = method === 'mobile' ? 'block' : 'none';
+                        document.getElementById('accountNumber').style.display = method === 'bank_transfer' ? 'block' : 'none';
+                        document.getElementById('accountHolderName').style.display = method === 'bank_transfer' ? 'block' : 'none';
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed && typeof result.value === 'object') {
+                    fetch(`/studentReg/request-payment/${regId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(result.value)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('Success!', 'Payment request sent.', 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error!', data.message || 'Failed to request payment.', 'error');
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire('Error!', 'Failed to request payment.', 'error');
+                    });
+                }
+            });
+        }
+        
     </script>
 @endpush

@@ -181,7 +181,8 @@ class StudentRegistrationController extends Controller
     public function stuRegDetail($id)
     {
         $registration = StudentRegistration::find($id);
-        return view('admin.studentRegistation.detail', compact('registration'));
+        $payment = $registration->payments()->whereIn('status', ['pending', 'completed'])->first();
+        return view('admin.studentRegistation.detail', compact('registration', 'payment'));
     }
 
     public function showImage($name)
@@ -302,24 +303,93 @@ class StudentRegistrationController extends Controller
         return redirect()->route('admin.stu.reg.list')->with('success', 'အောင်မြင်စွာပြင်လိုက်ပါပြီ');
     }
 
-    public function requestPayment(StudentRegistration $studentRegistration)
+    public function requestPayment(StudentRegistration $studentRegistration, Request $request)
     {
-        $studentRegistration->update(['is_request_payment' => true]);
-        Mail::to($studentRegistration->reg_email)->send(new PaymentRequestMail($studentRegistration));
+        $validated = $request->validate([
+            'bank_name' => 'required|string|max:255',
+            'payment_method' => 'required|in:mobile,bank_transfer',
+            'phone_number' => [
+                'nullable',
+                'required_if:payment_method,mobile',
+                'regex:/^09(2|4|6|7|8|9)[0-9]{7,9}$/',
+                'max:30'
+            ],
+            'account_number' => [
+                'nullable',
+                'required_if:payment_method,bank_transfer',
+                // Example: 123456789012 (12 digits)
+                'regex:/^[0-9]{6,20}$/', // Accepts 6 to 20 digits, e.g., 123456 or 12345678901234567890
+                'max:50'
+            ],
+            'account_holder_name' => [
+                'nullable',
+                'required_if:payment_method,bank_transfer',
+                'string',
+                'max:255'
+            ],
+            'reg_fee' => 'nullable|numeric|min:0',
+            'school_entry_fee' => 'nullable|numeric|min:0',
+            'exam_fee' => 'nullable|numeric|min:0',
+            'sport_fee' => 'nullable|numeric|min:0'
+        ]);
 
-        return redirect()
-            ->route('admin.stu.reg.list')
-            ->with('success', 'Payment လုပ်ဆောင်ရန် ကျောင်းသားအား အကြောင်းကြားပြီးပါပြီ။');
+        $data['reg_fee'] = $validated['reg_fee'] ?? 0;
+        $data['school_entry_fee'] = $validated['school_entry_fee'] ?? 0;
+        $data['exam_fee'] = $validated['exam_fee'] ?? 0;
+        $data['sport_fee'] = $validated['sport_fee'] ?? 0;
+
+
+        $studentRegistration->Payments()->create([
+            'bank_name' => $validated['bank_name'],
+            'payment_method' => $validated['payment_method'],
+            'phone_number' => $validated['payment_method'] === 'mobile' ? $validated['phone_number'] : null,
+            'account_number' => $validated['payment_method'] === 'bank_transfer' ? $validated['account_number'] : null,
+            'account_holder_name' => $validated['payment_method'] === 'bank_transfer' ? $validated['account_holder_name'] : null,
+        ]);
+
+        try {
+            Mail::to($studentRegistration->reg_email)->send(new PaymentRequestMail($studentRegistration, $data));
+        } catch (\Exception $e) {
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function paymentInfo($id)
+    {
+        $registration = StudentRegistration::findOrFail($id);
+        $successPayment = $registration->payments()->where('status', 'success')->latest()->first();
+        $imageUrl = null;
+        if ($successPayment && $successPayment->transaction_image) {
+            $imageUrl = asset('storage/images/' . $successPayment->transaction_image);
+        }
+        return response()->json([
+            'success_payment_image' => $imageUrl
+        ]);
     }
 
     public function submitPayment(StudentRegistration $studentRegistration, Request $request)
     {
         // dd($request->all());
         $validatedData = $request->validate([
-            'payment_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'transaction_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'transaction_note' => 'nullable|string|max:255',
+            'paid_amount' => 'required',
+            'payment_type' => 'required|string',
         ]);
 
-        $studentRegistration->update(['payment_screenshot' => File::upload($request->file('payment_file'), 'images/' . Auth::user()->uuid . '/')]);
+
+        $studentRegistration->update([
+            'paid_amount' => $validatedData['paid_amount'],
+            'left_amount' => $studentRegistration->academicYear->enrollment - $validatedData['paid_amount'],
+        ]);
+
+        $payment = $studentRegistration->payments()->where('status', 'pending')->latest()->first();
+
+        $payment->update([
+            'transaction_image' => File::upload($request->file('transaction_image'), 'images/' . Auth::user()->uuid . '/'),
+            'transaction_note' => $validatedData['transaction_note'],
+            'payment_type' => $validatedData['payment_type'],
+        ]);
 
         return response()->json(['status' => 'ok']);
     }
@@ -614,6 +684,13 @@ class StudentRegistrationController extends Controller
             'phone' => $studentRegistration->phone . '/' . $studentRegistration->guardian_phone,
         ]);
 
+        $payment = $studentRegistration->payments()
+            ->where(function ($query) {
+                $query->whereIn('status', ['pending', 'completed']);
+            })
+            ->latest()
+            ->first();
+        $payment->update(['status' => 'completed']);
         Mail::to($studentRegistration->reg_email)->send(new RegistrationSuccessMail($studentRegistration));
 
         return redirect()->route('admin.stu.reg.accept.list')->with('success', 'ကျောင်းအပ် လက်ခံလိုက်ပါပြီ');

@@ -14,12 +14,15 @@ class PaymentRequestMail extends Mailable
     use Queueable, SerializesModels;
 
     protected $reg;
+    protected $data;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($reg)
+    public function __construct($reg, $data)
     {
         $this->reg = $reg;
+        $this->data = $data;
     }
 
     /**
@@ -40,7 +43,8 @@ class PaymentRequestMail extends Mailable
         return new Content(
             view: 'emails.payment_request',
             with: [
-                'reg' => $this->reg
+                'reg' => $this->reg,
+                'data' => $this->data
             ]
         );
     }

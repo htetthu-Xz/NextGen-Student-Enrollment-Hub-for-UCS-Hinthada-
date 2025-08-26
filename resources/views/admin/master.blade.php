@@ -100,6 +100,13 @@
             </a>
         </li>
 
+        <li class="nav-item {{ request()->routeIs('years.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{route('years.index')}}">
+                <i class="fas fa-users"></i>
+                <span>ပညာသင်နှစ်</span>
+            </a>
+        </li>
+
         <li class="nav-item {{ request()->routeIs('admin.list') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.list') }}">
                 <i class="fas fa-users"></i>

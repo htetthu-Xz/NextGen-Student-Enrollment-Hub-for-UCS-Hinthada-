@@ -5,6 +5,7 @@ use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\YearController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\AcademicYearController;
@@ -58,6 +59,8 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('Students/transfer/list', [AdminController::class, 'transferStuList'])->name('transfer.stu');
     Route::get('/students/transfer/export', [AdminController::class, 'transferExport'])->name('transfer.stu.export');
 
+    Route::resource('years', YearController::class);
+
     Route::get('student/transfer/{user}', [AdminController::class, 'transferStudent'])->name('student.transfer');
     Route::get('stop/mail/{user}', [AdminController::class, 'stopMail'])->name('stop.mail');
     Route::get('nostop/mail/{id}', [AdminController::class, 'nostopMail'])->name('no.stop.mail');
@@ -93,10 +96,11 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('/studentReg/edit/{id}', [StudentRegistrationController::class, 'stuRegEdit'])->name('admin.stu.reg.edit');
     Route::put('/studentReg/update/{id}', [StudentRegistrationController::class, 'stuRegUpdate'])->name('admin.stu.reg.update');
     Route::delete('/studentReg/delete/{student_registration}', [StudentRegistrationController::class, 'stuRegDelete'])->name('admin.stu.reg.delete');
-    Route::get('studentReg/request-payment/{student_registration}', [StudentRegistrationController::class, 'requestPayment'])->name('admin.stu.reg.request.payment');
+    Route::post('studentReg/request-payment/{student_registration}', [StudentRegistrationController::class, 'requestPayment'])->name('admin.stu.reg.request.payment');
 
 
 
+    Route::get('/api/studentReg/{id}/payment-info', [StudentRegistrationController::class, 'paymentInfo']);
     Route::get('/image/{name}', [StudentRegistrationController::class, 'showImage'])->name('image.show');
 
     Route::get('admin/profile', [AdminController::class, 'adminProfile'])->name('admin.profile');
