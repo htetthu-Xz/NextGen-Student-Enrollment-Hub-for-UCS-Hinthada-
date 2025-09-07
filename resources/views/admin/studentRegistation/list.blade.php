@@ -2,7 +2,7 @@
 @section('content')
 <div class="page-wrapper mt-0">
     <div class="card bg-dark text-white">
-        <img class="w-100" src="{{ asset('user/images/ucsh1.jpg') }}" alt="Card image" style="height: 780px; filter: blur(100px); object-fit: cover;">
+        <img class="w-100" src="{{ asset('admin-assets/bg.png') }}" alt="Card image" style="height: 780px; filter: object-fit: cover;">
         <div class="card-img-overlay">
             <!-- Page Content -->
             <div class="content container-fluid">
@@ -87,7 +87,7 @@
                                     <td style="font-size: 1.1rem">{{ $reg->phone }}</td>
 
                                     <td style="font-size: 1.1rem">
-                                        @if ($reg->is_request_payment == '1' && $reg->payment_screenshot != null && $reg->status === "pending")
+                                        @if ($reg->paid_amount != 0 && $reg->status === "pending")
                                             <p style="font-size: 1.1rem"> ငွေပေးချေမှု အတည်ပြုရန် </p>
                                         @elseif ($reg->status === "confirm")
                                             <p style="font-size: 1.1rem"> ကျောင်းအပ်လက်ခံထားသည်</p>

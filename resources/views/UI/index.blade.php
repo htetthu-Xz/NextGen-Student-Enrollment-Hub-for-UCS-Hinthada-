@@ -134,20 +134,20 @@
   }
 
   .uni {
-    font-size:1.15rem;
+    font-size:1.15rem; 
     letter-spacing:.70em;
   }
 
   .sh {
-    letter-spacing:.08em !important;
+    letter-spacing:.08em !important; 
     font-size: 13px !important;
   }
 
   .uni-line {
-    height:2px;
-    background:#2C5E72;
-    border-radius:1px;
-    flex-basis: 100px;
+    height:2px; 
+    background:#2C5E72; 
+    border-radius:1px; 
+    flex-basis: 100px; 
     flex-grow: 0;
   }
 
@@ -163,7 +163,7 @@
     }
 
     .sh {
-      letter-spacing:.04em !important;
+      letter-spacing:.04em !important; 
       font-size: 11px !important;
     }
 
@@ -181,8 +181,14 @@
 
 @section('content')
   <div class="container my-md-5">
+    <div class="text-end" style="text-align: right;">
+      <a href="{{ asset('admin-assets/Form.pdf') }}" class="btn mb-2 btn-success btn-lg px-4" download>
+        Download Registration Form
+      </a>
+    </div>
     <div class="row g-4 g-lg-5 align-items-start p-2">
-      <div class="col-lg-8 {{ auth()->check() ? 'col-lg-12' : '' }} mt-3">
+      <div class="col-lg-8 left-wrap mt-3">
+
         <div class="soft-panel logo-panel mb-4">
           <div class="d-flex justify-content-between align-items-center">
             <div class="text-center uni-logo">
@@ -218,48 +224,47 @@
         </div>
       </div>
 
-      @if (!auth()->check())
-        <div class="col-lg-4 mt-5">
-          <div class="card shadow-sm login-card" style="padding: 0px">
-            <div class="card-header">
-              Login
-            </div>
-            <div class="card-body">
-              <form action="{{ route('login') }}" method="POST">
-                @csrf
-                  @if(session()->has('unauthenticated'))
-                      <div class="alert alert-danger">
-                          {{ session()->get('unauthenticated') }}
-                      </div>
-                  @endif
-                <div class="mb-3">
-                    <label for="email" class="mb-2"><b>Email</b></label>
-                    <input type="text" name="email" value="{{ old('email') }}"
-                        class="form-control border-0 shadow-sm @error('email') is-invalid @enderror"
-                        id="email" placeholder="Enter your email">
-                    @error('email')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
 
-                <div class="mb-3">
-                    <label for="password" class="mb-2"><b>လျှို့ဝှက်နံပါတ်ထည့်ရန်</b></label>
-                    <input type="password" name="password"
-                        class="form-control border-0 shadow-sm @error('password') is-invalid @enderror"
-                        id="password" placeholder="Enter your password">
-                    @error('password')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-                <button type="submit" class="btn btn-success w-100">
-                  Log in <i class="fa-solid fa-right-to-bracket"></i>
-                </button>
-              </form>
-            </div>
+
+      <div class="col-lg-4 mt-5">
+        <div class="card shadow-sm login-card" style="padding: 0px">
+          <div class="card-header">
+            Login
+          </div>
+          <div class="card-body">
+            <form action="{{ route('login') }}" method="POST">
+              @csrf
+                @if(session()->has('unauthenticated'))
+                    <div class="alert alert-danger">
+                        {{ session()->get('unauthenticated') }}
+                    </div>
+                @endif
+              <div class="mb-3">
+                  <label for="email" class="mb-2"><b>Email</b></label>
+                  <input type="text" name="email" value="{{ old('email') }}"
+                      class="form-control border-0 shadow-sm @error('email') is-invalid @enderror"
+                      id="email" placeholder="Enter your email">
+                  @error('email')
+                      <span class="invalid-feedback">{{ $message }}</span>
+                  @enderror
+              </div>
+
+              <div class="mb-3">
+                  <label for="password" class="mb-2"><b>လျှိုဝှက်နံပါတ်ထည့်ရန်</b></label>
+                  <input type="password" name="password"
+                      class="form-control border-0 shadow-sm @error('password') is-invalid @enderror"
+                      id="password" placeholder="Enter your password">
+                  @error('password')
+                      <span class="invalid-feedback">{{ $message }}</span>
+                  @enderror
+              </div>
+              <button type="submit" class="btn btn-success w-100">
+                Log in <i class="fa-solid fa-right-to-bracket"></i>
+              </button>
+            </form>
           </div>
         </div>
-      @endif
-
+      </div>
     </div>
     <div class="row g-4 g-lg-5 align-items-start p-2">
       <div class="col-lg-8 mt-5 new-reg" style="display: none;">
@@ -334,11 +339,32 @@
       });
 
       $('#submitBtn').on('click', function(e) {
-        e.preventDefault();
+        e.preventDefault(); 
         Swal.fire({
           icon: 'info',
           title: 'အသိပေးစာ',
-          text: 'သင်တန်းရေးရာဌာနသို့ လူကိုယ်တိုင် ကျောင်းလာရောက်အပ်နှံရန်လိုအပ်ပါသည်။ကျောင်းသားရဲ့ gmailသို့ ကျောင်းမှစာပို့ထားပါမည် ဝင်ရောက်စစ်ဆေးပါ။ ',
+            html: `
+            <div style="text-align:left; font-size:1rem;">
+              <p>
+              သင်တန်းရေးရာဌာနသို့ လူကိုယ်တိုင် ကျောင်းလာရောက်အပ်နှံရန်လိုအပ်ပါသည်။<br>
+              ကျောင်းသားရဲ့ Gmail သို့ကျောင်းမှစာပိုထားပါမည် ဝင်ရောက်စစ်ဆေးပါ။
+              </p>
+              <b>ပထမနှစ်(ပထမနှစ်ဝက်) သင်တန်း ကျောင်းအပ်ရန် အတွက် လိုအပ်သော စာရွက်စာတမ်းများ</b>
+              <ol style="padding-left:1.2em;">
+              <li>သန်းခေါင်စာရင်း မူရင်း/မိတ္ထူ (၁) စုံ</li>
+              <li>(၆) လအတွင်းရိုက်ကူးထားသောပတ်စပိုဓါတ်ပုံ(အင်္ကျီအဖြူ) (၅) ပုံ</li>
+              <li>မှတ်ပုံတင် မူရင်း/မိတ္ထူ (ကျောင်းသားနှင့်မိဘ (၂)ဦး) (၁) စုံ</li>
+              <li>တက္ကသိုလ်ဝင်တန်း အောင်လက်မှတ် မူရင်း/မိတ္ထူ (၁) စုံ</li>
+              <li>တက္ကသိုလ်ဝင်တန်း အမှတ်စာရင်း မူရင်း/မိတ္ထူ (၁) စုံ</li>
+              </ol>
+              <ul style="padding-left:1.2em;">
+              <li>ကျောင်းအပ်စတင်လက်ခံမည့်ရက် - <b>၂၂.၅.၂၀၂၆</b> (ကြာသာပတေးနေ့) စနေ၊တနင်္ဂနွေမပါ</li>
+              <li>ကျောင်းအပ်လက်ခံမည့် နောက်ဆုံးရက် - <b>၆.၆.၂၀၂၆</b> (သောကြာနေ့)</li>
+              <li>ကျောင်းစတင်ဖွင့်လှစ်မည့်ရက် - <b>၂.၆.၂၀၂၆</b> (တနင်္လာနေ့)</li>
+              </ul>
+            </div>
+            `,
+
           confirmButtonText: 'OK'
         }).then((result) => {
           if (result.isConfirmed) {

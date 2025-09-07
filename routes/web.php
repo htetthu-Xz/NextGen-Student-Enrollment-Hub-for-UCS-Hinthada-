@@ -44,6 +44,7 @@ Route::middleware('custom.auth')->group(function () {
 });
 
 Route::middleware('admin', 'auth')->group(function () {
+
     Route::get('/admin/registrations/word-download', [StudentRegistrationController::class, 'aceeptwordDownload'])->name('admin.registrations.accept.word.download');
     Route::get('admin/stu-reg-list/export', [StudentRegistrationController::class, 'exportToWord'])->name('admin.stu.reg.export');
     Route::get('accept/list', [AdminController::class, 'acceptList'])->name('admin.stu.reg.accept.list');
@@ -66,6 +67,8 @@ Route::middleware('admin', 'auth')->group(function () {
     Route::get('nostop/mail/{id}', [AdminController::class, 'nostopMail'])->name('no.stop.mail');
     Route::get('/reg/give/edit/{id}', [StudentRegistrationController::class, 'giveEdit'])->name('admin.stu.give.edit');
     Route::get('/reg/accept/{student_registration}', [StudentRegistrationController::class, 'regAccept'])->name('admin.stu.accept');
+    Route::get('payments/{payment}/complete', [StudentRegistrationController::class, 'completePayment'])->name('admin.stu.payment.complete');
+    Route::get('regs/{student_registration}/skip-payment', [StudentRegistrationController::class, 'skipPayment'])->name('admin.stu.payment.skip');
 
     Route::get('fresher-registration/list', [FresherRegistrationController::class, 'fresherRegList'])->name('fresher.reg.list');
     Route::get('/fresher/accept/{fresher}', [FresherRegistrationController::class, 'fresherAccept'])->name('fresher.accept');

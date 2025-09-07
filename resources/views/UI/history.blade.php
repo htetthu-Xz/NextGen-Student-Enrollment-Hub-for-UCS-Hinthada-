@@ -48,7 +48,7 @@
                               <td class="">{{ $reg->phone }}</td>
                               <td class=""><a href="{{route('ui.view.reg.detail', $reg->id)}}"><i class="fas fa-eye"></i></a></td>
                               <td class="">
-                                @if (!$current_payment->transaction_image)
+                                @if ($reg->is_payment_requested == 1)
                                     <span class="badge bg-info p-2">ငွေသွင်းရန် လိုအပ်ပါသည်။</span>
                                 @else
                                     @if($reg->status==="pending")
@@ -61,11 +61,16 @@
                                 @endif
                             </td>
                             <td class="">
-                                @if(!$current_payment->transaction_image)
-                                <form action="{{ route('admin.stu.reg.submit.payment', $reg->id) }}" method="POST" enctype="multipart/form-data" class="d-inline" id="paymentForm-{{ $reg->id }}">
-                                    @csrf
-                                    <button type="button" class="btn btn-info btn-sm" onclick="showPaymentModal({{ $reg->id }})">ငွေပေးချေမည်</button>
-                                </form>
+                                @if($current_payment && !$current_payment->transaction_image)
+                                    <form action="{{ route('admin.stu.reg.submit.payment', $reg->id) }}" method="POST" enctype="multipart/form-data" class="d-inline" id="paymentForm-{{ $reg->id }}">
+                                        @csrf
+                                        <button type="button" class="btn btn-info btn-sm" onclick="showPaymentModal({{ $reg->id }})">ငွေပေးချေမည်</button>
+                                    </form>
+                                    @php
+                                        if ($reg->is_payment_requested == 1) {
+                                            $rID = $reg->id;
+                                        }
+                                    @endphp
                                 @else
                                     @if ($reg->status === 'pending' || $reg->status === 'confirm')
                                         -
@@ -94,57 +99,80 @@
 @push('scripts')
     <script>
         function showPaymentModal(regId) {
-            // Get payment info from controller data
             const info = @json($paymentInfo);
             const payment = info[regId];
+            const current_payment = @json($current_payment);
+            const reg = @json($regs->firstWhere('id', $rID ?? 1));
+            @php
+                $amount = 0;
+                if($current_payment) {
+                    $amount = $current_payment->StudentRegistration->academicYear->enrollment - $reg->paid_amount;
+                }
+            @endphp
+            const amount = {{ $amount }};
             let paymentDetails = '';
             if (payment) {
-                paymentDetails += '<div class="mb-2 text-start  ">';
+                paymentDetails += `<div class="mb-3 p-3 rounded shadow-sm" style="background:#f8f9fa; border:1px solid #e3e3e3;">
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <h5 class="fw-bold text-primary mb-2" style="text-align:left;">Last Payment Information</h5>
+                        </div>`;
                 if (payment.payment_method === 'mobile') {
-                    paymentDetails += `<strong>Mobile Number:</strong> ${payment.phone_number}<br>`;
+                    paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Mobile Number:</span> <span class="text-dark">${payment.phone_number}</span></div>`;
                 } else if (payment.payment_method === 'bank_transfer') {
-                    paymentDetails += `<strong>Bank Name:</strong> ${payment.bank_name}<br>`;
-                    paymentDetails += `<strong>Account Number:</strong> ${payment.account_number}<br>`;
-                    paymentDetails += `<strong>Account Holder Name:</strong> ${payment.account_holder_name}<br>`;
+                    paymentDetails += `<div class="col-6 mb-1" style="text-align:left;"><span class="fw-bold">Bank Name:</span> <span class="text-dark">${payment.bank_name}</span></div>`;
+                    paymentDetails += `<div class="col-6 mb-1" style="text-align:left;"><span class="fw-bold">Account Number:</span> <span class="text-dark">${payment.account_number}</span></div>`;
+                    paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Account Holder Name:</span> <span class="text-dark">${payment.account_holder_name}</span></div>`;
                 }
                 if (payment.paid_amount) {
-                    paymentDetails += `<strong>Paid Amount:</strong> ${payment.paid_amount}<br>`;
+                    paymentDetails += `<div class="col-6 mb-1" style="text-align:left;"><span class="fw-bold">Paid Amount:</span> <span class="text-dark">${payment.paid_amount}</span></div>`;
                 }
                 if (payment.transaction_note) {
-                    paymentDetails += `<strong>Note:</strong> ${payment.transaction_note}<br>`;
+                    paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Note:</span> <span class="text-dark">${payment.transaction_note}</span></div>`;
                 }
                 if (payment.transaction_image) {
-                    paymentDetails += `<div class='mb-2'><a href="{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg->User)) }}/${payment.transaction_image}" target="_blank"><img src='{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg->User)) }}/${payment.transaction_image}' class='img-thumbnail' style='max-width:200px;'></a></div>`;
+                    paymentDetails += `<div class='col-12 mb-2' style="text-align:left;"><a href="{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg->User)) }}/${payment.transaction_image}" target="_blank"><img src='{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg->User)) }}/${payment.transaction_image}' class='img-thumbnail border border-primary' style='max-width:220px;'></a></div>`;
                 }
-                paymentDetails += `<strong>Paid Type:</strong> `;
-                paymentDetails += payment.full_paid ? '<span class="badge bg-success">Full Paid</span> <br>' : '';
-                paymentDetails += payment.partial_paid ? '<span class="badge bg-warning">Partial Paid</span> <br>' : '';
-                paymentDetails += `<strong>Left Amount:</strong> {{ $reg->left_amount }}<br>`;
-                paymentDetails += '</div>';
+                paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Paid Type:</span> `;
+                paymentDetails += payment.full_paid ? '<span class="badge bg-success">Full Paid</span> ' : '';
+                paymentDetails += payment.partial_paid ? '<span class="badge bg-warning">Partial Paid</span> ' : '';
+                paymentDetails += `</div>`;
+                paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Left Amount:</span> <span class="text-danger">{{ $reg->left_amount }}</span></div>`;
+                paymentDetails += '</div></div>';
             }
             Swal.fire({
-                title: 'Payment',
+                title: '<span class="fw-bold text-primary" style="text-align:left;">Payment</span>',
                 html: `
                     ${paymentDetails}
-                    <div class="text-start mb-2">
-                        <label for="paymentFile-${regId}" class="d-block text-start">Transaction Image</label>
-                        <input type="file" id="paymentFile-${regId}" name="payment_file" class="form-control mb-2 text-start" accept="image/*">
+                    <div class="mb-3" style="text-align:left;">
+                        <p>Bank Name: ${current_payment.bank_name}</p>
+                        <p>Payment Method: ${current_payment.payment_method}</p>
+                        <p>Amount: ${amount} MMK</p>
+                        ${current_payment.payment_method === 'mobile' ? `<p>Phone Number: ${current_payment.phone_number}</p>` : ''}
+                        ${current_payment.payment_method === 'bank_transfer' ? `<p>Account Number: ${current_payment.account_number}</p><p>Account Holder Name: ${current_payment.account_holder_name}</p>` : ''}
                     </div>
-                    <div class="text-start mb-2">
-                        <label for="transactionNote-${regId}" class="d-block text-start">Transaction Note</label>
-                        <input type="text" id="transactionNote-${regId}" name="transaction_note" class="form-control mb-2 text-start">
+                    <div class="mb-3" style="text-align:left;">
+                        <label for="paymentFile-${regId}" class="d-block fw-bold" style="text-align:left;">Transaction Image</label>
+                        <input type="file" id="paymentFile-${regId}" name="payment_file" class="form-control mb-2" style="text-align:left;" accept="image/*">
                     </div>
-                    <div class="text-start mb-2">
-                        <label for="paidAmount-${regId}" class="d-block text-start">Paid Amount</label>
-                        <input type="number" id="paidAmount-${regId}" name="paid_amount" class="form-control mb-2 text-start">
+                    <div class="mb-3" style="text-align:left;">
+                        <label for="transactionNote-${regId}" class="d-block fw-bold" style="text-align:left;">Transaction Note</label>
+                        <input type="text" id="transactionNote-${regId}" name="transaction_note" class="form-control mb-2" style="text-align:left;">
                     </div>
-                    <div class="form-check mb-2 text-start">
-                        <input class="form-check-input" type="checkbox" id="fullPaid-${regId}" name="full_paid">
-                        <label class="form-check-label text-start" for="fullPaid-${regId}">Full Paid</label>
+                    <div class="mb-3" style="text-align:left;">
+                        <label for="paidAmount-${regId}" class="d-block fw-bold" style="text-align:left;">Paid Amount</label>
+                        <input type="number" id="paidAmount-${regId}" name="paid_amount" class="form-control mb-2" style="text-align:left;">
                     </div>
-                    <div class="form-check mb-2 text-start">
-                        <input class="form-check-input" type="checkbox" id="partialPaid-${regId}" name="partial_paid">
-                        <label class="form-check-label text-start" for="partialPaid-${regId}">Partial Paid</label>
+                    <div class="mb-3" style="text-align:left;">
+                        <label class="d-block fw-bold mb-1" style="text-align:left;">Paid Type</label>
+                        <div class="form-check form-check-inline" style="text-align:left;">
+                            <input class="form-check-input" type="radio" name="payment_type" id="fullPaid-${regId}" value="full_paid">
+                            <label class="form-check-label" for="fullPaid-${regId}" style="text-align:left;">Full Paid</label>
+                        </div>
+                        <div class="form-check form-check-inline" style="text-align:left;">
+                            <input class="form-check-input" type="radio" name="payment_type" id="partialPaid-${regId}" value="partial_paid">
+                            <label class="form-check-label" for="partialPaid-${regId}" style="text-align:left;">Partial Paid</label>
+                        </div>
                     </div>
                 `,
                 showCancelButton: true,
@@ -154,10 +182,13 @@
                     const fileInput = document.getElementById(`paymentFile-${regId}`);
                     const transactionNote = document.getElementById(`transactionNote-${regId}`).value;
                     const paidAmount = document.getElementById(`paidAmount-${regId}`).value;
-                    const fullPaid = document.getElementById(`fullPaid-${regId}`).checked;
-                    const partialPaid = document.getElementById(`partialPaid-${regId}`).checked;
+                    const paymentType = document.querySelector(`input[name='payment_type']:checked`);
                     if (!fileInput.files.length) {
                         Swal.showValidationMessage('Please upload transaction image.');
+                        return false;
+                    }
+                    if (!paymentType) {
+                        Swal.showValidationMessage('Please select paid type.');
                         return false;
                     }
                     // Attach file to form and submit
@@ -166,9 +197,7 @@
                     formData.append('transaction_image', fileInput.files[0]);
                     formData.append('transaction_note', transactionNote);
                     formData.append('paid_amount', paidAmount);
-                    let type = fullPaid ? 'fully Paid' : 'partially Paid';
-                    formData.append('payment_type', type);
-                    //console.log(type);
+                    formData.append('payment_type', paymentType.value);
                     return fetch(form.action, {
                         method: 'POST',
                         headers: {

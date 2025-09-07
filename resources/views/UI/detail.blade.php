@@ -160,7 +160,7 @@
 
 
 
-            <div class="row justify-content-center mb-4">
+            {{-- <div class="row justify-content-center mb-4">
                 <div class="col-md-6">
                     <h5 class="text-primary text-center">Payment</h5>
                     <ul class="list-group">
@@ -173,7 +173,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
 
 
             <!-- Status -->

@@ -76,10 +76,12 @@ class UiController extends Controller
         }])->paginate();
 
         $paymentInfo = [];
-        $reg = $regs->where('status', 'pending')->first();
+        $reg = $regs->whereIn('status', ['pending', 'confirm'])->first();
+
         $current_payment = $reg->payments()->where('status', 'pending')->first();
         if ($reg) {
-            $successPayment = $reg->payments->where('status', 'completed')->first();
+            $successPayment = $reg->payments->whereIn('status', ['completed', 'partial_paid'])->first();
+
             if ($successPayment) {
                 $paymentInfo[$reg->id] = [
                     'bank_name' => $successPayment->bank_name ?? '',

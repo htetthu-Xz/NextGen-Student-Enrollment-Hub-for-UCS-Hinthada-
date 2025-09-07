@@ -67,11 +67,12 @@
                 To complete your enrollment, please proceed with the payment.
             </p>
             <p>
-                သင်တန်းနှစ်ကြေး : {{ number_format($data['reg_fee'], 2) }} MMK
-                ကျောင်းဝင်ကြေး : {{ number_format($data['school_entry_fee'], 2) }} MMK
-                စာမေးပွဲကြေး : {{ number_format($data['exam_fee'], 2) }} MMK
+                သင်တန်းနှစ်ကြေး : {{ number_format($data['reg_fee'], 2) }} MMK <br>
+                ကျောင်းဝင်ကြေး : {{ number_format($data['school_entry_fee'], 2) }} MMK <br>
+                စာမေးပွဲကြေး : {{ number_format($data['exam_fee'], 2) }} MMK <br>
                 အားကစားကြေး : {{ number_format($data['sport_fee'], 2) }} MMK
             </p>
+            <p>Description: {{ $data['payment_note'] ?? '-' }}</p>
             <p>
                 If you have any questions or need assistance, please contact our support team.
             </p>

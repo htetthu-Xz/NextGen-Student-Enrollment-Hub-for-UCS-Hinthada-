@@ -147,31 +147,66 @@
     </div>
 
 
-    @if($payment->transaction_image ?? false)
-        <div class="card shadow mb-4">
-            <div class="card-header bg-success text-white">
-                <strong>Payment Information</strong>
+    @if($registration->payments ?? false)
+        @if ($registration->paid_amount !== 0)
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <strong>Payment Information</strong>
+                </div>
+                @foreach ($registration->payments as $payment)
+                    @if ($payment->transaction_image ?? false)
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ $loop->iteration == 1 ? 'First Payment' : ($loop->iteration == 2 ? 'Second Payment' : ($loop->iteration == 3 ? 'Third Payment' : $loop->iteration . 'th Payment')) }}
+                            </h5>
+                            <table class="table custom-table">
+                                <tr>
+                                    <th>Bank Name</th>
+                                    <td>{{ $payment->bank_name }}</td>
+                                    <th>Payment Method</th>
+                                    <td>{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}</td
+                                </tr>
+                                <tr>
+                                    <th>Transaction Note</th>
+                                    <td>{{ $payment->transaction_note }}</td>
+                                    <th>Payment Type</th>
+                                    <td>{{ ucfirst(str_replace('_', ' ', $payment->payment_type)) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Paid Amount</th>
+                                    <td>{{ number_format($payment->amount, 2) }} MMK</td>
+                                    <th>Transaction Image</th>
+                                    <td colspan="3">
+                                        <a href="{{ asset(File::GetStudentDataPath($registration->User) . $payment->transaction_image) }}" target="_blank">
+                                            View Image
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                @if ($payment->status == 'pending')
+                                    <tr>
+                                        <th>Action</th>
+                                        <td colspan="3"><a href="{{ route('admin.stu.payment.complete', $payment->id) }}" class="btn btn-success">Complete Payment</a></td>
+                                    </tr>
+                                @endif
+                            </table>
+                        </div>
+                    @endif
+                @endforeach
             </div>
-            <div class="card-body">
-                <table class="table custom-table">
-                    <tr>
-                        <th>Payment Screenshot</th>
-                        <td colspan="3">
-                            <a href="{{ asset(File::GetStudentDataPath($registration->User) . $payment->transaction_image) }}" target="_blank">
-                                <img src="{{ asset(File::GetStudentDataPath($registration->User) . $payment->transaction_image) }}" width="150" class="img-thumbnail">
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        @endif
     @endif
 
     <div class="text-center mt-4">
-        @if ($payment->transaction_image ?? false && $registration->status === "pending")
-            <a href="{{ route('admin.stu.accept', $registration->id) }}" class="btn btn-success mx-2">
-                <i class="fa fa-check"></i> Accept
-            </a>
+        @if ($payment->transaction_image ?? false)
+            @if ($registration->status === 'pending')
+                <a href="{{ route('admin.stu.accept', $registration->id) }}" class="btn btn-success mx-2">
+                    <i class="fa fa-check"></i> Accept
+                </a>
+            @endif
+        @endif
+
+        @if ($registration->status !== 'confirm')
             <a href="#" onclick="showRejectPrompt({{ $registration->id }}); return false;" class="btn btn-danger mx-2">
                 <i class="fa fa-times"></i> Reject
                 <form id="reject-form-{{ $registration->id }}" action="{{ route('admin.stu.reg.delete', $registration->id) }}" method="POST" style="display:none;">
@@ -181,9 +216,16 @@
                 </form>
             </a>
         @endif
-        @if (!$payment->transaction_image ?? false && $registration->status === "pending")
+
+        @if ($registration->is_payment_requested == 0 && $registration->payment_type == 'partial_paid' && $registration->is_payment_completed == 0 && $registration->left_amount >= 0)
             <a href="#" onclick="showRequestPaymentPrompt({{ $registration->id }}); return false;" class="btn btn-warning mx-2">
                 <i class="fa fa-money-bill"></i> Request Payment
+            </a>
+        @endif
+
+        @if ($registration->is_payment_completed !== 1)
+            <a href="{{ route('admin.stu.payment.skip', $registration->id) }}" class="btn btn-info mx-2">
+                <i class="fa fa-credit-card"></i> Skip Payment
             </a>
         @endif
     </div>
@@ -200,7 +242,7 @@
                 inputLabel: 'Enter the reason for rejection',
                 inputPlaceholder: 'Type your message here...',
                 showCancelButton: true,
-                confirmButtonText: 'Reject',
+                confirmButtonText: 'Send',
                 cancelButtonText: 'Cancel',
                 inputValidator: (value) => {
                     if (!value) {
@@ -248,9 +290,12 @@
 
                     <label for="fee4" class="form-label text-start d-block">အားကစားကြေး</label>
                     <input type="number" id="sport_fee" class="form-control mb-2" value="0.00">
+
+                    <label for="description" class="form-label text-start d-block">Description (optional)</label>
+                    <textarea id="description" class="form-control mb-2" placeholder="Description"></textarea>
                 `,
                 showCancelButton: true,
-                confirmButtonText: 'Request',
+                confirmButtonText: 'Send',
                 cancelButtonText: 'Cancel',
                 preConfirm: () => {
                     
@@ -263,13 +308,14 @@
                     const schoolEntryFee = document.getElementById('school_entry_fee').value;
                     const examFee = document.getElementById('exam_fee').value;
                     const sportFee = document.getElementById('sport_fee').value;
+                    const description = document.getElementById('description').value;
 
                     if (!bankName) return 'Bank name is required';
                     if (!method) return 'Payment method is required';
                     if (method === 'mobile' && !phoneNumber) return 'Phone number is required';
                     if (method === 'bank_transfer' && !accountNumber) return 'Account number is required';
 
-                    return { bank_name: bankName, payment_method: method, phone_number: phoneNumber, account_number: accountNumber, account_holder_name: accountHolderName, reg_fee: regFee, school_entry_fee: schoolEntryFee, exam_fee: examFee, sport_fee: sportFee };
+                    return { bank_name: bankName, payment_method: method, phone_number: phoneNumber, account_number: accountNumber, account_holder_name: accountHolderName, reg_fee: regFee, school_entry_fee: schoolEntryFee, exam_fee: examFee, sport_fee: sportFee, payment_note: description };
                 },
                 didOpen: () => {
                     document.getElementById('reg_fee').value = "{{ $registration->academicYear->enrollment }}";
@@ -282,6 +328,13 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed && typeof result.value === 'object') {
+                    Swal.fire({
+                        title: 'Processing...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
                     fetch(`/studentReg/request-payment/${regId}`, {
                         method: 'POST',
                         headers: {
@@ -292,6 +345,7 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        Swal.close();
                         if (data.success) {
                             Swal.fire('Success!', 'Payment request sent.', 'success').then(() => {
                                 window.location.reload();

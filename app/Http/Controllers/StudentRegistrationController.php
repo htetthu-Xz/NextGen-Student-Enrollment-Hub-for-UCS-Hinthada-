@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Payment;
 use Illuminate\Support\Str;
 use App\Helper\Facades\File;
 use App\Models\AcademicYear;
@@ -11,6 +12,7 @@ use PhpOffice\PhpWord\PhpWord;
 use App\Mail\PaymentRequestMail;
 use PhpOffice\PhpWord\IOFactory;
 use App\Mail\FresherAcceptedMail;
+use App\Mail\PaymentCompleteMail;
 use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Log;
 use App\Mail\RegistrationRejectMail;
@@ -64,7 +66,7 @@ class StudentRegistrationController extends Controller
             if ($res) {
                 if ($res['status'] == 'FAIL' || $res['status'] == 'INCOMPLETE') {
                     return back()
-                        ->with('error', 'You are "Failed" in your last academic exam. Son you can\'t register for this academic year.');
+                        ->with('error', 'မိမိတက်ရောက်ရမည့် သင်တန်းနှစ်အတွက်သာ registration ကို မှန်ကန်စွာ ဖြည့်စွက်ပါ။');
                 }
             } else {
                 return back()
@@ -176,13 +178,40 @@ class StudentRegistrationController extends Controller
     }
 
 
+    public function skipPayment(StudentRegistration $student_registration)
+    {
 
+        $student_registration->update([
+            'is_payment_completed' => true,
+            'left_amount' => 0,
+            'status' => 'confirm',
+        ]);
+
+        Payment::create([
+            'student_registration_id' => $student_registration->id,
+            'amount' => $student_registration->academicYear->enrollment,
+            'status' => 'completed',
+            'payment_type' => 'fully Paid',
+            'bank_name' => 'N/A',
+            'payment_method' => 'mobile',
+            'phone_number' => 'N/A',
+            'account_number' => 'N/A',
+            'account_holder_name' => 'N/A',
+            'transaction_image' => null,
+            'transaction_note' => 'Payment skipped by admin.',
+        ]);
+
+        Mail::to($student_registration->reg_email)->send(new PaymentCompleteMail($student_registration));
+
+        return back()->with('success', 'Payment has been marked as completed (skipped) successfully.');
+    }
 
     public function stuRegDetail($id)
     {
         $registration = StudentRegistration::find($id);
         $payment = $registration->payments()->whereIn('status', ['pending', 'completed'])->first();
-        return view('admin.studentRegistation.detail', compact('registration', 'payment'));
+        $totalPaid = $registration->payments()->sum('amount');
+        return view('admin.studentRegistation.detail', compact('registration', 'payment', 'totalPaid'));
     }
 
     public function showImage($name)
@@ -330,13 +359,15 @@ class StudentRegistrationController extends Controller
             'reg_fee' => 'nullable|numeric|min:0',
             'school_entry_fee' => 'nullable|numeric|min:0',
             'exam_fee' => 'nullable|numeric|min:0',
-            'sport_fee' => 'nullable|numeric|min:0'
+            'sport_fee' => 'nullable|numeric|min:0',
+            'payment_note' => 'nullable|string|max:500',
         ]);
 
         $data['reg_fee'] = $validated['reg_fee'] ?? 0;
         $data['school_entry_fee'] = $validated['school_entry_fee'] ?? 0;
         $data['exam_fee'] = $validated['exam_fee'] ?? 0;
         $data['sport_fee'] = $validated['sport_fee'] ?? 0;
+        $data['payment_note'] = $validated['payment_note'] ?? '';
 
 
         $studentRegistration->Payments()->create([
@@ -345,7 +376,10 @@ class StudentRegistrationController extends Controller
             'phone_number' => $validated['payment_method'] === 'mobile' ? $validated['phone_number'] : null,
             'account_number' => $validated['payment_method'] === 'bank_transfer' ? $validated['account_number'] : null,
             'account_holder_name' => $validated['payment_method'] === 'bank_transfer' ? $validated['account_holder_name'] : null,
+            'payment_note' => $validated['payment_note'],
         ]);
+
+        $studentRegistration->update(['is_payment_requested' => 1]);
 
         try {
             Mail::to($studentRegistration->reg_email)->send(new PaymentRequestMail($studentRegistration, $data));
@@ -369,7 +403,6 @@ class StudentRegistrationController extends Controller
 
     public function submitPayment(StudentRegistration $studentRegistration, Request $request)
     {
-        // dd($request->all());
         $validatedData = $request->validate([
             'transaction_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'transaction_note' => 'nullable|string|max:255',
@@ -377,10 +410,13 @@ class StudentRegistrationController extends Controller
             'payment_type' => 'required|string',
         ]);
 
+        $paidAmount = $studentRegistration->paid_amount + $validatedData['paid_amount'];
 
         $studentRegistration->update([
-            'paid_amount' => $validatedData['paid_amount'],
-            'left_amount' => $studentRegistration->academicYear->enrollment - $validatedData['paid_amount'],
+            'payment_type' => $validatedData['payment_type'],
+            'paid_amount' => $paidAmount,
+            'left_amount' => $studentRegistration->academicYear->enrollment - $paidAmount,
+            'is_payment_requested' => 0,
         ]);
 
         $payment = $studentRegistration->payments()->where('status', 'pending')->latest()->first();
@@ -388,10 +424,26 @@ class StudentRegistrationController extends Controller
         $payment->update([
             'transaction_image' => File::upload($request->file('transaction_image'), 'images/' . Auth::user()->uuid . '/'),
             'transaction_note' => $validatedData['transaction_note'],
-            'payment_type' => $validatedData['payment_type'],
+            'payment_type' => $validatedData['payment_type'] == 'full_paid' ? 'fully Paid' : 'partially Paid',
+            'amount' => $validatedData['paid_amount'],
         ]);
 
         return response()->json(['status' => 'ok']);
+    }
+
+    public function completePayment(Payment $payment)
+    {
+        $payment->update(['status' => 'completed']);
+        $studentRegistration = $payment->studentRegistration;
+        $studentRegistration->update(['status' => 'confirm', 'is_payment_completed' => 1, 'status_message' => null]);
+
+        try {
+            Mail::to($studentRegistration->reg_email)->send(new PaymentCompleteMail($studentRegistration));
+        } catch (\Exception $e) {
+            Log::error('Failed to send acceptance email: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', 'Payment marked as completed and registration confirmed.');
     }
 
     public function stuRegDelete(StudentRegistration $studentRegistration, Request $request)
@@ -671,7 +723,7 @@ class StudentRegistrationController extends Controller
 
     public function regAccept(StudentRegistration $studentRegistration)
     {
-        $studentRegistration->update(['status' => 'confirm']);
+        $studentRegistration->update(['status' => 'confirm', 'status_message' => null]);
         $user = User::findOrFail($studentRegistration->user_id);
         $user->update([
             'current_academic_year_id' => $studentRegistration->academic_year_id,
@@ -684,13 +736,13 @@ class StudentRegistrationController extends Controller
             'phone' => $studentRegistration->phone . '/' . $studentRegistration->guardian_phone,
         ]);
 
-        $payment = $studentRegistration->payments()
-            ->where(function ($query) {
-                $query->whereIn('status', ['pending', 'completed']);
-            })
-            ->latest()
-            ->first();
-        $payment->update(['status' => 'completed']);
+        $payment = $studentRegistration->payments()->where('status', 'pending')->latest()->first();
+        if ($payment && $payment->payment_type == 'fully Paid') {
+            $payment->update(['status' => 'completed']);
+            $studentRegistration->update(['is_payment_completed' => 1]);
+        } elseif ($payment && $payment->payment_type == 'partially Paid') {
+            $payment->update(['status' => 'partial_paid']);
+        }
         Mail::to($studentRegistration->reg_email)->send(new RegistrationSuccessMail($studentRegistration));
 
         return redirect()->route('admin.stu.reg.accept.list')->with('success', 'ကျောင်းအပ် လက်ခံလိုက်ပါပြီ');
