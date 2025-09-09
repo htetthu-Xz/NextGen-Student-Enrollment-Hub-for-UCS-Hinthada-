@@ -113,7 +113,7 @@
                                             @if ($reg->status === 'pending')
                                                 <p  style="font-size: 1.1rem">စောင့်ဆိုင်းနေသည်</p>
                                             @elseif ($reg->status === 'confirm')
-                                                <p  style="font-size: 1.1rem">ကျောင်းအပ်လက်ခံထားသည်</p>
+                                                <p  style="font-size: 1.1rem">ကျောင်းအပ်လက်ခံထားသည် <br><span class="p-2 badge bg-warning">{{ $reg->left_amount > 0 ? 'ငွေပေးချေရန် ကျန်ရှိသည်' : '' }}</span></p>
                                             @else
                                                 <p style="font-size: 1.1rem">ပြန်ပြင်ခိုင်းထားသည်</p>
                                             @endif

@@ -69,7 +69,7 @@
 @push('scripts')
     <script>
         document.getElementById('acceptBtn').addEventListener('click', function() {
-            document.getElementById('acceptForm').style.display = 'block';
+            document.getElementById('acceptForm').submit();
         });
     </script>
 @endpush

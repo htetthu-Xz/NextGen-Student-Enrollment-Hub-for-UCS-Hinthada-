@@ -48,11 +48,13 @@
                               <td class="">{{ $reg->phone }}</td>
                               <td class=""><a href="{{route('ui.view.reg.detail', $reg->id)}}"><i class="fas fa-eye"></i></a></td>
                               <td class="">
-                                @if ($reg->is_payment_requested == 1)
+                                @if ($reg->is_payment_requested == 1 && $reg->status==="pending")
                                     <span class="badge bg-info p-2">ငွေသွင်းရန် လိုအပ်ပါသည်။</span>
                                 @else
                                     @if($reg->status==="pending")
                                         <span class="badge bg-warning text-dark p-2">ကျောင်းအပ်လက်ခံရန်စောင့်ဆိုင်းနေသည်</span>
+                                    @elseif ($reg->status==="confirm" && $reg->is_payment_requested == 1)
+                                        <span class="badge bg-success p-2">လက်ခံထားသည်(ငွေသွင်းရန် လိုအပ်ပါသည်)</span>
                                     @elseif ($reg->status==="confirm")
                                         <span class="badge bg-success p-2">လက်ခံထားသည်</span>
                                     @else
@@ -137,7 +139,7 @@
                 paymentDetails += payment.full_paid ? '<span class="badge bg-success">Full Paid</span> ' : '';
                 paymentDetails += payment.partial_paid ? '<span class="badge bg-warning">Partial Paid</span> ' : '';
                 paymentDetails += `</div>`;
-                paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Left Amount:</span> <span class="text-danger">{{ $reg->left_amount }}</span></div>`;
+                paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Paid Amount:</span> <span class="text-success">{{ number_format($reg->paid_amount, 2) }} MMK</span></div>`;
                 paymentDetails += '</div></div>';
             }
             Swal.fire({

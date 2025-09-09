@@ -143,6 +143,7 @@
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -170,7 +171,7 @@
                                     <th>Transaction Note</th>
                                     <td>{{ $payment->transaction_note }}</td>
                                     <th>Payment Type</th>
-                                    <td>{{ ucfirst(str_replace('_', ' ', $payment->payment_type)) }}</td>
+                                    <td><span class="badge bg-info">{{ ucfirst(str_replace('_', ' ', $payment->payment_type)) }}</span></td>
                                 </tr>
                                 <tr>
                                     <th>Paid Amount</th>
@@ -183,7 +184,7 @@
                                     </td>
                                 </tr>
 
-                                @if ($payment->status == 'pending')
+                                @if ($payment->status == 'pending' && $payment->studentRegistration->left_amount == 0 && $payment->payment_type == 'partially Paid')
                                     <tr>
                                         <th>Action</th>
                                         <td colspan="3"><a href="{{ route('admin.stu.payment.complete', $payment->id) }}" class="btn btn-success">Complete Payment</a></td>
@@ -197,6 +198,18 @@
         @endif
     @endif
 
+    <div class="mt-3">
+        @if ($registration->is_payment_requested == 1)
+            <span class="badge bg-info text-dark">Payment Requested</span>
+        @endif
+    </div>
+
+    <div class="mt-3">
+        @if ($registration->is_payment_completed == 1)
+            <span class="badge bg-success p-2">  Registration Completed</span>
+        @endif
+    </div>
+
     <div class="text-center mt-4">
         @if ($payment->transaction_image ?? false)
             @if ($registration->status === 'pending')
@@ -206,7 +219,7 @@
             @endif
         @endif
 
-        @if ($registration->status !== 'confirm')
+        @if ($registration->status !== 'confirm' && $registration->is_payment_requested == 0)
             <a href="#" onclick="showRejectPrompt({{ $registration->id }}); return false;" class="btn btn-danger mx-2">
                 <i class="fa fa-times"></i> Reject
                 <form id="reject-form-{{ $registration->id }}" action="{{ route('admin.stu.reg.delete', $registration->id) }}" method="POST" style="display:none;">
@@ -218,14 +231,20 @@
         @endif
 
         @if ($registration->is_payment_requested == 0 && $registration->payment_type == 'partial_paid' && $registration->is_payment_completed == 0 && $registration->left_amount >= 0)
-            <a href="#" onclick="showRequestPaymentPrompt({{ $registration->id }}); return false;" class="btn btn-warning mx-2">
+            <a href="#" id="request-payment" onclick="showRequestPaymentPrompt({{ $registration->id }}); return false;" class="btn btn-warning mx-2">
                 <i class="fa fa-money-bill"></i> Request Payment
             </a>
         @endif
 
-        @if ($registration->is_payment_completed !== 1)
+        @if ($active_payment && $active_payment->status == 'pending' || $registration->academicYear->enrollment == 0)
+            <script>
+                document.getElementById('request-payment').style.display = 'none';
+            </script>
+        @endif
+
+        @if ($registration->is_payment_completed !== 1 && $registration->academicYear->enrollment == 0)
             <a href="{{ route('admin.stu.payment.skip', $registration->id) }}" class="btn btn-info mx-2">
-                <i class="fa fa-credit-card"></i> Skip Payment
+                <i class="fa fa-credit-card"></i> Skip Payment & Accept
             </a>
         @endif
     </div>

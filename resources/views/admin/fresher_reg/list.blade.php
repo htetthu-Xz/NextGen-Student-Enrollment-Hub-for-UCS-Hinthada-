@@ -18,6 +18,7 @@
                                     <th style="font-size: 1.3rem">အမည်</th>
                                     <th style="font-size: 1.3rem">Email</th>
                                     <th style="font-size: 1.3rem">Phone</th>
+                                    <th style="font-size: 1.3rem">Status</th>
                                     <th style="font-size: 1.3rem">Action</th>
                                 </tr>
                             </thead>
@@ -33,6 +34,7 @@
                                         </td>
                                         <td style="font-size: 1.1rem">{{ $fresher->email }}</td>
                                         <td style="font-size: 1.1rem">{{ $fresher->phone }}</td>
+                                        <td style="font-size: 1.1rem"><span class="badge bg-{{ $fresher->status == 'accepted' ? 'success' : 'warning' }}">{{ ucfirst($fresher->status) }}</span></td>
                                         <td style="font-size: 1.1rem">
                                             @if ($fresher->status == 'accepted')
                                                 -

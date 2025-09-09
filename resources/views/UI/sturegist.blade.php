@@ -15,6 +15,18 @@
     <div class="row">
         <div class="col-12">
             <div class="wizard-container">
+                @if ($errors->any())
+                    <script>
+                        $(document).ready(function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registration FAILED',
+                                html: '{!! implode("<br>", $errors->all()) !!}',
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                    </script>
+                @endif
                 <div class="card wizard-card" data-color="blue" id="wizardProfile">
                     <form action="{{ route('stu.reg.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf

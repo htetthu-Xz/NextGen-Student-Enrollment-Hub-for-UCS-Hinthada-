@@ -56,27 +56,25 @@ class FresherRegistrationController extends Controller
 
     public function fresherAcceptStore(Request $request, Fresher $fresher)
     {
-        $request->validate([
-            'email' => ['required', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@ucsh\.edu\.mm$/'],
-            'uni_id_no' => 'required|string|max:255',
-        ]);
+        // $request->validate([
+        //     'email' => ['required', 'email', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@ucsh\.edu\.mm$/'],
+        //     'uni_id_no' => 'required|string|max:255',
+        // ]);
 
-        $user = User::create([
-            'name' => $fresher->name,
-            'email' => $request->email,
-            'uni_id_no' => $request->uni_id_no,
-            'image' => 'default.png',
-            'password' => 'P@ssw0rd',
-            'uuid' => Str::uuid()
-        ]);
+        // $user = User::create([
+        //     'name' => $fresher->name,
+        //     'email' => $request->email,
+        //     'uni_id_no' => $request->uni_id_no,
+        //     'image' => 'default.png',
+        //     'password' => 'P@ssw0rd',
+        //     'uuid' => Str::uuid()
+        // ]);
 
-        if ($user) {
-            try {
-                Mail::to($fresher->email)->send(new FresherAcceptedMail($user));
-            } catch (\Exception $e) {
-                // Log the error for debugging
-                Log::error('Mail sending failed: ' . $e->getMessage());
-            }
+
+        try {
+            Mail::to($fresher->email)->send(new FresherAcceptedMail($fresher));
+        } catch (\Exception $e) {
+            Log::error('Mail sending failed: ' . $e->getMessage());
         }
 
         $fresher->update([

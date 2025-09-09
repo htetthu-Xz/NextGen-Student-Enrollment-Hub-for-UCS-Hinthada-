@@ -187,7 +187,7 @@
       </a>
     </div>
     <div class="row g-4 g-lg-5 align-items-start p-2">
-      <div class="col-lg-8 left-wrap mt-3">
+      <div class="{{ !auth()->check() ? 'col-lg-8' : 'col-lg-12' }}  left-wrap mt-3">
 
         <div class="soft-panel logo-panel mb-4">
           <div class="d-flex justify-content-between align-items-center">
@@ -226,45 +226,47 @@
 
 
 
-      <div class="col-lg-4 mt-5">
-        <div class="card shadow-sm login-card" style="padding: 0px">
-          <div class="card-header">
-            Login
-          </div>
-          <div class="card-body">
-            <form action="{{ route('login') }}" method="POST">
-              @csrf
-                @if(session()->has('unauthenticated'))
-                    <div class="alert alert-danger">
-                        {{ session()->get('unauthenticated') }}
-                    </div>
-                @endif
-              <div class="mb-3">
-                  <label for="email" class="mb-2"><b>Email</b></label>
-                  <input type="text" name="email" value="{{ old('email') }}"
-                      class="form-control border-0 shadow-sm @error('email') is-invalid @enderror"
-                      id="email" placeholder="Enter your email">
-                  @error('email')
-                      <span class="invalid-feedback">{{ $message }}</span>
-                  @enderror
-              </div>
+      @if (!auth()->check())
+        <div class="col-lg-4 mt-5">
+          <div class="card shadow-sm login-card" style="padding: 0px">
+            <div class="card-header">
+              Login
+            </div>
+            <div class="card-body">
+              <form action="{{ route('login') }}" method="POST">
+                @csrf
+                  @if(session()->has('unauthenticated'))
+                      <div class="alert alert-danger">
+                          {{ session()->get('unauthenticated') }}
+                      </div>
+                  @endif
+                <div class="mb-3">
+                    <label for="email" class="mb-2"><b>Email</b></label>
+                    <input type="text" name="email" value="{{ old('email') }}"
+                        class="form-control border-0 shadow-sm @error('email') is-invalid @enderror"
+                        id="email" placeholder="Enter your email">
+                    @error('email')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
 
-              <div class="mb-3">
-                  <label for="password" class="mb-2"><b>လျှိုဝှက်နံပါတ်ထည့်ရန်</b></label>
-                  <input type="password" name="password"
-                      class="form-control border-0 shadow-sm @error('password') is-invalid @enderror"
-                      id="password" placeholder="Enter your password">
-                  @error('password')
-                      <span class="invalid-feedback">{{ $message }}</span>
-                  @enderror
-              </div>
-              <button type="submit" class="btn btn-success w-100">
-                Log in <i class="fa-solid fa-right-to-bracket"></i>
-              </button>
-            </form>
+                <div class="mb-3">
+                    <label for="password" class="mb-2"><b>လျှိုဝှက်နံပါတ်ထည့်ရန်</b></label>
+                    <input type="password" name="password"
+                        class="form-control border-0 shadow-sm @error('password') is-invalid @enderror"
+                        id="password" placeholder="Enter your password">
+                    @error('password')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+                <button type="submit" class="btn btn-success w-100">
+                  Log in <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      @endif
     </div>
     <div class="row g-4 g-lg-5 align-items-start p-2">
       <div class="col-lg-8 mt-5 new-reg" style="display: none;">

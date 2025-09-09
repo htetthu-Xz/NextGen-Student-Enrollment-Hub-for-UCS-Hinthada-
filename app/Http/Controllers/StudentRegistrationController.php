@@ -211,7 +211,8 @@ class StudentRegistrationController extends Controller
         $registration = StudentRegistration::find($id);
         $payment = $registration->payments()->whereIn('status', ['pending', 'completed'])->first();
         $totalPaid = $registration->payments()->sum('amount');
-        return view('admin.studentRegistation.detail', compact('registration', 'payment', 'totalPaid'));
+        $active_payment = $registration->payments()->latest()->first();
+        return view('admin.studentRegistation.detail', compact('registration', 'payment', 'totalPaid', 'active_payment'));
     }
 
     public function showImage($name)
