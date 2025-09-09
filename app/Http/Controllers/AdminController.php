@@ -321,7 +321,7 @@ class AdminController extends Controller
                 return back()->with('success', 'အောင်မြင်စွာဖျက်လိုက်ပါပြီ');
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'မူလကျားကိုဖျက်၍မရပါ။');
+            return back()->with('error', 'ကျောင်းသားအား ဖျက်၍မရနိုင်ပါ။');
         }
     }
 
