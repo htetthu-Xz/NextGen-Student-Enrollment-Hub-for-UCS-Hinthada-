@@ -10,7 +10,7 @@ class YearController extends Controller
     public function index()
     {
         $years = Year::paginate(10);
-        return view('admin.years.index', compact('years'));
+        return view('admin.Years.index', compact('years'));
     }
 
     public function store(Request $request)

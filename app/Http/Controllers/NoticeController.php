@@ -11,12 +11,12 @@ class NoticeController extends Controller
     public function list()
     {
         $notices = Notice::paginate(10);
-        return view('admin.notice.list', compact('notices'));
+        return view('admin.Notice.list', compact('notices'));
     }
 
     public function add()
     {
-        return view('admin.notice.add');
+        return view('admin.Notice.add');
     }
     public function store(Request $request)
     {
@@ -32,7 +32,7 @@ class NoticeController extends Controller
     public function edit($id)
     {
         $notice = Notice::find($id);
-        return view('admin.notice.edit', compact('notice'));
+        return view('admin.Notice.edit', compact('notice'));
     }
 
     public function update(Request $request, $id)

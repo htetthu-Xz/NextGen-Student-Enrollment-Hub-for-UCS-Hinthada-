@@ -252,7 +252,7 @@ class AdminController extends Controller
             });
         }
         $admins = $admins->latest()->paginate(10);
-        return view('admin.transfer.list', compact('admins'));
+        return view('admin.Transfer.list', compact('admins'));
     }
 
     public function export()
