@@ -182,7 +182,8 @@
 @section('content')
   <div class="container my-md-5">
     <div class="text-end" style="text-align: right;">
-      <a href="{{ asset('admin-assets/Form.pdf') }}" class="btn mb-2 btn-success btn-lg px-4" download>
+      <a href="{{ route('download.registration.form') }}" class="btn btn-info" style="border-radius: 10px">
+        <i class="fa fa-download" aria-hidden="true"></i>
         Download Registration Form
       </a>
     </div>
@@ -241,7 +242,7 @@
                       </div>
                   @endif
                 <div class="mb-3">
-                    <label for="email" class="mb-2"><b>Email</b></label>
+                    <label for="email" class="mb-2"><b>အီးမေးလ်</b></label>
                     <input type="text" name="email" value="{{ old('email') }}"
                         class="form-control border-0 shadow-sm @error('email') is-invalid @enderror"
                         id="email" placeholder="Enter your email">

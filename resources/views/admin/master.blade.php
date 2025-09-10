@@ -45,8 +45,8 @@
         }
 
         .custom-table td, .custom-table th {
-            border-bottom: 1px solid #0a5c70; /* Add bottom border to each td and th */
-            padding: 10px; /* Add padding for cell content */
+            border-bottom: 1px solid #0a5c70;
+            padding: 10px;
         }
     </style>
 </head>

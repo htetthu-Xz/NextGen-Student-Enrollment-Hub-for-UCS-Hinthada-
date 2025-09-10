@@ -5,6 +5,7 @@ use App\Models\StudentRegistration;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\YearController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NoticeController;
@@ -12,8 +13,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\FresherRegistrationController;
 use App\Http\Controllers\StudentRegistrationController;
 
-
-
+Route::get('/download-registration-form', [FormController::class, 'download'])->name('download.registration.form');
 Route::get('/', [UiController::class, 'home'])->name('ui.home');
 Route::get('contact', [UiController::class, 'contact'])->name('ui.contact');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
