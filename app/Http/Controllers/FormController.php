@@ -9,7 +9,7 @@ class FormController extends Controller
 {
     public function download()
     {
-        $file = public_path('admin-assets/Form.pdf');
+        $file = public_path('admin-assets/form.pdf');
         $headers = [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename="Registration_Form.pdf"',

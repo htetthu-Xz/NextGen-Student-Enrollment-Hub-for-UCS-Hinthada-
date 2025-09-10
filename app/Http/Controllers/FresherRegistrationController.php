@@ -11,6 +11,7 @@ use App\Helper\Facades\File;
 use Illuminate\Http\Request;
 use App\Mail\FresherAcceptedMail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class FresherRegistrationController extends Controller
@@ -22,6 +23,9 @@ class FresherRegistrationController extends Controller
 
     public function fresherStore(Request $request)
     {
+        if (Auth::user()->role == 'admin') {
+            return redirect()->back()->with('error', 'Admin cannot register as a student');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:freshers,email',

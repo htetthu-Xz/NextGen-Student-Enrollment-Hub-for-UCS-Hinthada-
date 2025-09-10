@@ -28,6 +28,9 @@ class UiController extends Controller
 
     public function stuReg()
     {
+        if (Auth::user()->role == 'admin') {
+            return redirect()->back()->with('error', 'Admin cannot register as a student');
+        }
         $years = AcademicYear::all();
         $yrs = Year::where('is_current', 1)->first();
         return view('UI.sturegist', ['years' => $years, 'yrs' => $yrs]);
