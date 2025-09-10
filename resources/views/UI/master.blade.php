@@ -2,18 +2,46 @@
 <html lang="en">
 
 <head>
-  <!-- ...existing head content... -->
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Mobile Metas -->
+
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Site Metas -->
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+
+  <meta name="keywords" content="smart register" />
+  <meta name="description" content="Step to a Brighter Future in ICT" />
+  <meta name="author" content="UCSH" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Smart Register" />
+  <meta property="og:description" content="Step to a Brighter Future in ICT" />
+  <meta property="og:image" content="{{ asset('user/images/logo.png') }}" />
+  <meta property="og:url" content="{{ url()->current() }}" />
+  <meta property="og:site_name" content="Smart Register" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Smart Register" />
+  <meta name="twitter:description" content="Step to a Brighter Future in ICT" />
+  <meta name="twitter:image" content="{{ asset('user/images/logo.png') }}" />
+  <meta name="twitter:site" content="@yourtwitterhandle" />
+  <meta name="twitter:creator" content="@yourtwitterhandle" />
+
+  <meta itemprop="name" content="Smart Register" />
+  <meta itemprop="description" content="Step to a Brighter Future in ICT" />
+  <meta itemprop="image" content="{{ asset('user/images/logo.png') }}" />
+
+
+
+  <!-- Telegram -->
+  <meta name="telegram:title" content="Smart Register" />
+  <meta name="telegram:description" content="Step to a Brighter Future in ICT" />
+  <meta name="telegram:image" content="{{ asset('user/images/logo.png') }}" />
+
+  <!-- Additional SEO -->
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
   <link rel="shortcut icon" href="{{ asset('user/images/favicon.png') }}" type="">
 
-  <title>Student Management System</title>
+  <title>Smart Register</title>
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" type="text/css" href="{{ asset('user/css/bootstrap.css') }}" />

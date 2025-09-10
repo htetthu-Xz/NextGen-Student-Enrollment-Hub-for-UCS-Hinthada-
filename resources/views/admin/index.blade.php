@@ -2,14 +2,13 @@
 @section('content')
 
 <div class="col-12">
+    <div class="mt-3 mb-2 text-center">
+        <img src="{{ asset('user/images/logo.png') }}" style="height: 70px; width: 70px;">
+        <span class="pcolor fw-bold  mb-5" style="font-size: 1.8rem; font-weight: bold;">
+            ကွန်ပျူတာတက္ကသိုလ်(ဟင်္သာတ)
+        </span>
+    </div>
     <div class="" style="height:400px;padding:20px">
-        <div class="mt-3 mb-2 text-center">
-            <img src="{{ asset('user/images/logo.png') }}" style="height: 70px; width: 70px;">
-            <span class="pcolor  fw-bold  mb-5" style="font-size: 1.8rem; font-weight: bold;">
-                ကွန်ပျူတာတက္ကသိုလ်(ဟင်္သာတ)
-            </span>
-        </div>
-
         <div class="row">
             <div class="col-6" style="height:200px" >
                 <div class="card shadow-2xl p-3 text-center" >

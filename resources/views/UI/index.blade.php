@@ -175,6 +175,13 @@
     .uni-line {
       flex-basis: 75px
     }
+
+    .responsive {
+      margin-top: 20px !important;
+      margin-bottom: 10px !important;
+      font-size: 12px !important;
+      margin-right: 7px;
+    }
   }
 </style>
 @endpush
@@ -182,7 +189,7 @@
 @section('content')
   <div class="container my-md-5">
     <div class="text-end" style="text-align: right;">
-      <a href="{{ route('download.registration.form') }}" class="btn btn-info" style="border-radius: 10px">
+      <a href="{{ route('download.registration.form') }}" class="btn responsive btn-info" style="border-radius: 10px">
         <i class="fa fa-download" aria-hidden="true"></i>
         Download Registration Form
       </a>
