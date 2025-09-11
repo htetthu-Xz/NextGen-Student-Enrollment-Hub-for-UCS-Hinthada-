@@ -227,7 +227,7 @@
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" class="d-flex flex-column" style="height: 100vh !important;">
 
         <!-- Main Content -->
         <div id="content">

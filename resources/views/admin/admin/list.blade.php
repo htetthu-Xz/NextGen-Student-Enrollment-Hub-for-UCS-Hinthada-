@@ -4,15 +4,12 @@
     <div class="card bg-dark text-white">
         <img class="w-100" src="{{ asset('admin-assets/bg.png') }}" alt="Card image" style="height: 780px; object-fit: cover;">
         <div class="card-img-overlay">
-            <!-- Page Content -->
-                <!-- Page Content -->
                 <div class="content container-fluid">
-                    <!-- Page Header -->
                     <div class="page-header">
                         <div class="page-header">
                             <div class="row">
                                 <div class="col-11">
-                                    <div class="d-flex jusitfy-content-center gap-3">
+                                    <div class="d-flex justify-content-center gap-3">
                                         <div class="col-12 ">
                                             <form
                                                 class="d-none  d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
@@ -59,7 +56,7 @@
                     @if ($admins->isEmpty())
                         <p class="text-danger fw-bold border p-2 rounded text-center my-5">No Reviews has found ! </p>
                     @else
-                        <table class="custom-table  border-success table-hover mt-4">
+                        <table class="custom-table table-responsive border-success table-hover mt-4">
                             <thead class=" border-success">
                                 <tr>
                                     <th style="">စဉ်</th>

@@ -61,6 +61,8 @@ class StudentRegistrationController extends Controller
                 'semester' => $academicYear->esemester,
             ]);
 
+            Log::info('API response', ['body' => $response->body(), 'status' => $response->status()]);
+
             $res = $response->json()['results'][0] ?? null;
 
             if ($res) {
