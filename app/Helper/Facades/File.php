@@ -38,6 +38,9 @@ class File
 
             $storedPath = $file->storeAs($path, $fileName, $disk);
 
+            $dir = dirname(Storage::disk($disk)->path($storedPath));
+            @chmod($dir, 0755);
+
             @chmod(Storage::disk($disk)->path($storedPath), 0644);
 
             return $fileName;
