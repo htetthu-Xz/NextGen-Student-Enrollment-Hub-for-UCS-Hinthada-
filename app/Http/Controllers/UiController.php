@@ -81,7 +81,11 @@ class UiController extends Controller
         $paymentInfo = [];
         $reg = $regs->whereIn('status', ['pending', 'confirm'])->first();
 
-        $current_payment = $reg->payments()->where('status', 'pending')->first();
+        if ($reg) {
+            $current_payment = $reg->payments()->where('status', 'pending')->first();
+        } else {
+            $current_payment = null;
+        }
         if ($reg) {
             $successPayment = $reg->payments->whereIn('status', ['completed', 'partial_paid'])->first();
 

@@ -10,38 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class File
 {
-    // public static function Upload($file, $path)
-    // {
-    //     if (isset($file) && $file->isValid()) {
-    //         $fileName = Carbon::now()->timestamp . '_' . $file->getClientOriginalName();
-    //         $fullPath = $path . $fileName;
-
-    //         $directory = dirname(Storage::path($fullPath));
-    //         if (!is_dir($directory)) {
-    //             mkdir($directory, 0755, true);
-    //         }
-
-    //         $file->storeAs($path, $fileName);
-
-    //         @chown(Storage::path($fullPath), 'www-data');
-
-    //         return $fileName;
-    //     }
-
-    //     return null;
-    // }
-
     public static function Upload($file, $path, $disk = 'public')
     {
         if ($file && $file->isValid()) {
             $fileName = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
 
-            $storedPath = $file->storeAs($path, $fileName, $disk);
-
-            $dir = dirname(Storage::disk($disk)->path($storedPath));
-            @chmod($dir, 0755);
-
-            @chmod(Storage::disk($disk)->path($storedPath), 0644);
+            $file->storeAs($path, $fileName, $disk);
 
             return $fileName;
         }
@@ -71,6 +45,6 @@ class File
 
     public static function GetStudentDataPath($user  = null)
     {
-        return 'storage/images/' . ($user ? $user->uuid : Auth::user()->uuid) . '/';
+        return 'storage/public/images/' . ($user ? $user->uuid : Auth::user()->uuid) . '/';
     }
 }

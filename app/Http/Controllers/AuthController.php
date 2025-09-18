@@ -35,7 +35,7 @@ class AuthController extends Controller
         $data['transfer'] = $request->has('transfer') ? 'in' : 'present';
 
         $data['uuid'] = Str::uuid();
-        $data['image'] = File::upload($request->file('image'), 'storage/images/' . $data['uuid']);
+        $data['image'] = File::upload($request->file('image'), 'images/' . $data['uuid']);
         $data['password'] = 'P@ssw0rd';
 
         User::create($data);

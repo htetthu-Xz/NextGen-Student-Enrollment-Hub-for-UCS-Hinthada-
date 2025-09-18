@@ -133,13 +133,13 @@
                     paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Note:</span> <span class="text-dark">${payment.transaction_note}</span></div>`;
                 }
                 if (payment.transaction_image) {
-                    paymentDetails += `<div class='col-12 mb-2' style="text-align:left;"><a href="{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg->User)) }}/${payment.transaction_image}" target="_blank"><img src='{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg->User)) }}/${payment.transaction_image}' class='img-thumbnail border border-primary' style='max-width:220px;'></a></div>`;
+                    paymentDetails += `<div class='col-12 mb-2' style="text-align:left;"><a href="{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg!=null? $reg->User :'')) }}/${payment.transaction_image}" target="_blank"><img src='{{ asset(App\Helper\Facades\File::GetStudentDataPath($reg!=null? $reg->User :'')) }}/${payment.transaction_image}' class='img-thumbnail border border-primary' style='max-width:220px;'></a></div>`;
                 }
                 paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Paid Type:</span> `;
                 paymentDetails += payment.full_paid ? '<span class="badge bg-success">Full Paid</span> ' : '';
                 paymentDetails += payment.partial_paid ? '<span class="badge bg-warning">Partial Paid</span> ' : '';
                 paymentDetails += `</div>`;
-                paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Paid Amount:</span> <span class="text-success">{{ number_format($reg->paid_amount, 2) }} MMK</span></div>`;
+                paymentDetails += `<div class="col-12 mb-1" style="text-align:left;"><span class="fw-bold">Paid Amount:</span> <span class="text-success">{{ number_format($reg->paid_amount?? 0, 2) }} MMK</span></div>`;
                 paymentDetails += '</div></div>';
             }
             Swal.fire({
