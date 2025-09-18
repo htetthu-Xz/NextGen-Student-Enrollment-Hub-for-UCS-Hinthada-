@@ -21,7 +21,7 @@
 
                                     <div class="mb-3 text-center">
                                         @if ($user->image)
-                                            <img src="{{ asset('storage/images/' . Auth::user()->uuid . '/' . $user->image) }}"
+                                            <img src="{{ asset('storage/public/images/' . Auth::user()->uuid . '/' . $user->image) }}"
                                                 class="profileimg rounded-circle"
                                                 style="width: 200px; height:200px; object-fit:cover">
                                         @else
