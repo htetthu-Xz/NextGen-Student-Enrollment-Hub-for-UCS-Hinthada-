@@ -53,7 +53,7 @@ class StudentRegistrationController extends Controller
 
 
 
-            $search = Auth::user()->uni_id_no;
+            $search = substr(Auth::user()->uni_id_no, -4);
 
             $response = Http::get(env('ACADEMIC_RESULTS_CHECK_API_URL'), [
                 'search' => $search,
