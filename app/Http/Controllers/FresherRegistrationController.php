@@ -23,7 +23,7 @@ class FresherRegistrationController extends Controller
 
     public function fresherStore(Request $request)
     {
-        if (Auth::user()->role == 'admin') {
+        if (Auth::check() && Auth::user()->role == 'admin') {
             return redirect()->back()->with('error', 'Admin cannot register as a student');
         }
         $request->validate([
